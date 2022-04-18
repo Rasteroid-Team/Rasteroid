@@ -1,13 +1,48 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package pruebas_rasteroid;
 
-/**
- *
- * @author Arnau
- */
-public class Physics {
+import static java.lang.Thread.sleep;
+import java.util.ArrayList;
+
+public class Physics implements Runnable{
+
+    ArrayList<Nave> naves = new ArrayList<>();
     
+    public Physics() {
+        
+    }
+    
+    public void addNave(Nave naveToAdd) {
+        naves.add(naveToAdd);
+    }
+    
+    private void calcularPosicionNave(Nave nave) {
+        
+        float friction = nave.getFriction();
+        
+        nave.setPosX( nave.getPosX() + nave.getSpeedX() );
+        nave.setSpeedX( nave.getSpeedX() - friction );
+        
+        nave.setPosY( nave.getPosY() + nave.getSpeedY() );
+        nave.setSpeedY( nave.getSpeedY() - friction );
+        
+    }
+    
+    private void updatePositions() {
+        for (Nave nave : naves) {
+            calcularPosicionNave(nave);
+        }
+    }
+    
+    @Override
+    public void run() {
+        while (true) {
+            try {
+                updatePositions();
+                sleep(16);
+            } catch (InterruptedException ex) {
+                System.out.println("El thread de fisicas ha sufrido un problema");
+            }
+        }
+    }
+
 }
