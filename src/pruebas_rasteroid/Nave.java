@@ -1,13 +1,14 @@
 package pruebas_rasteroid;
 
 public class Nave {
+
     private float posX, posY;
     private float speedX, speedY;
     private int angle;
     private int acceleration;
     private float friction = 0.05f;
-    
-    public Nave(){
+
+    public Nave() {
         posX = 300f;
         posY = 300f;
         speedX = 6f;
@@ -71,8 +72,5 @@ public class Nave {
     public void setFriction(float friction) {
         this.friction = friction;
     }
-    
-    
-    
-    
+
 }
