@@ -10,9 +10,10 @@ public class Nave {
     public Nave(){
         posX = 300;
         posY = 300;
-        speedX = 5;
-        speedY = 5;
+        speedX = 0;
+        speedY = 0;
         angle = 0;
+        acceleration = 0;
     }
 
     public float getPosX() {
