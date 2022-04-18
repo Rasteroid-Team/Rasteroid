@@ -5,13 +5,13 @@ public class Nave {
     private float speedX, speedY;
     private int angle;
     private int acceleration;
-    private float friction = 0.5f;
+    private float friction = 0.05f;
     
     public Nave(){
-        posX = 300;
-        posY = 300;
-        speedX = 0;
-        speedY = 0;
+        posX = 300f;
+        posY = 300f;
+        speedX = 6f;
+        speedY = 5f;
         angle = 0;
         acceleration = 0;
     }

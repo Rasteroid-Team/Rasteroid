@@ -7,8 +7,8 @@ public class Physics implements Runnable{
 
     ArrayList<Nave> naves = new ArrayList<>();
     
-    public Physics() {
-        
+    public Physics(ArrayList<Nave> naves) {
+        this.naves = naves;
     }
     
     public void addNave(Nave naveToAdd) {

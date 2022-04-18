@@ -1,21 +1,38 @@
 package pruebas_rasteroid;
 
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 public class Pruebas_Rasteroid extends JFrame{
 
+    private ArrayList<Nave> naves = new ArrayList<Nave>();
+    private Physics physics;
+    private Viewer viewer;
+    
+    
     public Pruebas_Rasteroid() {
         setWindowParameters();
+        naves.add(new Nave());
+        physics = new Physics(naves);
+        viewer =  new Viewer(naves, this.getWidth(), this.getHeight());
+        this.add(viewer);
         
-    
+        Thread thread1 = new Thread(physics);
+        thread1.start();
+        Thread thread2 = new Thread(viewer);
+        thread2.start();
+        
+      
+        this.setVisible(true);
+
     
     }
     
     private void setWindowParameters() {
-        this.setVisible(true);
         this.setSize(1000, 700);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
     }
     
     public static void main(String[] args) {
