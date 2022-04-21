@@ -42,23 +42,23 @@ public class Pruebas_Rasteroid extends JFrame {
 
     }
 
-    private class TAdapter extends KeyAdapter {
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-            for (Nave nave : naves) {
-                nave.keyReleased(e);
-            }
-            
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            
-              for (Nave nave : naves) {
-                nave.keyPressed(e);
-            }
-        }
-    }
+//    private class TAdapter extends KeyAdapter {
+//
+//        @Override
+//        public void keyReleased(KeyEvent e) {
+//            for (Nave nave : naves) {
+//                nave.keyReleased(e);
+//            }
+//            
+//        }
+//
+//        @Override
+//        public void keyPressed(KeyEvent e) {
+//            
+//              for (Nave nave : naves) {
+//                nave.keyPressed(e);
+//            }
+//        }
+//    }
 
 }
