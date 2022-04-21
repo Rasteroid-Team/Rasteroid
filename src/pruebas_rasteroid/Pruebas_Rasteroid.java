@@ -23,7 +23,7 @@ public class Pruebas_Rasteroid extends JFrame {
     private JTextArea textArea ;
 
     public Pruebas_Rasteroid() {
-        addKeyListener(new TAdapter());
+        
         setWindowParameters();
         naves.add(new Nave());
         naves.add(new Nave());
@@ -45,14 +45,15 @@ public class Pruebas_Rasteroid extends JFrame {
         boton = new JButton("ENVIA EL ÁNGULO");
         textArea = new JTextArea("ESCRIBE EL ÁNGULO");
         viewer = new Viewer(naves, this.getWidth()-30, this.getHeight()-50);
+        viewer.addKeyListener(new TAdapter());
 
         c.gridx = 0;
         c.gridy = 0;
-        pane.add(textArea, c);
+       pane.add(textArea, c);
         
          c.gridx = 1;
         c.gridy = 0;
-        pane.add(boton, c);
+      pane.add(boton, c);
 
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
