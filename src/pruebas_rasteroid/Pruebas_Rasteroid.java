@@ -3,6 +3,8 @@ package pruebas_rasteroid;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Pruebas_Rasteroid extends JFrame {
 
@@ -11,6 +13,7 @@ public class Pruebas_Rasteroid extends JFrame {
     private Viewer viewer;
 
     public Pruebas_Rasteroid() {
+        addKeyListener(new TAdapter());
         setWindowParameters();
         naves.add(new Nave());
         naves.add(new Nave());
@@ -42,8 +45,8 @@ public class Pruebas_Rasteroid extends JFrame {
 
     }
 
-//    private class TAdapter extends KeyAdapter {
-//
+    private class TAdapter extends KeyAdapter {
+
 //        @Override
 //        public void keyReleased(KeyEvent e) {
 //            for (Nave nave : naves) {
@@ -51,14 +54,14 @@ public class Pruebas_Rasteroid extends JFrame {
 //            }
 //            
 //        }
-//
-//        @Override
-//        public void keyPressed(KeyEvent e) {
-//            
-//              for (Nave nave : naves) {
-//                nave.keyPressed(e);
-//            }
-//        }
-//    }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            System.out.println("Pressed");
+              for (Nave nave : naves) {
+                nave.daleGas(e);
+            }
+        }
+    }
 
 }
