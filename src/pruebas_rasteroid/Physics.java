@@ -20,8 +20,13 @@ public class Physics implements Runnable {
         float friction = nave.getFriction();
 
         nave.setPosX(nave.getPosX() + nave.getSpeedX());
-        if (nave.getSpeedX() < 5 && nave.getSpeedX() > -5 ) nave.setSpeedX(nave.getSpeedX() - friction);
 
+        if (nave.getSpeedX() > 0 ) nave.setSpeedX(nave.getSpeedX() - friction);
+        if (nave.getSpeedX() < 0 ) nave.setSpeedX(nave.getSpeedX() + friction);
+        
+        if (nave.getSpeedY() > 0 ) nave.setSpeedY(nave.getSpeedY() - friction);
+        if (nave.getSpeedY() < 0 ) nave.setSpeedY(nave.getSpeedY() + friction);
+        
         nave.setPosY(nave.getPosY() + nave.getSpeedY());
         if (nave.getSpeedY() < 5 && nave.getSpeedY() > -5 ) nave.setSpeedY(nave.getSpeedY() - friction);
 

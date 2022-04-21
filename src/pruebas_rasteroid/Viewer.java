@@ -73,7 +73,8 @@ public class Viewer extends Canvas implements Runnable {
         for (int i = 0; i < naves.size(); i++) {
             //naves.get(i).pintarse(g);
 
-            g.drawRect((int) naves.get(i).getPosX(), (int) naves.get(i).getPosY(), 10, 10);
+            //g.drawRect((int) naves.get(i).getPosX(), (int) naves.get(i).getPosY(), 10, 10);
+            g.fillRect((int) naves.get(i).getPosX(), (int) naves.get(i).getPosY(), 10, 10);
             //g.drawRect(20, 20, 10, 10);
             // g.drawImage(naves.get(i), coordenadaX, coordenadaY, null);
         }

@@ -1,5 +1,7 @@
 package pruebas_rasteroid;
 
+import java.awt.event.KeyEvent;
+
 public class Nave {
 
     private float posX, posY;
@@ -11,14 +13,33 @@ public class Nave {
     
     //1000, 700
     public Nave() {
-        posX = 100f + (int)(Math.random() * 800f );
-        posY = 50f + (int)(Math.random() * 700f );
-        speedX = 1f + (int)(Math.random() * 4f );
-        speedY = 1f + (int)(Math.random() * 4f );
+        posX = 100f + (int)(Math.random() * 400f );
+        posY = 50f + (int)(Math.random() * 400f );
+        speedX = -4f + (int)(Math.random() * 9f );
+        speedY = -4f + (int)(Math.random() * 9f );
         angle = 0;
         acceleration = 0;
     }
 
+    public void daleGas(KeyEvent e){
+        int key = e.getKeyCode();
+        
+        if (key == KeyEvent.VK_UP) {
+            if (speedY < 0) {
+                speedY -= 00.5;
+            }else {
+                speedY += 00.5;
+            }
+        
+            if (speedX < 0) {
+                speedX -= 00.5;
+            }else {
+                speedX += 00.5;
+            }
+        }
+            
+    }
+    
     public float getPosX() {
         return posX;
     }
