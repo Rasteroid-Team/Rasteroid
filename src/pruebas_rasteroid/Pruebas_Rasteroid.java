@@ -13,6 +13,10 @@ public class Pruebas_Rasteroid extends JFrame {
     public Pruebas_Rasteroid() {
         setWindowParameters();
         naves.add(new Nave());
+        naves.add(new Nave());
+        naves.add(new Nave());
+        naves.add(new Nave());
+        naves.add(new Nave());
         physics = new Physics(naves);
         viewer = new Viewer(naves, this.getWidth(), this.getHeight());
         this.add(viewer);

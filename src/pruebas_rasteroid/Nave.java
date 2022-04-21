@@ -8,11 +8,13 @@ public class Nave {
     private int acceleration;
     private float friction = 0.05f;
 
+    
+    //1000, 700
     public Nave() {
-        posX = 300f;
-        posY = 300f;
-        speedX = 6f;
-        speedY = 5f;
+        posX = 100f + (int)(Math.random() * 800f );
+        posY = 50f + (int)(Math.random() * 700f );
+        speedX = 1f + (int)(Math.random() * 4f );
+        speedY = 1f + (int)(Math.random() * 4f );
         angle = 0;
         acceleration = 0;
     }
