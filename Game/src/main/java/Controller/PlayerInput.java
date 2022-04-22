@@ -1,4 +1,4 @@
 package Controller;
 
-public class PlayerInput {
+public record PlayerInput() {
 }
