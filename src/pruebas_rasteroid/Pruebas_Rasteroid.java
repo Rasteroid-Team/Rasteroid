@@ -11,8 +11,10 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
+
 
 public class Pruebas_Rasteroid extends JFrame {
 
@@ -78,6 +80,9 @@ public class Pruebas_Rasteroid extends JFrame {
                 System.out.println("Me has clocado. El ángulo es " +angulo);
                 //TODO 
                 //paso el angulo a la nave
+                 for (int i = 0; i < naves.size(); i++) {
+                       naves.get(i).setAngle(angulo);
+        }
             }
         });
         
