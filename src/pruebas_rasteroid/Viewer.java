@@ -89,7 +89,7 @@ public class Viewer extends Canvas implements Runnable {
         }
  
         for (int i = 0; i < naves.size(); i++) {
-            BufferedImage imagenRotada = rotate(ii, naves.get(i).getAngle());
+            BufferedImage imagenRotada = rotate(ii, naves.get(i).getDynamicBody().getAngle());
 //            System.out.println("El anulo es " + naves.get(i).getAngle());
 
         
@@ -125,7 +125,7 @@ public class Viewer extends Canvas implements Runnable {
     
     public static BufferedImage rotate(BufferedImage image, double angle) {
             double radians = Math.toRadians(angle);
-            System.out.println("El radian es " + radians);
+            //System.out.println("El radian es " + radians);
             double sin = Math.abs(Math.sin(radians)), cos = Math.abs(Math.cos(radians));
             int w = image.getWidth(), h = image.getHeight();
             int neww = (int)Math.floor(w*cos+h*sin), newh = (int) Math.floor(h * cos + w * sin);

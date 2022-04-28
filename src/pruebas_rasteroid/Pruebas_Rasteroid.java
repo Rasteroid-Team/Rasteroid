@@ -109,7 +109,7 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
                 //TODO 
                 //paso el angulo a la nave
                  for (int i = 0; i < naves.size(); i++) {
-                       naves.get(i).setAngle(angulo);
+                       naves.get(i).getDynamicBody().setAngle(angulo);
         }
             }
         });
