@@ -41,11 +41,39 @@ public class DynamicBody extends Body{
 
     public void move(){
         
+        super.setPosX( super.getPosX() + speedX );
+        super.setPosY( super.getPosY() + speedY );
+        
+        if ( speedX > 0.1 ) {
+            speedX -=  frictionCofficient;
+        } else if ( speedX < -0.1 ) {
+            speedX += frictionCofficient;
+        } else speedX = 0;
+        
+        if ( speedY > 0.1 ) {
+            speedY -=  frictionCofficient;
+        } else if ( speedY < -0.1 ) {
+            speedY += frictionCofficient;
+        } else speedY = 0;
+        
     }
 
     public void move( int angulo, int potencia ) {
 
-       
+        super.setPosX( super.getPosX() + speedX );
+        super.setPosY( super.getPosY() + speedY );
+        
+        if ( speedX > 0.1 ) {
+            speedX -=  frictionCofficient;
+        } else if ( speedX < -0.1 ) {
+            speedX += frictionCofficient;
+        } else speedX = 0;
+        
+        if ( speedY > 0.1 ) {
+            speedY -=  frictionCofficient;
+        } else if ( speedY < -0.1 ) {
+            speedY += frictionCofficient;
+        } else speedY = 0;
         
     }
     

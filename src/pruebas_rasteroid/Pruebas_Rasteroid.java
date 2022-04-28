@@ -18,7 +18,6 @@ import javax.swing.JTextArea;
 public class Pruebas_Rasteroid extends JFrame implements Runnable{
 
     private ArrayList<GameObject> naves = new ArrayList<GameObject>();
-    private Physics physics;
     private Viewer viewer;
     private JButton boton;
     private JTextArea textArea ;
@@ -50,6 +49,7 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
                 if( potencia > 0 )potencia-= 0.5 ;
             } else {
                 nave.getDynamicBody().move(anguloFuerza, potencia);
+                System.out.println("fuego mami");
             }
             
         }
@@ -94,8 +94,6 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
         pane.add(viewer, c);
 
 
-        Thread thread1 = new Thread(physics);
-        thread1.start();
         Thread thread2 = new Thread(viewer);
         thread2.start();
 
