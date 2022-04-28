@@ -7,6 +7,8 @@ package pruebas_rasteroid;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -68,13 +71,13 @@ public class Viewer extends Canvas implements Runnable {
     }
 
     private void pintarNaves(Graphics g) {
-        //pintarNaves(g);
         g.setColor(Color.white);
+        ImageIcon ii = new ImageIcon("src\\pruebas_rasteroid\\shipGirada.png");
+ 
         for (int i = 0; i < naves.size(); i++) {
-            //naves.get(i).pintarse(g);
-
+            g.drawImage(ii.getImage(),(int) naves.get(i).getPosX() ,(int) naves.get(i).getPosY(), 100,100, this);
             //g.drawRect((int) naves.get(i).getPosX(), (int) naves.get(i).getPosY(), 10, 10);
-            g.fillRect((int) naves.get(i).getPosX(), (int) naves.get(i).getPosY(), 10, 10);
+            // g.fillRect((int) naves.get(i).getPosX(), (int) naves.get(i).getPosY(), 10, 10);
             //g.drawRect(20, 20, 10, 10);
             // g.drawImage(naves.get(i), coordenadaX, coordenadaY, null);
         }
