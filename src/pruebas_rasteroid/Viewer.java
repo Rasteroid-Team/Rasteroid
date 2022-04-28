@@ -31,10 +31,10 @@ import javax.swing.ImageIcon;
  */
 public class Viewer extends Canvas implements Runnable {
 
-    private ArrayList<Nave> naves;
     private  BufferedImage ii;
+    private ArrayList<GameObject> naves;
 
-    public Viewer(ArrayList<Nave> naves, int width, int height) {
+    public Viewer(ArrayList<GameObject> naves, int width, int height) {
         this.naves = naves;
         this.setSize(width, height);
 
@@ -93,7 +93,7 @@ public class Viewer extends Canvas implements Runnable {
 //            System.out.println("El anulo es " + naves.get(i).getAngle());
 
         
-            g.drawImage(imagenRotada,(int) naves.get(i).getPosX() ,(int) naves.get(i).getPosY(), imagenRotada.getWidth(),imagenRotada.getHeight(), this);
+            g.drawImage(imagenRotada,(int) naves.get(i).getDynamicBody().getPosX(),(int) naves.get(i).getDynamicBody().getPosY(), imagenRotada.getWidth(),imagenRotada.getHeight(), this);
             
 //            double rotationRequired = Math.toRadians (naves.get(i).getAngle());
 //            double locationX = ii.getWidth() / 2;
@@ -105,6 +105,7 @@ public class Viewer extends Canvas implements Runnable {
 //            g.drawImage(op.filter(ii, null), (int) naves.get(i).getPosX() ,(int) naves.get(i).getPosY(),100,100, null);
             
             
+          //  g.drawImage(ii.getImage(),(int) naves.get(i).getDynamicBody().getPosX() ,(int) naves.get(i).getDynamicBody().getPosY(), 100,100, this);
             //g.drawRect((int) naves.get(i).getPosX(), (int) naves.get(i).getPosY(), 10, 10);
             // g.fillRect((int) naves.get(i).getPosX(), (int) naves.get(i).getPosY(), 10, 10);
             //g.drawRect(20, 20, 10, 10);
