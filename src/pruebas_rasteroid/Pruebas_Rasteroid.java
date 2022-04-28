@@ -118,5 +118,26 @@ public class Pruebas_Rasteroid extends JFrame {
     
     
     
+    
+     public void daleGas(KeyEvent e){
+        int key = e.getKeyCode();
+        
+        if (key == KeyEvent.VK_UP) {
+            if (speedY < 0) {
+                speedY -= 00.5;
+            }else {
+                speedY += 00.5;
+            }
+        
+            if (speedX < 0) {
+                speedX -= 00.5;
+            }else {
+                speedX += 00.5;
+            }
+        }
+            
+    }
+    
+    
 
 }
