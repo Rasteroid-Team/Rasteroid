@@ -25,9 +25,9 @@ import javax.swing.ImageIcon;
  */
 public class Viewer extends Canvas implements Runnable {
 
-    private ArrayList<Nave> naves;
+    private ArrayList<GameObject> naves;
 
-    public Viewer(ArrayList<Nave> naves, int width, int height) {
+    public Viewer(ArrayList<GameObject> naves, int width, int height) {
         this.naves = naves;
         this.setSize(width, height);
 
@@ -75,7 +75,7 @@ public class Viewer extends Canvas implements Runnable {
         ImageIcon ii = new ImageIcon("src\\pruebas_rasteroid\\shipGirada.png");
  
         for (int i = 0; i < naves.size(); i++) {
-            g.drawImage(ii.getImage(),(int) naves.get(i).getPosX() ,(int) naves.get(i).getPosY(), 100,100, this);
+            g.drawImage(ii.getImage(),(int) naves.get(i).getDynamicBody().getPosX() ,(int) naves.get(i).getDynamicBody().getPosY(), 100,100, this);
             //g.drawRect((int) naves.get(i).getPosX(), (int) naves.get(i).getPosY(), 10, 10);
             // g.fillRect((int) naves.get(i).getPosX(), (int) naves.get(i).getPosY(), 10, 10);
             //g.drawRect(20, 20, 10, 10);
