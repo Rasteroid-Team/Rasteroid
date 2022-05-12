@@ -10,7 +10,7 @@ public class GameRules {
     private float environmentFriction;
     private int goal;
     private float maxPlayerSpeed;
-    private boolean[] peaceful;
+    private boolean peaceful;
     private int startBreaktimeDuration;
 
     public float getBaseBulletDamage() {
@@ -85,11 +85,11 @@ public class GameRules {
         this.maxPlayerSpeed = maxPlayerSpeed;
     }
 
-    public boolean[] getPeaceful() {
+    public boolean getPeaceful() {
         return peaceful;
     }
 
-    public void setPeaceful(boolean[] peaceful) {
+    public void setPeaceful(boolean peaceful) {
         this.peaceful = peaceful;
     }
 
