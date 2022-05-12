@@ -23,7 +23,6 @@ public class DynamicBody extends Body{
         speedY = (float) Math.random() * 6 - 3;
                 
     }
-
     
     
     public float getSpeedX() {
@@ -53,22 +52,19 @@ public class DynamicBody extends Body{
     public void move( float angulo, float potencia ) {
 
         float speedToAdd = (float) (potencia * 1) / 100;
-
+        
         speedX += speedToAdd;
         speedY += speedToAdd;
-
-        
-        
-        
         //UPDATE POSITION
-            //CHECK COLISIONS WITH WALLS
-        
+        //CHECK COLISIONS WITH WALLS
+        float centerX = getCenterX(super.getPosX());
+        float centerY = getCenterX(super.getPosY());
         //IF COLISION RIGHT 
-        if( super.getPosX() + speedX > 1000 ) {
+        if( (centerX - super.getRadius())  > 1000 ) {
             super.setPosX( super.getPosX() - speedX );
             speedX = -speedX;
         //IF COLISION LEFT
-        } else if ( super.getPosX() + speedX < 0 ){
+        } else if ( centerX - super.getRadius() < 0 ){
             super.setPosX( super.getPosX() - speedX );
             speedX = -speedX;
         
@@ -79,11 +75,11 @@ public class DynamicBody extends Body{
         
         
         //IF COLISION UP 
-        if( super.getPosY() + speedY > 700 ) {
+        if( centerY + super.getRadius()  > 700 ) {
             super.setPosY( super.getPosY() - speedY );
             speedY = -speedY;
         //IF COLISION BOT
-        } else if ( super.getPosY() + speedY < 0 ){
+        } else if ( centerY + super.getRadius()  < 0 ){
             super.setPosY( super.getPosY() - speedY );
             speedY = -speedY;
         
@@ -91,7 +87,6 @@ public class DynamicBody extends Body{
         } else {
             super.setPosY( super.getPosY() + speedY );
         }
-        
         
         //SPEED LOSE
         if ( speedX > 0.05 ) {
@@ -107,5 +102,18 @@ public class DynamicBody extends Body{
         } else speedY = 0;
         
     }
+    
+    
+    public float getCenterX(float posX){
+        return  posX + super.getRadius();
+        
+    }
+    
+    public float getCenterY(float posY){
+        return  posY + super.getRadius();
+        
+    }
+    
+    
     
 }

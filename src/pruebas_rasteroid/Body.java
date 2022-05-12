@@ -4,7 +4,7 @@ public class Body {
 
     private float posX, posY;
     private int angle;
-    private float radius = 12;
+    private float radius = 100;
     
     //ESTO ES UN OBJETO ESTATICO
     //MAP SIZE --> 1000, 700
@@ -46,4 +46,9 @@ public class Body {
         this.radius = radius;
     }
 
+    
+    public void checkBorderColisions(){
+        
+    }
+    
 }

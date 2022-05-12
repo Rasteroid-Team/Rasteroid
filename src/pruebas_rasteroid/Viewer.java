@@ -68,7 +68,9 @@ public class Viewer extends Canvas implements Runnable {
             BufferedImage iii = ImageIO.read(new File("src\\resources\\shipGirada.png"));
             ii = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
             Graphics g2 = ii.createGraphics();
-            g2.drawImage(iii.getScaledInstance(40, -1, BufferedImage.SCALE_SMOOTH), 0, 0, this);
+            g2.drawImage(iii, 0, 0, 100, 100, null);
+            g2.setColor(Color.blue);
+            g2.fillOval(0, 0, 7, 7);
             g2.dispose();
         } catch (IOException ex) {
             Logger.getLogger(Viewer.class.getName()).log(Level.SEVERE, null, ex);
