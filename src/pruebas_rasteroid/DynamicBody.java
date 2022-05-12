@@ -3,7 +3,7 @@ package pruebas_rasteroid;
 public class DynamicBody extends Body{
     
     private float speedX, speedY;
-    private float frictionCofficient = 0.01f;
+    private float frictionCofficient = 0.05f;
 
     //TO DO 
     
@@ -24,7 +24,7 @@ public class DynamicBody extends Body{
                 
     }
 
-   
+    
     
     public float getSpeedX() {
         return speedX;
@@ -54,18 +54,55 @@ public class DynamicBody extends Body{
 
         float speedToAdd = (float) (potencia * 1) / 100;
 
+        
+        
+        
         speedX += speedToAdd;
         speedY += speedToAdd;
 
-        super.setPosX( super.getPosX() + speedX );
-        super.setPosY( super.getPosY() + speedY );
-
+        
+        
+        
+        //UPDATE POSITION
+            //CHECK COLISIONS WITH WALLS
+        
+        //IF COLISION RIGHT 
+        if( super.getPosX() + speedX > 1000 ) {
+            super.setPosX( super.getPosX() - speedX );
+            speedX = -speedX;
+        //IF COLISION LEFT
+        } else if ( super.getPosX() + speedX < 0 ){
+            super.setPosX( super.getPosX() - speedX );
+            speedX = -speedX;
+        
+        //IF NOT COLISION
+        } else {
+            super.setPosX( super.getPosX() + speedX );
+        }
+        
+        
+        //IF COLISION UP 
+        if( super.getPosY() + speedY > 700 ) {
+            super.setPosY( super.getPosY() - speedY );
+            speedY = -speedY;
+        //IF COLISION BOT
+        } else if ( super.getPosY() + speedY < 0 ){
+            super.setPosY( super.getPosY() - speedY );
+            speedY = -speedY;
+        
+        //IF NOT COLISION
+        } else {
+            super.setPosY( super.getPosY() + speedY );
+        }
+        
+        
+        //SPEED LOSE
         if ( speedX > 0.05 ) {
             speedX -=  frictionCofficient;
         } else if ( speedX < -0.05 ) {
             speedX += frictionCofficient;
         } else speedX = 0;
-
+  
         if ( speedY > 0.05 ) {
             speedY -=  frictionCofficient;
         } else if ( speedY < -0.05 ) {

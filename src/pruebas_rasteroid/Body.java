@@ -4,7 +4,8 @@ public class Body {
 
     private float posX, posY;
     private int angle;
-
+    private float radius = 12;
+    
     //ESTO ES UN OBJETO ESTATICO
     //MAP SIZE --> 1000, 700
     public Body() {
@@ -35,6 +36,14 @@ public class Body {
 
     public void setAngle(int angle) {
         this.angle = angle;
+    }
+    
+    public float getRadius() {
+        return radius;
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
     }
 
 }
