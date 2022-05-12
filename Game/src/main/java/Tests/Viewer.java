@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package pruebas_rasteroid;
+package Tests;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -79,7 +79,7 @@ public class Viewer extends Canvas implements Runnable {
 
     private void pintarNaves(Graphics g) {
         try {
-            BufferedImage iii = ImageIO.read(new File("src\\resources\\shipGirada.png"));
+            BufferedImage iii = ImageIO.read(new File("Rasteroid\\Game\\src\\main\\java\\Tests\\Resources\\shipGirada.png"));
             ii = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
             Graphics g2 = ii.createGraphics();
             g2.drawImage(iii, 0, 0, 100, 100, null);

@@ -1,4 +1,5 @@
-package pruebas_rasteroid;
+package Tests;
+
 
 public class DynamicBody extends Body{
     private float speedX, speedY;

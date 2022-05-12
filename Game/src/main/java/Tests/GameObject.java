@@ -1,4 +1,5 @@
-package pruebas_rasteroid;
+package Tests;
+
 
 public class GameObject {
     private boolean visible;

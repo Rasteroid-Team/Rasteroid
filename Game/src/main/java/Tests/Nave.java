@@ -1,4 +1,4 @@
-package pruebas_rasteroid;
+package Tests;
 
 import java.awt.event.KeyEvent;
 

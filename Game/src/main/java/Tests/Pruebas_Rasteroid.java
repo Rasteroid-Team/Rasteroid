@@ -1,4 +1,4 @@
-package pruebas_rasteroid;
+package Tests;
 
 import java.awt.ComponentOrientation;
 import java.awt.Container;
@@ -75,8 +75,8 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
         pane.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.VERTICAL;
-        boton = new JButton("ENVIA EL ÁNGULO");
-        textArea = new JTextArea("ESCRIBE EL ÁNGULO");
+        boton = new JButton("ENVIA EL ANGULO");
+        textArea = new JTextArea("ESCRIBE EL ANGULO");
         viewer = new Viewer(naves, papi.getWidth()-30, papi.getHeight()-50);
         viewer.addKeyListener(new TAdapter());
 
@@ -106,7 +106,7 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
             public void actionPerformed(ActionEvent e) {
                 
                 int angulo = Integer.parseInt(textArea.getText());
-                System.out.println("Me has clocado. El ángulo es " +angulo);
+                System.out.println("Me has clocado. El Angulo es " +angulo);
                 //TODO 
                 //paso el angulo a la nave
                  for (int i = 0; i < naves.size(); i++) {
