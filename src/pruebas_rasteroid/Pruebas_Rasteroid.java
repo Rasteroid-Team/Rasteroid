@@ -140,20 +140,26 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
         @Override
         public void keyPressed(KeyEvent e) {
             System.out.println(e.getKeyCode());
-            
-            //TO DO
-            
-            //KEY CODES
-            //  ARRIBA -->      38
-            //  IZQUIERDA -->   37
-            //  DERECHA -->     39
-            
-            //ACCIONES
-            // ARRIBA --> ACCELERAR
-            // LADOS --> ALTERAR VARIABLE 'anguloFuerza' LIGERAMENTE
-            
-            
-            accelerando = true;
+                int tecla = e.getKeyCode();
+            switch(tecla){
+                case 38: // La tecla de arriba
+                    accelerando = true;
+                    break;
+                case 37:   //  IZQUIERDA -->   37
+                    //restar
+                    anguloFuerza--;
+                            for (int i = 0; i < naves.size(); i++) {
+                       naves.get(i).getDynamicBody().setAngle(anguloFuerza);
+        }
+                    break;
+                case 39://  DERECHA -->     39
+                    anguloFuerza++;
+                                         for (int i = 0; i < naves.size(); i++) {
+                       naves.get(i).getDynamicBody().setAngle(anguloFuerza);
+        }
+                    break; 
+            }
+         
         }
     }
 }
