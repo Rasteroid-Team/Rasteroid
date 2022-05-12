@@ -54,9 +54,6 @@ public class DynamicBody extends Body{
 
         float speedToAdd = (float) (potencia * 1) / 100;
 
-        
-        
-        
         speedX += speedToAdd;
         speedY += speedToAdd;
 
