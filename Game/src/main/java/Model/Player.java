@@ -8,6 +8,19 @@ public class Player extends GameObject {
     protected int killCount;
 
     /*--------------------
+        Constructor
+     --------------------*/
+
+    //Basic constructor
+    public Player(Body body) {
+        super(body);
+        this.bulletDamage = 5;
+        this.bulletSpeed = 1;
+        this.ammo = 10000;
+        this.killCount = 0;
+    }
+
+    /*--------------------
         Getters/Setters
      --------------------*/
 

@@ -5,6 +5,17 @@ public class Bullet extends GameObject {
     protected float damage;
 
     /*--------------------
+        Constructor
+     --------------------*/
+
+    //Basic constructor
+    public Bullet(Body body, String ownerName) {
+        super(body);
+        this.ownerName = null;
+        this.damage = 5;
+    }
+
+    /*--------------------
         Getters/Setters
      --------------------*/
 

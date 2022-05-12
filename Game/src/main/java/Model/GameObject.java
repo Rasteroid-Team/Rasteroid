@@ -11,6 +11,7 @@ public class GameObject {
     protected boolean invincible;
     protected HashMap<String, Animation> animationMap;
     protected Animation currentAnimation;
+    protected Body body;
 
     /*--------------------
         Getters/Setters
@@ -54,6 +55,19 @@ public class GameObject {
 
     public void setCurrentAnimation(Animation currentAnimation) {
         this.currentAnimation = currentAnimation;
+    }
+
+    /*--------------------
+            Constructor
+     --------------------*/
+
+    //Basic gameObject
+    public GameObject(Body body) {
+        this.visible = true;
+        this.health = 100;
+        this.invincible = false;
+        this.body = body;
+        //needs animations
     }
 
     /*--------------------
