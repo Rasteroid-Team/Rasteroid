@@ -23,8 +23,8 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
     private JTextArea textArea ;
     
     private int anguloFuerza = 62;
-    private int potencia = 50;
-    private boolean powerPressed = false;
+    private int potencia = 100;
+    private boolean accelerando = false;
 
     public Pruebas_Rasteroid() {
         crearInterfaz(this);
@@ -44,10 +44,11 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
     private void updatePositions() {
         for (GameObject nave : naves) {
             
-            if (!powerPressed) {
-                nave.getDynamicBody().move();
-                if( potencia > 0 )potencia-= 0.5 ;
+            if (!accelerando) {
+                nave.getDynamicBody().move(0,0);
+                if( potencia > 0 )potencia-= 0.3;
             } else {
+                potencia = 100;
                 nave.getDynamicBody().move(anguloFuerza, potencia);
                 System.out.println("fuego mami");
             }
@@ -126,7 +127,7 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
         while (true) {
             try {
                 updatePositions();
-                powerPressed = false;
+                accelerando = false;
                 sleep(16);
             } catch (InterruptedException ex) {
                 System.out.println("El thread ha sufrido un problema");
@@ -138,7 +139,21 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
 
         @Override
         public void keyPressed(KeyEvent e) {
-            powerPressed = true;
+            System.out.println(e.getKeyCode());
+            
+            //TO DO
+            
+            //KEY CODES
+            //  ARRIBA -->      38
+            //  IZQUIERDA -->   37
+            //  DERECHA -->     39
+            
+            //ACCIONES
+            // ARRIBA --> ACCELERAR
+            // LADOS --> ALTERAR VARIABLE 'anguloFuerza' LIGERAMENTE
+            
+            
+            accelerando = true;
         }
     }
 }

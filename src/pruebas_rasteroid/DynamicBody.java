@@ -1,16 +1,27 @@
 package pruebas_rasteroid;
 
 public class DynamicBody extends Body{
-    private float speedX, speedY;
-    private float frictionCofficient = 0.05f;
-
     
-    //1000, 700
+    private float speedX, speedY;
+    private float frictionCofficient = 0.01f;
+
+    //TO DO 
+    
+    //implement
+    float speedLimit;
+    
+    
+    //create
+    //private float[] descomponerFuerzas( angulo , fuerza ) { return [ velX, velY ] }
+    
+    
+    //ESTO ES UN OBJETO MOVIBLE
+    //MAP SIZE --> 1000, 700
     public DynamicBody() {
     
         speedX = (float) Math.random() * 6 - 3;
         speedY = (float) Math.random() * 6 - 3;
-        
+                
     }
 
    
@@ -39,28 +50,9 @@ public class DynamicBody extends Body{
         this.frictionCofficient = friction;
     }
 
-    public void move(){
-        
-        super.setPosX( super.getPosX() + speedX );
-        super.setPosY( super.getPosY() + speedY );
-        
-        if ( speedX > 0.1 ) {
-            speedX -=  frictionCofficient;
-        } else if ( speedX < -0.1 ) {
-            speedX += frictionCofficient;
-        } else speedX = 0;
-        
-        if ( speedY > 0.1 ) {
-            speedY -=  frictionCofficient;
-        } else if ( speedY < -0.1 ) {
-            speedY += frictionCofficient;
-        } else speedY = 0;
-        
-    }
-
     public void move( float angulo, float potencia ) {
 
-        float speedToAdd = (float) (potencia * 0.5) / 100;
+        float speedToAdd = (float) (potencia * 1) / 100;
 
         speedX += speedToAdd;
         speedY += speedToAdd;
@@ -68,20 +60,18 @@ public class DynamicBody extends Body{
         super.setPosX( super.getPosX() + speedX );
         super.setPosY( super.getPosY() + speedY );
 
-        if ( speedX > 0.1 ) {
+        if ( speedX > 0.05 ) {
             speedX -=  frictionCofficient;
-        } else if ( speedX < -0.1 ) {
+        } else if ( speedX < -0.05 ) {
             speedX += frictionCofficient;
         } else speedX = 0;
 
-        if ( speedY > 0.1 ) {
+        if ( speedY > 0.05 ) {
             speedY -=  frictionCofficient;
-        } else if ( speedY < -0.1 ) {
+        } else if ( speedY < -0.05 ) {
             speedY += frictionCofficient;
         } else speedY = 0;
-
+        
     }
-    
-
     
 }
