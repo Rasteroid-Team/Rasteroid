@@ -75,14 +75,21 @@ public class GameObject {
      --------------------*/
 
     public void damage(float damage) {
+        this.health -= damage;
+        if (this.health <= 0) {     //Correct?
+            destroy();
+        }
     }
 
     public void destroy() {
+        //this.visible = false;     Correct?
+        GameScreen.removeGameObject(this);
     }
 
     public void setAnimationState(String animationState) {
     }
 
     public void drawTo(Graphics graphics) {
+        //Waiting for physics and graphics
     }
 }
