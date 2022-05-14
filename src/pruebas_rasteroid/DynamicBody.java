@@ -49,16 +49,52 @@ public class DynamicBody extends Body{
         this.frictionCofficient = friction;
     }
 
+     public float getCenterX(float posX){
+        return  posX + super.getRadius();
+        
+    }
+    
+    public float getCenterY(float posY){
+        return  posY + super.getRadius();
+        
+    }
+    
     public void move( float angulo, float potencia ) {
 
-        float speedToAdd = (float) (potencia * 1) / 100;
+        //APLICAR FOLMULA PARA SACAR FUERZA DE X e Y - sin cos
+        double anguloRad = Math.toRadians(angulo);
+        float sin = potencia * (float)Math.sin(anguloRad);
+        float cos = potencia * (float)Math.cos(anguloRad);
         
-        speedX += speedToAdd;
-        speedY += speedToAdd;
+        float addSpeedX = sin * 1 / 90;
+        float addSpeedY = cos * -1 / 90;
+        //Aplicar veloidad
+        speedX += addSpeedX;
+        speedY += addSpeedY;
+        if(potencia > 0){
+        System.out.println("potencia: " + potencia);        
+        System.out.println("angulo: " + angulo);
+
+        System.out.println("cos: " + cos);
+        System.out.println("sin: " + sin);
+        System.out.println("\n\n");
+        }
         //UPDATE POSITION
+        if(speedX > 6) speedX = 6;
+        if(speedY > 6) speedY = 6;
+        this.checkBorderCollisions();
+
+        this.applyFriction();
+        
+        
+    }
+    
+    
+    public void checkBorderCollisions(){
         //CHECK COLISIONS WITH WALLS
         float centerX = getCenterX(super.getPosX());
         float centerY = getCenterX(super.getPosY());
+        
         //IF COLISION RIGHT 
         if( (centerX - super.getRadius())  > 1000 ) {
             super.setPosX( super.getPosX() - speedX );
@@ -87,8 +123,12 @@ public class DynamicBody extends Body{
         } else {
             super.setPosY( super.getPosY() + speedY );
         }
-        
-        //SPEED LOSE
+    }
+    
+   
+
+    private void applyFriction() {
+       //SPEED LOSE
         if ( speedX > 0.05 ) {
             speedX -=  frictionCofficient;
         } else if ( speedX < -0.05 ) {
@@ -100,18 +140,6 @@ public class DynamicBody extends Body{
         } else if ( speedY < -0.05 ) {
             speedY += frictionCofficient;
         } else speedY = 0;
-        
-    }
-    
-    
-    public float getCenterX(float posX){
-        return  posX + super.getRadius();
-        
-    }
-    
-    public float getCenterY(float posY){
-        return  posY + super.getRadius();
-        
     }
     
     

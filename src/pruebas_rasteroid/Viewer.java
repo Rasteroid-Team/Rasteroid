@@ -49,12 +49,10 @@ public class Viewer extends Canvas implements Runnable {
     private void paint2() {
         BufferStrategy bs = getBufferStrategy();
         if (bs == null) {
-            System.out.println("mal");
             return;
         }
         Graphics g = bs.getDrawGraphics();
         if (g == null) {
-            System.out.println("mal 2");
             return;
         }
 

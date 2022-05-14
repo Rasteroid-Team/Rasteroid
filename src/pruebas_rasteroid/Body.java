@@ -47,8 +47,5 @@ public class Body {
     }
 
     
-    public void checkBorderColisions(){
-        
-    }
-    
+
 }

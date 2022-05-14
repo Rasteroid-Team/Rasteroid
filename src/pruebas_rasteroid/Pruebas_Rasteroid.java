@@ -22,7 +22,7 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
     private JButton boton;
     private JTextArea textArea ;
     
-    private int anguloFuerza = 62;
+    private int anguloFuerza = 0;
     private int potencia = 100;
     private boolean accelerando = false;
 
@@ -50,7 +50,6 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
             } else {
                 potencia = 100;
                 nave.getDynamicBody().move(anguloFuerza, potencia);
-                System.out.println("fuego mami");
             }
             
         }
@@ -106,7 +105,6 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
             public void actionPerformed(ActionEvent e) {
                 
                 int angulo = Integer.parseInt(textArea.getText());
-                System.out.println("Me has clocado. El ángulo es " +angulo);
                 //TODO 
                 //paso el angulo a la nave
                  for (int i = 0; i < naves.size(); i++) {
@@ -139,7 +137,6 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
 
         @Override
         public void keyPressed(KeyEvent e) {
-            System.out.println(e.getKeyCode());
                 int tecla = e.getKeyCode();
             switch(tecla){
                 case 38: // La tecla de arriba
@@ -147,16 +144,16 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
                     break;
                 case 37:   //  IZQUIERDA -->   37
                     //restar
-                    anguloFuerza--;
-                            for (int i = 0; i < naves.size(); i++) {
+                    anguloFuerza = anguloFuerza-10;
+                    for (int i = 0; i < naves.size(); i++) {
                        naves.get(i).getDynamicBody().setAngle(anguloFuerza);
-        }
+                    }
                     break;
                 case 39://  DERECHA -->     39
-                    anguloFuerza++;
-                                         for (int i = 0; i < naves.size(); i++) {
+                    anguloFuerza = anguloFuerza + 10;
+                    for (int i = 0; i < naves.size(); i++) {
                        naves.get(i).getDynamicBody().setAngle(anguloFuerza);
-        }
+                    }
                     break; 
             }
          
