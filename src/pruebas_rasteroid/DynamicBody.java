@@ -61,7 +61,7 @@ public class DynamicBody extends Body{
         
         //Aplicar veloidad
         
-        speedX += addSpeedX;
+        
         
             //Apply speed limit X
         if(speedX > speedLimit) {
@@ -69,9 +69,7 @@ public class DynamicBody extends Body{
         } else if (speedX < -speedLimit) {
             speedX = -speedLimit;
         }
-            
-        
-        speedY += addSpeedY;
+                 
         
             //Apply speed limit Y
         if(speedY > speedLimit) {
@@ -79,6 +77,9 @@ public class DynamicBody extends Body{
         } else if (speedY < -speedLimit) {
             speedY = -speedLimit;
         }
+        
+        speedY += addSpeedY;
+        speedX += addSpeedX;
         
         
         if(potencia > 0){
