@@ -4,12 +4,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Transparency;
 import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -70,27 +65,46 @@ public class Viewer extends Canvas implements Runnable {
             ii = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
             Graphics g2 = ii.createGraphics();
             g2.drawImage(iii, 0, 0, 100, 100, null);
-            g2.setColor(Color.blue);
-            g2.fillOval(0, 0, 7, 7);
             g2.dispose();
         } catch (IOException ex) {
             Logger.getLogger(Viewer.class.getName()).log(Level.SEVERE, null, ex);
         }
  
-        for (int i = 0; i < naves.size(); i++) {
+        
+        for (GameObject nave : naves) {
+            float posX = nave.getDynamicBody().getPosX();
+            float posY = nave.getDynamicBody().getPosY();
+            float orientation = nave.getDynamicBody().getAngle();
+            
             AffineTransform affineTransform = new AffineTransform();
             
             //Poner la posicion del affinetransform
-            affineTransform.translate( naves.get(i).getDynamicBody().getPosX(), naves.get(i).getDynamicBody().getPosY());
+            affineTransform.translate( posX, posY );
+            
             //rotar el affineTransform
-            affineTransform.rotate(Math.toRadians(naves.get(i).getDynamicBody().getAngle()));
+            affineTransform.rotate( Math.toRadians( orientation ) );
+            
             // esto es para que gire por el centro de la figura (como mide 100 x100, ponemos que gire a mitad de cada distancia)
             affineTransform.translate(-50, -50);
+            
             //Cambiar el tamaño
             affineTransform.scale(1,1);
-
+            
             Graphics2D g2 = (Graphics2D) g;
             g2.drawImage(ii, affineTransform, this); 
+            
+            
+            //DEBUG
+            g.setColor(Color.GREEN);
+            
+            //Vertical lines
+            g2.drawLine((int) posX, 0,(int) posX,(int) posY - 5);
+            g2.drawLine((int) posX, (int) posY + 5,(int) posX, 1000 );
+            
+            //Horizontal
+            g2.drawLine(0, (int)posY , (int) posX - 5 , (int) posY );
+            g2.drawLine((int) posX + 5, (int)posY , 1000 , (int) posY );
+            
         }
     }
 

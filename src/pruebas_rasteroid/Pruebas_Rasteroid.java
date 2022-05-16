@@ -30,10 +30,10 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
         crearInterfaz(this);
         
         naves.add( new GameObject( new DynamicBody() ));
-        naves.add( new GameObject( new DynamicBody() ));
-        naves.add( new GameObject( new DynamicBody() ));
-        naves.add( new GameObject( new DynamicBody() ));
-        naves.add( new GameObject( new DynamicBody() ));
+//        naves.add( new GameObject( new DynamicBody() ));
+//        naves.add( new GameObject( new DynamicBody() ));
+//        naves.add( new GameObject( new DynamicBody() ));
+//        naves.add( new GameObject( new DynamicBody() ));
 
         
         new Thread(this).start();
@@ -48,7 +48,7 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
                 nave.getDynamicBody().move(0,0);
                 if( potencia > 0 )potencia-= 0.3;
             } else {
-                potencia = 100;
+                potencia = 80;
                 nave.getDynamicBody().move(anguloFuerza, potencia);
             }
             

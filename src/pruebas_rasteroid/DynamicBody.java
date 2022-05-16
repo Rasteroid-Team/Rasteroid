@@ -8,7 +8,7 @@ public class DynamicBody extends Body{
     //TO DO 
     
     //implement
-    float speedLimit;
+    float speedLimit = 6;
     
     
     //create
@@ -48,16 +48,6 @@ public class DynamicBody extends Body{
     public void setFrictionCofficient(float friction) {
         this.frictionCofficient = friction;
     }
-
-     public float getCenterX(float posX){
-        return  posX + super.getRadius();
-        
-    }
-    
-    public float getCenterY(float posY){
-        return  posY + super.getRadius();
-        
-    }
     
     public void move( float angulo, float potencia ) {
 
@@ -71,6 +61,7 @@ public class DynamicBody extends Body{
         //Aplicar veloidad
         speedX += addSpeedX;
         speedY += addSpeedY;
+        
         if(potencia > 0){
         System.out.println("potencia: " + potencia);        
         System.out.println("angulo: " + angulo);
@@ -80,8 +71,8 @@ public class DynamicBody extends Body{
         System.out.println("\n\n");
         }
         //UPDATE POSITION
-        if(speedX > 6) speedX = 6;
-        if(speedY > 6) speedY = 6;
+        if(speedX > speedLimit) speedX = speedLimit;
+        if(speedY > speedLimit) speedY = speedLimit;
         this.checkBorderCollisions();
 
         this.applyFriction();
@@ -92,15 +83,15 @@ public class DynamicBody extends Body{
     
     public void checkBorderCollisions(){
         //CHECK COLISIONS WITH WALLS
-        float centerX = getCenterX(super.getPosX());
-        float centerY = getCenterX(super.getPosY());
+        float posX = super.getPosX();
+        float posY = super.getPosY();
         
         //IF COLISION RIGHT 
-        if( (centerX - super.getRadius())  > 1000 ) {
+        if( ( posX + super.getRadius() )  > 1000 ) {
             super.setPosX( super.getPosX() - speedX );
             speedX = -speedX;
         //IF COLISION LEFT
-        } else if ( centerX - super.getRadius() < 0 ){
+        } else if ( posX - super.getRadius() < 0 ){
             super.setPosX( super.getPosX() - speedX );
             speedX = -speedX;
         
@@ -110,12 +101,12 @@ public class DynamicBody extends Body{
         }
         
         
-        //IF COLISION UP 
-        if( centerY + super.getRadius()  > 700 ) {
+        //IF COLISION UP
+        if( posY - super.getRadius() < 0 ) {
             super.setPosY( super.getPosY() - speedY );
             speedY = -speedY;
         //IF COLISION BOT
-        } else if ( centerY + super.getRadius()  < 0 ){
+        } else if ( posY + super.getRadius()  > 650 ){
             super.setPosY( super.getPosY() - speedY );
             speedY = -speedY;
         

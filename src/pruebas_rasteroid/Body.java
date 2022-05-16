@@ -4,7 +4,7 @@ public class Body {
 
     private float posX, posY;
     private int angle;
-    private float radius = 100;
+    private float radius = 50;
     
     //ESTO ES UN OBJETO ESTATICO
     //MAP SIZE --> 1000, 700
