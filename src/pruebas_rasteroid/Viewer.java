@@ -97,6 +97,8 @@ public class Viewer extends Canvas implements Runnable {
             //DEBUG
             g.setColor(Color.GREEN);
             
+            g.drawOval( (int) posX-50, (int) posY-50, 100, 100);
+            
             //Vertical lines
             g2.drawLine((int) posX, 0,(int) posX,(int) posY - 5);
             g2.drawLine((int) posX, (int) posY + 5,(int) posX, 1000 );
