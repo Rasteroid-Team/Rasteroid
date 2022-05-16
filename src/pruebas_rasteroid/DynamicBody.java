@@ -8,7 +8,7 @@ public class DynamicBody extends Body{
     //TO DO 
     
     //implement
-    float speedLimit = 6;
+    float speedLimit = 5;
     
     
     //create
@@ -19,8 +19,8 @@ public class DynamicBody extends Body{
     //MAP SIZE --> 1000, 700
     public DynamicBody() {
     
-        speedX = (float) Math.random() * 6 - 3;
-        speedY = (float) Math.random() * 6 - 3;
+        speedX = (float) Math.random() * 5 - 2.5f;
+        speedY = (float) Math.random() * 5 - 2.5f;
                 
     }
     
@@ -58,9 +58,28 @@ public class DynamicBody extends Body{
         
         float addSpeedX = sin * 1 / 90;
         float addSpeedY = cos * -1 / 90;
+        
         //Aplicar veloidad
+        
         speedX += addSpeedX;
+        
+            //Apply speed limit X
+        if(speedX > speedLimit) {
+            speedX = speedLimit;
+        } else if (speedX < -speedLimit) {
+            speedX = -speedLimit;
+        }
+            
+        
         speedY += addSpeedY;
+        
+            //Apply speed limit Y
+        if(speedY > speedLimit) {
+            speedY = speedLimit;
+        } else if (speedY < -speedLimit) {
+            speedY = -speedLimit;
+        }
+        
         
         if(potencia > 0){
         System.out.println("potencia: " + potencia);        
@@ -70,11 +89,9 @@ public class DynamicBody extends Body{
         System.out.println("sin: " + sin);
         System.out.println("\n\n");
         }
-        //UPDATE POSITION
-        if(speedX > speedLimit) speedX = speedLimit;
-        if(speedY > speedLimit) speedY = speedLimit;
+        
+        
         this.checkBorderCollisions();
-
         this.applyFriction();
         
         

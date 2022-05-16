@@ -23,7 +23,7 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
     private JTextArea textArea ;
     
     private int anguloFuerza = 0;
-    private int potencia = 100;
+    private int potencia = 0;
     private boolean accelerando = false;
 
     public Pruebas_Rasteroid() {
