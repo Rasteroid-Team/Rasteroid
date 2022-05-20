@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class HR75 extends PlayerModel {
 
-  private final String res_path = "src/Resources/players/hr75/";
+  private final String res_path = "Game/src/Resources/players/hr75/";
 
   @Override
   public void load_states() {

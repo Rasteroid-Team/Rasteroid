@@ -75,12 +75,28 @@ public class GameObject {
         body.update(input);
     }
 
-    public void render(Graphics2D g) {
-        BufferedImage bi = stateList.get(this.currentState).get_animation().get_current_sprite().rotate( Math.toRadians(body.getAngle()));
-        g.drawImage(bi, (int) (body.getPosX()-bi.getWidth()/2), (int) (body.getPosY()-bi.getHeight()/2), null);
-        //g.drawLine((int) (body.getPosX()-body.getRadius()), (int)body.getPosY(), (int) (body.getPosX()+body.getRadius()), (int)body.getPosY());
-        //g.drawLine((int) (body.getPosX()), (int)(body.getPosY()-body.getRadius()), (int) (body.getPosX()), (int)(body.getPosY()+body.getRadius()));
-        g.drawOval((int)(body.getPosX()-body.getRadius()), (int)(body.getPosY()-body.getRadius()), (int)body.getRadius()*2, (int)body.getRadius()*2);
+    public void render(Graphics2D graphics)
+    {
+
+        BufferedImage output_image;
+
+        output_image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+        Graphics g2 = output_image.createGraphics();
+        g2.drawImage(stateList.get(currentState).get_animation().get_current_sprite().get_image(), 0, 0, 100, 100, null);
+        g2.dispose();
+
+        float pos_x = body.getPosX();
+        float pos_y = body.getPosY();
+        float orientation = body.getAngle();
+
+        AffineTransform affineTransform = new AffineTransform();
+        affineTransform.translate( pos_x, pos_y );
+        affineTransform.rotate( Math.toRadians( orientation ) );
+        affineTransform.translate(-50, -50);
+        affineTransform.scale(1,1);
+
+        graphics.drawImage(output_image, affineTransform, null);
+        graphics.drawOval((int)(body.getPosX()-body.getRadius()), (int)(body.getPosY()-body.getRadius()), (int)body.getRadius()*2, (int)body.getRadius()*2);
     }
 
 }

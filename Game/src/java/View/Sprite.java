@@ -52,33 +52,9 @@ public class Sprite {
     return this;
   }
 
-  public BufferedImage rotate(double radians)
+  public void draw_rotated(double radians, float posX, float posY, float angle, Graphics2D graphics)
   {
-    BufferedImage output_image;
 
-    //iii = ImageIO.read(new File("Game/src/PruebasRasteroidFisicas/resources/shipGirada.png"));
-    output_image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
-    Graphics g2 = output_image.createGraphics();
-    g2.drawImage(image, 0, 0, 100, 100, null);
-    g2.dispose();
-
-    double orientation = radians;
-
-    AffineTransform affineTransform = new AffineTransform();
-
-    //Poner la posicion del affinetransform
-    affineTransform.translate( 0, 0 );
-
-    //rotar el affineTransform
-    affineTransform.rotate( Math.toRadians( orientation ) );
-
-    // esto es para que gire por el centro de la figura (como mide 100 x100, ponemos que gire a mitad de cada distancia)
-    affineTransform.translate(-50, -50);
-
-    //Cambiar el tamaño
-    affineTransform.scale(1,1);
-
-    return output_image;
   }
 
 }
