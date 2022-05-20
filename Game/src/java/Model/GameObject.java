@@ -4,8 +4,11 @@ import Testing.InputAdapter;
 import View.Objects.MachineState;
 import View.Objects.PlayerModels.HR75;
 import View.Objects.PlayerModels.PlayerModel;
+import View.Sprite;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class GameObject {
@@ -73,8 +76,11 @@ public class GameObject {
     }
 
     public void render(Graphics2D g) {
-        g.drawImage(stateList.get(currentState).get_animation().get_current_sprite().get_image(),
-                (int) body.getPosX(), (int) body.getPosY(), null);
+        BufferedImage bi = stateList.get(this.currentState).get_animation().get_current_sprite().rotate( Math.toRadians(body.getAngle()));
+        g.drawImage(bi, (int) (body.getPosX()-bi.getWidth()/2), (int) (body.getPosY()-bi.getHeight()/2), null);
+        //g.drawLine((int) (body.getPosX()-body.getRadius()), (int)body.getPosY(), (int) (body.getPosX()+body.getRadius()), (int)body.getPosY());
+        //g.drawLine((int) (body.getPosX()), (int)(body.getPosY()-body.getRadius()), (int) (body.getPosX()), (int)(body.getPosY()+body.getRadius()));
+        g.drawOval((int)(body.getPosX()-body.getRadius()), (int)(body.getPosY()-body.getRadius()), (int)body.getRadius()*2, (int)body.getRadius()*2);
     }
 
 }

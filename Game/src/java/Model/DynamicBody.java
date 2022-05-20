@@ -91,17 +91,6 @@ public class DynamicBody extends Body{
             
         }
         
-        
-        if(potencia > 0){
-        System.out.println("potencia: " + potencia);        
-        System.out.println("angulo: " + angulo);
-
-        System.out.println("cos: " + cos);
-        System.out.println("sin: " + sin);
-        System.out.println("\n\n");
-        }
-        
-        
         this.checkBorderCollisions();
         this.applyFriction();
         
