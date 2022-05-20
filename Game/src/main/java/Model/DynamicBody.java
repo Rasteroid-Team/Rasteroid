@@ -17,14 +17,23 @@ public class DynamicBody extends Body{
     
     //ESTO ES UN OBJETO MOVIBLE
     //MAP SIZE --> 1000, 700
+    //HardCoded
     public DynamicBody() {
     
         speedX = (float) Math.random() * 5 - 2.5f;
         speedY = (float) Math.random() * 5 - 2.5f;
                 
     }
-    
-    
+
+
+    public DynamicBody(float posX, float posY, int angle, float radius, float speedX, float speedY, float frictionCofficient, float speedLimit) {
+        super(posX, posY, angle, radius);
+        this.speedX = speedX;
+        this.speedY = speedY;
+        this.frictionCofficient = frictionCofficient;
+        this.speedLimit = speedLimit;
+    }
+
     public float getSpeedX() {
         return speedX;
     }

@@ -8,10 +8,19 @@ public class Body {
     
     //ESTO ES UN OBJETO ESTATICO
     //MAP SIZE --> 1000, 700
+
+    //Hardcoded
     public Body() {
         posX = 100f + (int) (Math.random() * 400f);
         posY = 50f + (int) (Math.random() * 400f);
         angle = 0;
+    }
+
+    public Body(float posX, float posY, int angle, float radius) {
+        this.posX = posX;
+        this.posY = posY;
+        this.angle = angle;
+        this.radius = radius;
     }
 
     public float getPosX() {
