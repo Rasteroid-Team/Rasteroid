@@ -1,6 +1,7 @@
 package main.java.View.test.Objects;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 public abstract class GameEntity {
@@ -11,6 +12,7 @@ public abstract class GameEntity {
   private int height;
   private List<MachineState> machine_states;
   private MachineState machine_state;
+  private Rectangle2D hit_box;
 
   public GameEntity()
   {
@@ -107,5 +109,9 @@ public abstract class GameEntity {
       machine_state = state;
     }
   }
+
+  public void set_hit_box(Rectangle2D new_hit_box) {hit_box = new_hit_box;}
+
+  public Rectangle2D get_hit_box() {return hit_box;}
 
 }

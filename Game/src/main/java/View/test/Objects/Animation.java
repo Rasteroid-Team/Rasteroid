@@ -17,7 +17,6 @@ public class Animation {
   public Animation reset()
   {
     current_sprite = 0;
-    delay = 0;
     loop_count = 0;
     return this;
   }
