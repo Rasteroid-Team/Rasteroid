@@ -48,35 +48,13 @@ public class GameControl {
   //player input
   InputAdapter input;
 
-  //equipo fisicas hizo esto//////////
-  private int anguloFuerza = 0;
-  private int potencia = 0;
-  private boolean accelerando = false;
-  ////////////////////////////////////
 
   public void update()
   {
     //TODO: update here your game objects
     for (GameObject object : objects)
     {
-      //object.getDynamicBody().update();
-
-      accelerando =  input.get_active_keys()[0];
-      if (input.get_active_keys()[1]) {
-        anguloFuerza -= 5;
-      }
-      if (input.get_active_keys()[2]) {
-        anguloFuerza += 5;
-      }
-
-      object.getDynamicBody().setAngle(anguloFuerza);
-      if (!accelerando) {
-        object.getDynamicBody().move(0,0);
-        if( potencia > 0 )potencia-= 0.3;
-      } else {
-        potencia = 80;
-        object.getDynamicBody().move(anguloFuerza, potencia);
-      }
+      object.getDynamicBody().update(input);
 
     }
   }
@@ -85,29 +63,7 @@ public class GameControl {
   {
     //TODO: draw here your game objects
     for (GameObject object : objects) {
-      //object.getDynamicBody().render(graphics);
-
-
-      float posX = object.getDynamicBody().getPosX();
-      float posY = object.getDynamicBody().getPosY();
-      float orientation = object.getDynamicBody().getAngle();
-
-      AffineTransform affineTransform = new AffineTransform();
-
-      //Poner la posicion del affinetransform
-      affineTransform.translate( posX, posY );
-
-      //rotar el affineTransform
-      affineTransform.rotate( Math.toRadians( orientation ) );
-
-      // esto es para que gire por el centro de la figura (como mide 100 x100, ponemos que gire a mitad de cada distancia)
-      affineTransform.translate(-50, -50);
-
-      //Cambiar el tamaño
-      affineTransform.scale(1,1);
-
-      graphics.drawImage(ii, affineTransform, null);
-
+      object.getDynamicBody().render(graphics);
 
     }
     //★ debug ~ mode ★

@@ -3,6 +3,7 @@ package PruebasRasteroidFisicas.pruebas_rasteroid;
 import PruebasRasteroidFisicas.pruebas_rasteroid.Logic.GameControl;
 import PruebasRasteroidFisicas.pruebas_rasteroid.Logic.GameEngine;
 import PruebasRasteroidFisicas.pruebas_rasteroid.Logic.GraphicEngine;
+import PruebasRasteroidFisicas.pruebas_rasteroid.Objects.PlayerModels.HR75;
 import PruebasRasteroidFisicas.pruebas_rasteroid.View.MainFrame;
 
 import java.awt.ComponentOrientation;
@@ -149,7 +150,7 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
         game_control.set_engine(game_engine);
         game_control.set_debug_mode(true);
         game_control.set_input_mapper(input);
-        game_control.add_object(new GameObject(new DynamicBody()));
+        game_control.add_object(new GameObject(new DynamicBody(new HR75())));
         //game_control.set_player(new PlayerEntity("tuMhorenito19",new HR75()));
         MainFrame mainFrame = new MainFrame(graphics);
         mainFrame.setVisible(true);

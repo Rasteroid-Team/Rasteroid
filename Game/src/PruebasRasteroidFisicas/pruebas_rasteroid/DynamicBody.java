@@ -1,11 +1,86 @@
 package PruebasRasteroidFisicas.pruebas_rasteroid;
 
+import PruebasRasteroidFisicas.pruebas_rasteroid.Objects.PlayerModels.PlayerModel;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class DynamicBody extends Body{
     
     private float speedX, speedY;
     private float frictionCofficient = 0.05f;
 
-    //TO DO 
+    ////status
+    // edit jose: Lo he movido aqui por que veía que
+    //            que hacía referencias constantes al
+    //            dynamic body y para optimizar las
+    //            llamadas, lo encontraba necesario.
+    private int anguloFuerza = 0;
+    private int potencia = 0;
+    private boolean accelerando = false;
+
+    @Override
+    public void update(InputAdapter input) {
+        super.update(input);
+        accelerando =  input.get_active_keys()[0];
+        if (input.get_active_keys()[1]) {
+            anguloFuerza -= 5;
+        }
+        if (input.get_active_keys()[2]) {
+            anguloFuerza += 5;
+        }
+
+        setAngle(anguloFuerza);
+        if (!accelerando) {
+            move(0,0);
+            if( potencia > 0 )potencia-= 0.3;
+        } else {
+            potencia = 80;
+            move(anguloFuerza, potencia);
+        }
+    }
+
+    @Override
+    public void render(Graphics2D graphics) {
+
+        BufferedImage output_image;
+
+        //iii = ImageIO.read(new File("Game/src/PruebasRasteroidFisicas/resources/shipGirada.png"));
+        output_image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+        Graphics g2 = output_image.createGraphics();
+        g2.drawImage(current_state.get_animation().get_current_sprite().get_image(), 0, 0, 100, 100, null);
+        g2.dispose();
+
+        float posX = getPosX();
+        float posY = getPosY();
+        float orientation = getAngle();
+
+        AffineTransform affineTransform = new AffineTransform();
+
+        //Poner la posicion del affinetransform
+        affineTransform.translate( posX, posY );
+
+        //rotar el affineTransform
+        affineTransform.rotate( Math.toRadians( orientation ) );
+
+        // esto es para que gire por el centro de la figura (como mide 100 x100, ponemos que gire a mitad de cada distancia)
+        affineTransform.translate(-50, -50);
+
+        //Cambiar el tamaño
+        affineTransform.scale(1,1);
+
+        graphics.drawImage(output_image, affineTransform, null);
+    }
+
+    ////
+
+    //TO DO
     
     //implement
     float speedLimit = 5;
@@ -23,8 +98,11 @@ public class DynamicBody extends Body{
         speedY = (float) Math.random() * 5 - 2.5f;
                 
     }
-    
-    
+
+    public DynamicBody(PlayerModel model) {
+        super(model);
+    }
+
     public float getSpeedX() {
         return speedX;
     }

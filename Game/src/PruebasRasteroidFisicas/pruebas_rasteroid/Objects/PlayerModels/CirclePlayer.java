@@ -1,8 +1,10 @@
-package View.test.Objects.PlayerModels;
+package PruebasRasteroidFisicas.pruebas_rasteroid.Objects.PlayerModels;
 
-import View.test.Objects.Animation;
-import View.test.Objects.MachineState;
-import View.test.Resources.Sprite;
+
+
+import PruebasRasteroidFisicas.pruebas_rasteroid.Objects.Animation;
+import PruebasRasteroidFisicas.pruebas_rasteroid.Objects.MachineState;
+import PruebasRasteroidFisicas.pruebas_rasteroid.Resources.Sprite;
 
 import java.util.ArrayList;
 

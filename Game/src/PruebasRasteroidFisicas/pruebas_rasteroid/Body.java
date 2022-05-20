@@ -1,8 +1,14 @@
 package PruebasRasteroidFisicas.pruebas_rasteroid;
 
-import java.awt.*;
 
-public class Body {
+import Model.Player;
+import PruebasRasteroidFisicas.pruebas_rasteroid.Objects.MachineState;
+import PruebasRasteroidFisicas.pruebas_rasteroid.Objects.PlayerModels.PlayerModel;
+
+import java.awt.*;
+import java.util.List;
+
+public abstract class Body {
 
     private float posX, posY;
     private int angle;
@@ -51,10 +57,26 @@ public class Body {
 
     //GRAPHICS
 
+    public Body(PlayerModel model)
+    {
+        posX = 100f + (int) (Math.random() * 400f);
+        posY = 50f + (int) (Math.random() * 400f);
+        angle = 0;
+        machine_states = model.get_machine_states();
+        current_state = model.get_machine_states().get(0);
+    }
+
+    //machine states and animations
+    protected List<MachineState> machine_states;
+    protected MachineState current_state;
+
+
     //update and render
-    public void update(){}
 
     public void render(Graphics2D graphics) {}
-    
 
+
+    public void update(InputAdapter input) {
+        current_state.get_animation().update();
+    }
 }
