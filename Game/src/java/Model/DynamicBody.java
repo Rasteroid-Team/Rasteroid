@@ -171,6 +171,9 @@ public class DynamicBody extends Body{
         }
     }
     
-    
+    public boolean is_accelerating()
+    {
+        return accelerando;
+    }
     
 }

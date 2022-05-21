@@ -72,6 +72,15 @@ public class GameObject {
     }
 
     public void update(InputAdapter input) {
+        if (input.get_active_keys()[0])
+        {
+            currentState = 1;
+        }
+        else
+        {
+            currentState = 0;
+        }
+        stateList.get(currentState).get_animation().update();
         body.update(input);
     }
 
@@ -96,7 +105,7 @@ public class GameObject {
         affineTransform.scale(1,1);
 
         graphics.drawImage(output_image, affineTransform, null);
-        graphics.drawOval((int)(body.getPosX()-body.getRadius()), (int)(body.getPosY()-body.getRadius()), (int)body.getRadius()*2, (int)body.getRadius()*2);
+        //graphics.drawOval((int)(body.getPosX()-body.getRadius()), (int)(body.getPosY()-body.getRadius()), (int)body.getRadius()*2, (int)body.getRadius()*2);
     }
 
 }

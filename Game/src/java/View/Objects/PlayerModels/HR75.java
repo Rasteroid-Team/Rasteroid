@@ -23,9 +23,20 @@ public class HR75 extends PlayerModel {
       idle.set_animation(idle_animation);
     }
     machine_states.add(idle);
-    machine_states.add(idle);
-    machine_states.add(idle);
-    machine_states.add(idle);
-    machine_states.add(idle);
+
+    //MOVE
+    MachineState move = new MachineState("move");
+    {
+      Animation move_animation = new Animation();
+      move_animation.set_delay(1);
+      move_animation.set_loop(true);
+      load_sprite_in_range(move_animation, res_path+"move/hr75_move_", 10, 100, 100);
+      move.set_animation(move_animation);
+    }
+
+    machine_states.add(move);
+    //machine_states.add(idle);
+    //machine_states.add(idle);
+    //machine_states.add(idle);
   }
 }
