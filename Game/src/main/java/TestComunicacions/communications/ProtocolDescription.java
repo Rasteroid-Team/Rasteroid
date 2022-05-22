@@ -2,7 +2,7 @@
  * This project is given as is with license GNU/GPL-3.0. For more info look
  * on github
  */
-package communications;
+package TestComunicacions.communications;
 
 /**
  * Stores the description of each protocol with it's id and the expected return type

@@ -1,5 +1,4 @@
-package pruebas_rasteroid;
-
+package TestComunicacions.Rasteroid.pruebas_rasteroid;
 public class DynamicBody extends Body{
     
     private float speedX, speedY;
@@ -8,7 +7,7 @@ public class DynamicBody extends Body{
     //TO DO 
     
     //implement
-    float speedLimit;
+    float speedLimit = 5;
     
     
     //create
@@ -19,8 +18,8 @@ public class DynamicBody extends Body{
     //MAP SIZE --> 1000, 700
     public DynamicBody() {
     
-        speedX = (float) Math.random() * 6 - 3;
-        speedY = (float) Math.random() * 6 - 3;
+        speedX = (float) Math.random() * 5 - 2.5f;
+        speedY = (float) Math.random() * 5 - 2.5f;
                 
     }
     
@@ -48,16 +47,6 @@ public class DynamicBody extends Body{
     public void setFrictionCofficient(float friction) {
         this.frictionCofficient = friction;
     }
-
-     public float getCenterX(float posX){
-        return  posX + super.getRadius();
-        
-    }
-    
-    public float getCenterY(float posY){
-        return  posY + super.getRadius();
-        
-    }
     
     public void move( float angulo, float potencia ) {
 
@@ -68,9 +57,26 @@ public class DynamicBody extends Body{
         
         float addSpeedX = sin * 1 / 90;
         float addSpeedY = cos * -1 / 90;
+        
         //Aplicar veloidad
-        speedX += addSpeedX;
+
         speedY += addSpeedY;
+        speedX += addSpeedX;
+        
+        
+        float speedTotal = (float) Math.sqrt( (speedY*speedY) + (speedX*speedX));
+        
+        if ( speedTotal > speedLimit ) {
+            
+            float xNorm = speedX / speedTotal;
+            float yNorm = speedY / speedTotal;
+            
+            speedX = xNorm * speedLimit;
+            speedY = yNorm * speedLimit;
+            
+        }
+        
+        
         if(potencia > 0){
         System.out.println("potencia: " + potencia);        
         System.out.println("angulo: " + angulo);
@@ -79,11 +85,9 @@ public class DynamicBody extends Body{
         System.out.println("sin: " + sin);
         System.out.println("\n\n");
         }
-        //UPDATE POSITION
-        if(speedX > 6) speedX = 6;
-        if(speedY > 6) speedY = 6;
+        
+        
         this.checkBorderCollisions();
-
         this.applyFriction();
         
         
@@ -92,15 +96,15 @@ public class DynamicBody extends Body{
     
     public void checkBorderCollisions(){
         //CHECK COLISIONS WITH WALLS
-        float centerX = getCenterX(super.getPosX());
-        float centerY = getCenterX(super.getPosY());
+        float posX = super.getPosX();
+        float posY = super.getPosY();
         
         //IF COLISION RIGHT 
-        if( (centerX - super.getRadius())  > 1000 ) {
+        if( ( posX + super.getRadius() )  > 1270 ) {
             super.setPosX( super.getPosX() - speedX );
             speedX = -speedX;
         //IF COLISION LEFT
-        } else if ( centerX - super.getRadius() < 0 ){
+        } else if ( posX - super.getRadius() < 0 ){
             super.setPosX( super.getPosX() - speedX );
             speedX = -speedX;
         
@@ -110,12 +114,12 @@ public class DynamicBody extends Body{
         }
         
         
-        //IF COLISION UP 
-        if( centerY + super.getRadius()  > 700 ) {
+        //IF COLISION UP
+        if( posY - super.getRadius() < 0 ) {
             super.setPosY( super.getPosY() - speedY );
             speedY = -speedY;
         //IF COLISION BOT
-        } else if ( centerY + super.getRadius()  < 0 ){
+        } else if ( posY + super.getRadius()  > 950 ){
             super.setPosY( super.getPosY() - speedY );
             speedY = -speedY;
         

@@ -1,5 +1,4 @@
-package pruebas_rasteroid;
-
+package TestComunicacions.Rasteroid.pruebas_rasteroid;
 public class GameObject {
     private Body staticBody;
     private DynamicBody dynamicBody;

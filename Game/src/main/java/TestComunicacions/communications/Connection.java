@@ -2,9 +2,9 @@
  * This project is given as is with license GNU/GPL-3.0. For more info look
  * on github
  */
-package communications;
+package TestComunicacions.communications;
 
-import static communications.CommunicationController.*;
+import static TestComunicacions.communications.CommunicationController.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
