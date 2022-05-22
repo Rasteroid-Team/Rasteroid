@@ -22,7 +22,6 @@ public class InputAdapter extends KeyAdapter{
      
     @Override
     public void keyTyped(KeyEvent e) {
-        System.out.println("Holi keytyped");
         switch (e.getKeyChar()) {
             case 'w': // La tecla de arriba
                 System.out.println("Holi arribs");
@@ -39,12 +38,11 @@ public class InputAdapter extends KeyAdapter{
 
     @Override
     public void keyPressed(KeyEvent e) {
-         System.out.println("Holi keypressed");
+
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("Holi key released");
         switch (e.getKeyChar()) {
             case 'w': // La tecla de arriba
                 active_keys[0] = false;

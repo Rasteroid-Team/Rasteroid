@@ -1,28 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="3cc4d44d-f700-40e7-988a-47b5bfe686f3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/Rasteroid/pruebas_rasteroid/InputAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/Rasteroid/resources/shipGirada2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/Game.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Game.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/Rasteroid/pruebas_rasteroid/Body.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/Rasteroid/pruebas_rasteroid/Body.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/Rasteroid/pruebas_rasteroid/DynamicBody.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/Rasteroid/pruebas_rasteroid/DynamicBody.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/Rasteroid/pruebas_rasteroid/GameObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/Rasteroid/pruebas_rasteroid/GameObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/Rasteroid/pruebas_rasteroid/InputAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/Rasteroid/pruebas_rasteroid/InputAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/Rasteroid/pruebas_rasteroid/Pruebas_Rasteroid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/Rasteroid/pruebas_rasteroid/Pruebas_Rasteroid.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/Rasteroid/pruebas_rasteroid/Viewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/Rasteroid/pruebas_rasteroid/Viewer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/Rasteroid/pruebas_rasteroid/shipGirada.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/Rasteroid/resources/shipGirada.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/Rasteroid/resources/shipGirada.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/ClientConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/ClientConnector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/CommunicationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/CommunicationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/Connection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/Connection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/ConnectionInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/ConnectionInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/ConnectionInterfaceInitiater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/ConnectionInterfaceInitiater.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/Protocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/Protocol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/ProtocolDataPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/ProtocolDataPacket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/ProtocolDescription.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/ProtocolDescription.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/ServerConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/ServerConnector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/ServerHealth.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TestComunicacions/communications/ServerHealth.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +36,8 @@
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Pilotes" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />

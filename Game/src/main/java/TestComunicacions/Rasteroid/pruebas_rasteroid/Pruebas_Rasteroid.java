@@ -1,5 +1,7 @@
 package TestComunicacions.Rasteroid.pruebas_rasteroid;
 
+import TestComunicacions.communications.*;
+
 import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
@@ -11,25 +13,38 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+
 import static java.lang.Thread.sleep;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 
-public class Pruebas_Rasteroid extends JFrame implements Runnable{
+public class Pruebas_Rasteroid extends JFrame implements Runnable, ConnectionInterface {
 
     private ArrayList<GameObject> naves = new ArrayList<GameObject>();
     private Viewer viewer;
     private JButton boton;
     private JTextArea textArea ;
-    
+    private CommunicationController communicationController;
     private int anguloFuerza = 0;
     private int potencia = 0;
     private boolean accelerando = false;
     private InputAdapter iad; 
 
+
+    //********************************
+    private HashMap<String, int> dispositivos = new HashMap<String, int>();
+    //********************************
+
     public Pruebas_Rasteroid() {
         crearInterfaz(this);
-        
+        //*******************
+        communicationController = new CommunicationController();
+        communicationController.addAllListeners(this);
+        inicializarProtocolos();
+
+
+
         naves.add( new GameObject( new DynamicBody() ));
 //        naves.add( new GameObject( new DynamicBody() ));
 //        naves.add( new GameObject( new DynamicBody() ));
@@ -39,7 +54,19 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
         
         new Thread(this).start();
     }
-    
+
+    //************************
+    private void inicializarProtocolos() {
+        communicationController.addNewProtocol(
+                100,
+                "Pasar GameObjects entre dispositivos",
+                "GameObject"
+        );
+
+
+
+    }
+    //**********************
     // ------ GAME CONTROLLER ----------
     
     private void updatePositions() {
@@ -59,12 +86,30 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
                 nave.getDynamicBody().move(0,0);
                 if( potencia > 0 )potencia-= 0.3;
             } else {
+
+                System.out.println("aa");
                 potencia = 80;
-                nave.getDynamicBody().move(anguloFuerza, potencia);
+                //************
+                int wall = nave.getDynamicBody().move(anguloFuerza, potencia);
+                if(wall != -1) {
+                    sendGameObject(wall, nave);
+                }
+                //**********
             }
             
         }
     }
+
+
+    //********************************
+        public void sendGameObject(int wall, GameObject go){
+            for(String e : dispositivos){
+                if(connections.get(e) == direction){
+                    controller.sendMessage(controller.createPacket(e,69,ball));
+                }
+            }
+        }
+    //********************************
     
     // ---------------------------------
     
@@ -133,7 +178,9 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
     public static void main(String[] args) {
         new Pruebas_Rasteroid();
     }
-    
+
+    //********************
+
     @Override
     public void run() {
         while (true) {
@@ -146,4 +193,23 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable{
         }
     }
 
+    @Override
+    public void onMessageReceived(ProtocolDataPacket packet) {
+
+    }
+
+    @Override
+    public void onConnectionAccept(String mac) {
+        
+    }
+
+    @Override
+    public void onConnectionClosed(String mac) {
+
+    }
+
+    @Override
+    public void onLookupUpdate(ArrayList<String> macs) {
+
+    }
 }
