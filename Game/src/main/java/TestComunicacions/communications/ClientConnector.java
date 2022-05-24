@@ -4,12 +4,13 @@
  */
 package TestComunicacions.communications;
 
-import static TestComunicacions.communications.CommunicationController.MAXATTEMPTS;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static TestComunicacions.communications.CommunicationController.MAXATTEMPTS;
 
 /**
  * Client-side class that has the connect logic and a thread that checks for
@@ -33,7 +34,7 @@ class ClientConnector implements Runnable{
      */
     Socket connect(String ip){
         try {
-            Socket socket=new Socket(ip,this.controller.PORT);
+            Socket socket=new Socket("localhost", Integer.parseInt(ip));
             System.out.println("Connected");
             return socket;
             

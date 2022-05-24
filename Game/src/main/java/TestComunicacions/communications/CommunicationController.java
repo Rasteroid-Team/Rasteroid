@@ -11,13 +11,16 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * TO DO: Check if we need to use public, private, default or protected for our methods
  * @author masa
  */
 public class CommunicationController {
-    
+
+    private Scanner scanner = new Scanner(System.in);
+
     public final int PORT;
     public final int SERVERHEALTHMAXWAIT;
     public final int ACKMAXWAIT;
@@ -45,7 +48,7 @@ public class CommunicationController {
      * and maxPc = 2
      */
     public CommunicationController(){
-        PORT = 42069;
+        PORT = scanner.nextInt();
         SERVERHEALTHMAXWAIT = 1500;
         ACKMAXWAIT = 2500;
         maxPc = 2;
@@ -242,7 +245,7 @@ public class CommunicationController {
      */
     private boolean checkPacket(ProtocolDataPacket packet){
         boolean isValid = true;
-        if(packet.getId() > protocol.getMinId() && packet.getTargetID() != null && !packet.getTargetID().equals(localMAC)){
+        if(packet.getId() > protocol.getMinId() && packet.getTargetID() != null){
             //send based on target id
             sendPacket(null, new ProtocolDataPacket(localMAC,packet.getTargetID(),packet.getId(),packet.getObject()));
         }else{
@@ -416,7 +419,7 @@ public class CommunicationController {
         if(maxPc == 0){
             available = true;
         }else{
-            for(int i = 0; i < maxPc && available == false; i++){
+            for(int i = 0; i < maxPc && !available; i++){
                 synchronized(this.pcConnections){
                     if(pcConnections.get(i) == null){
                         available = true;

@@ -1,26 +1,23 @@
 package TestComunicacions.Rasteroid.pruebas_rasteroid;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 
 public class Viewer extends Canvas implements Runnable {
 
-    private  BufferedImage ii;
-    private ArrayList<GameObject> naves;
-    private BufferedImage iii ;
+    private BufferedImage ii;
+    private CopyOnWriteArrayList<GameObject> naves;
+    private BufferedImage iii;
 
-    public Viewer(ArrayList<GameObject> naves, int width, int height) {
+    public Viewer(CopyOnWriteArrayList<GameObject> naves, int width, int height) {
         this.naves = naves;
         this.setSize(width, height);
 
@@ -61,7 +58,7 @@ public class Viewer extends Canvas implements Runnable {
 
     private void pintarNaves(Graphics g) {
         try {
-            iii = ImageIO.read(new File("src/main/java/TestComunicacions/Rasteroid/resources/shipGirada.png"));
+            iii = ImageIO.read(new File("C:\\Users\\joanf\\OneDrive\\2n DAM\\Programació de Serveis i Processos\\NetBeans Projects\\RasteroidDef\\Rasteroid\\Development\\Game\\src\\main\\java\\TestComunicacions\\Rasteroid\\resources\\shipGirada.png"));
             ii = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
             Graphics g2 = ii.createGraphics();
             g2.drawImage(iii, 0, 0, 100, 100, null);
@@ -69,45 +66,44 @@ public class Viewer extends Canvas implements Runnable {
         } catch (IOException ex) {
             Logger.getLogger(Viewer.class.getName()).log(Level.SEVERE, null, ex);
         }
- 
-        
+
+
         for (GameObject nave : naves) {
             float posX = nave.getDynamicBody().getPosX();
             float posY = nave.getDynamicBody().getPosY();
             float orientation = nave.getDynamicBody().getAngle();
-            
+
             AffineTransform affineTransform = new AffineTransform();
-            
+
             //Poner la posicion del affinetransform
-            affineTransform.translate( posX, posY );
-            
+            affineTransform.translate(posX, posY);
+
             //rotar el affineTransform
-            affineTransform.rotate( Math.toRadians( orientation ) );
-            
+            affineTransform.rotate(Math.toRadians(orientation));
+
             // esto es para que gire por el centro de la figura (como mide 100 x100, ponemos que gire a mitad de cada distancia)
             affineTransform.translate(-50, -50);
-            
+
             //Cambiar el tamaño
-            affineTransform.scale(1,1);
-            
+            affineTransform.scale(1, 1);
+
             Graphics2D g2 = (Graphics2D) g;
-            g2.drawImage(ii, affineTransform, this); 
+            g2.drawImage(ii, affineTransform, this);
 
 
-            
             //DEBUG
             g.setColor(Color.GREEN);
-            
-            g.drawOval( (int) posX-50, (int) posY-50, 100, 100);
-            
+
+            g.drawOval((int) posX - 50, (int) posY - 50, 100, 100);
+
             //Vertical lines
-            g2.drawLine((int) posX, 0,(int) posX,(int) posY - 5);
-            g2.drawLine((int) posX, (int) posY + 5,(int) posX, 1300 );
-            
+            g2.drawLine((int) posX, 0, (int) posX, (int) posY - 5);
+            g2.drawLine((int) posX, (int) posY + 5, (int) posX, 1300);
+
             //Horizontal
-            g2.drawLine(0, (int)posY , (int) posX - 5 , (int) posY );
-            g2.drawLine((int) posX + 5, (int)posY , 1300 , (int) posY );
-            
+            g2.drawLine(0, (int) posY, (int) posX - 5, (int) posY);
+            g2.drawLine((int) posX + 5, (int) posY, 1300, (int) posY);
+
         }
     }
 
@@ -118,6 +114,14 @@ public class Viewer extends Canvas implements Runnable {
         int y2 = this.getHeight();
         g.setColor(Color.WHITE);
         g.fillRect(x1, y1, x2, y2);
+    }
+
+    public void addPlayer(GameObject player) {
+        this.naves.add(player);
+    }
+
+    public void removePlayer(GameObject player) {
+        this.naves.remove(player);
     }
 
 }

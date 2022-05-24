@@ -1,5 +1,8 @@
 package TestComunicacions.Rasteroid.pruebas_rasteroid;
-public class DynamicBody extends Body{
+
+import java.io.Serializable;
+
+public class DynamicBody extends Body implements Serializable {
     
     private float speedX, speedY;
     private float frictionCofficient = 0.05f;
@@ -48,7 +51,7 @@ public class DynamicBody extends Body{
         this.frictionCofficient = friction;
     }
     
-    public int move( float angulo, float potencia ) {
+    public int move(float angulo, float potencia ) {
 
         //APLICAR FOLMULA PARA SACAR FUERZA DE X e Y - sin cos
         double anguloRad = Math.toRadians(angulo);
@@ -91,7 +94,6 @@ public class DynamicBody extends Body{
         this.applyFriction();
 
         return wall;
-        
     }
     
     
@@ -99,14 +101,13 @@ public class DynamicBody extends Body{
         //CHECK COLISIONS WITH WALLS
         float posX = super.getPosX();
         float posY = super.getPosY();
-        int wall = -1;
-
+        
         //IF COLISION RIGHT 
         if( ( posX + super.getRadius() )  > 1270 ) {
-            //super.setPosX( super.getPosX() - speedX );
-            //speedX = -speedX;
-            wall = 2;
+            super.setPosX( super.getPosX() + 1 );
+//            speedX = -speedX;
 
+            return 2;
         //IF COLISION LEFT
         } else if ( posX - super.getRadius() < 0 ){
             super.setPosX( super.getPosX() - speedX );
@@ -131,7 +132,8 @@ public class DynamicBody extends Body{
         } else {
             super.setPosY( super.getPosY() + speedY );
         }
-        return wall;
+
+        return -1;
     }
     
    

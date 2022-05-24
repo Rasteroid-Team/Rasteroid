@@ -1,5 +1,8 @@
 package TestComunicacions.Rasteroid.pruebas_rasteroid;
-public class GameObject {
+
+import java.io.Serializable;
+
+public class GameObject implements Serializable {
     private Body staticBody;
     private DynamicBody dynamicBody;
     

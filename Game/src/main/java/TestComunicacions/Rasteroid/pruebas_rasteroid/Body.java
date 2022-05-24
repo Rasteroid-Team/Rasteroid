@@ -1,6 +1,8 @@
 package TestComunicacions.Rasteroid.pruebas_rasteroid;
 
-public class Body {
+import java.io.Serializable;
+
+public class Body implements Serializable {
 
     private float posX, posY;
     private int angle;
