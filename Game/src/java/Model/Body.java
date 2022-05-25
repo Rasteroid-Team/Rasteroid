@@ -2,6 +2,8 @@ package Model;
 
 import Testing.InputAdapter;
 
+import java.util.List;
+
 public class Body {
 
     private float posX, posY;
@@ -57,7 +59,7 @@ public class Body {
         this.radius = radius;
     }
 
-    public void update(InputAdapter input) {
+    public void update(InputAdapter input, List<GameObject> objects) {
 
     }
 

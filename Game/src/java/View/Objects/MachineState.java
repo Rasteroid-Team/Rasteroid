@@ -35,4 +35,6 @@ public class MachineState {
     name = n;
   }
 
+  public String get_name() {return name;}
+
 }

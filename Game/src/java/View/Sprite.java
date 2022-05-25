@@ -23,8 +23,8 @@ public class Sprite {
     try
     {
       File img_file = new File(path);
-      System.out.println("★ Sprite loaded:"+img_file.getAbsolutePath());
       image = ImageIO.read(new File(path));
+      System.out.println("★ Sprite loaded:"+img_file.getAbsolutePath());
     }
     catch (IOException image_not_found)
     {

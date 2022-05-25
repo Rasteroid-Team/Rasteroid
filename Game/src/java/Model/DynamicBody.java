@@ -2,6 +2,8 @@ package Model;
 
 import Testing.InputAdapter;
 
+import java.util.List;
+
 public class DynamicBody extends Body{
     
     private float speedX, speedY;
@@ -91,24 +93,23 @@ public class DynamicBody extends Body{
             
         }
         
-        this.checkBorderCollisions();
         this.applyFriction();
         
         
     }
     
     
-    public void checkBorderCollisions(){
+    public void checkBorderCollisions(Map map_object){
         //CHECK COLISIONS WITH WALLS
         float posX = super.getPosX();
         float posY = super.getPosY();
         
         //IF COLISION RIGHT 
-        if( ( posX + super.getRadius() )  > 1270 ) {
+        if( ( posX + super.getRadius() )  >= map_object.get_right_border().getX() ) {
             super.setPosX( super.getPosX() - speedX );
             speedX = -speedX;
         //IF COLISION LEFT
-        } else if ( posX - super.getRadius() < 0 ){
+        } else if ( posX - super.getRadius() <= 0 ){
             super.setPosX( super.getPosX() - speedX );
             speedX = -speedX;
         
@@ -119,11 +120,11 @@ public class DynamicBody extends Body{
         
         
         //IF COLISION UP
-        if( posY - super.getRadius() < 0 ) {
+        if( posY - super.getRadius() <= 0 ) {
             super.setPosY( super.getPosY() - speedY );
             speedY = -speedY;
-        //IF COLISION BOT
-        } else if ( posY + super.getRadius()  > 950 ){
+        //IF COLISION BOTTOM
+        } else if ( posY + super.getRadius()  >= map_object.get_bottom_border().getY() ){
             super.setPosY( super.getPosY() - speedY );
             speedY = -speedY;
         
@@ -151,9 +152,17 @@ public class DynamicBody extends Body{
     }
 
     @Override
-    public void update(InputAdapter input) {
-        super.update(input);
-        accelerando =  input.get_active_keys()[0];
+    public void update(InputAdapter input, List<GameObject> objects) {
+        super.update(input, objects);
+        for (GameObject object: objects)
+        {
+            if (object instanceof Map)
+            {
+                this.checkBorderCollisions((Map) object);
+            }
+        }
+
+        accelerando = input.get_active_keys()[0];
         if (input.get_active_keys()[1]) {
             anguloFuerza -= 5;
         }

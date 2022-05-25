@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.GameObject;
+import Model.Map;
 import Testing.InputAdapter;
 
 import java.awt.*;
@@ -27,7 +28,7 @@ public class GameControl {
     //TODO: update here your game objects
     for (GameObject object : objects)
     {
-      object.update(input);
+      object.update(input, objects);
 
     }
   }
@@ -37,7 +38,11 @@ public class GameControl {
     //TODO: draw here your game objects
     for (GameObject object : objects) {
       object.render(graphics);
-
+      if (object instanceof Map && debug_mode)
+      {
+        graphics.setColor(Color.RED);
+        ((Map) object).draw_borders(graphics);
+      }
     }
     //★ debug ~ mode ★
     if (debug_mode)

@@ -2,9 +2,8 @@ package Model;
 
 import Testing.InputAdapter;
 import View.Objects.MachineState;
-import View.Objects.PlayerModels.HR75;
-import View.Objects.PlayerModels.PlayerModel;
-import View.Sprite;
+import View.Objects.ObjectModels.Players.HR75;
+import View.Objects.ObjectModels.ObjectModel;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -19,7 +18,7 @@ public class GameObject {
     private int currentState = 0;
     private List<MachineState> stateList;
 
-    public GameObject(Body body, boolean visible, float health, boolean invencible, PlayerModel model) {
+    public GameObject(Body body, boolean visible, float health, boolean invencible, ObjectModel model) {
         this.body = body;
         this.visible = visible;
         this.health = health;
@@ -71,7 +70,7 @@ public class GameObject {
         this.invencible = invencible;
     }
 
-    public void update(InputAdapter input) {
+    public void update(InputAdapter input, List<GameObject> objects) {
         if (input.get_active_keys()[0])
         {
             currentState = 1;
@@ -81,7 +80,7 @@ public class GameObject {
             currentState = 0;
         }
         stateList.get(currentState).get_animation().update();
-        body.update(input);
+        body.update(input, objects);
     }
 
     public void render(Graphics2D graphics)
