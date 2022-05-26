@@ -1,5 +1,7 @@
 package Model;
 
+import java.awt.*;
+
 public class Bullet extends GameObject {
     protected String ownerName;
     protected float damage;
@@ -33,5 +35,10 @@ public class Bullet extends GameObject {
 
     public void setDamage(float damage) {
         this.damage = damage;
+    }
+
+    public void render(Graphics2D graphics) {
+        graphics.fillOval((int) this.getBody().getPosX(), (int)this.getBody().getPosY(),
+        5, 5);
     }
 }

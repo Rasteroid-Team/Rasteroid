@@ -7,10 +7,14 @@ import View.*;
 
 public class Test {
 
+    public static GameEngine game_engine;
+    public static GraphicEngine graphics;
+    public static GameControl game_control;
+
     public static void main(String[] args) {
-        GraphicEngine graphics = new GraphicEngine();
-        GameControl game_control = new GameControl();
-        GameEngine game_engine = new GameEngine(game_control, graphics);
+        graphics = new GraphicEngine();
+        game_control = new GameControl();
+        game_engine = new GameEngine(game_control, graphics);
         game_engine.set_max_ups(60);
         InputAdapter input = new InputAdapter();
         graphics.addKeyListener(input);

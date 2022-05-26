@@ -62,8 +62,16 @@ public class DynamicBody extends Body{
     public void setFrictionCofficient(float friction) {
         this.frictionCofficient = friction;
     }
-    
-    public void move( float angulo, float potencia ) {
+
+    public float getSpeedLimit() {
+        return speedLimit;
+    }
+
+    public void setSpeedLimit(float speedLimit) {
+        this.speedLimit = speedLimit;
+    }
+
+    public void move(float angulo, float potencia ) {
 
         //APLICAR FOLMULA PARA SACAR FUERZA DE X e Y - sin cos
         double anguloRad = Math.toRadians(angulo);

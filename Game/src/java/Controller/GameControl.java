@@ -6,13 +6,16 @@ import Testing.InputAdapter;
 import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class GameControl {
 
   //objects
-  private final List<GameObject> objects = new ArrayList<>();
-
+  public final List<GameObject> objects = new ArrayList<>();
+  public final Queue<GameObject> addQueue = new LinkedList<>();
+  public final Queue<GameObject> deleteQueue = new LinkedList<>();
   //for print engine values
   private boolean debug_mode;
   private GameEngine game_engine;
@@ -29,6 +32,15 @@ public class GameControl {
     {
       object.update(input);
 
+    }
+    GameObject obj = null;
+    while (!deleteQueue.isEmpty()) {
+      obj = deleteQueue.poll();
+      objects.remove(obj);
+    }
+    while (!addQueue.isEmpty()) {
+      obj = addQueue.poll();
+      objects.add(obj);
     }
   }
 

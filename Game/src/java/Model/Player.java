@@ -1,5 +1,8 @@
 package Model;
 
+import Testing.InputAdapter;
+import Testing.Test;
+
 public class Player extends GameObject {
     protected String name;
     protected float bulletDamage;
@@ -12,8 +15,8 @@ public class Player extends GameObject {
      --------------------*/
 
     //Basic constructor
-    public Player(Body body) {
-        super(body);
+    public Player(DynamicBody dynamicBody) {
+        super(dynamicBody);
         this.bulletDamage = 5;
         this.bulletSpeed = 1;
         this.ammo = 10000;
@@ -68,6 +71,18 @@ public class Player extends GameObject {
             Methods
      --------------------*/
 
+    public void update(InputAdapter input) {
+        this.getBody().update(input);
+        if (input.get_active_keys()[3])  {
+            shoot();
+        }
+    }
+
     public void shoot() {
+        DynamicBody dynBody = (DynamicBody) this.getBody();
+        Bullet bullet = new Bullet(new DynamicBody(this.getBody().getPosX(), this.getBody().getPosY(),
+                this.getBody().getAngle(), 1, dynBody.getSpeedX(), dynBody.getSpeedY(),
+                0.01f, dynBody.getSpeedLimit()*3), this.name);
+        Test.game_control.addQueue.add(bullet);
     }
 }

@@ -9,17 +9,17 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 /**
- *
  * @author DAM
  */
-public class InputAdapter extends KeyAdapter{
-    
+public class InputAdapter extends KeyAdapter {
+
     private final boolean[] active_keys = new boolean[]{
-          false, //w
-          false, //a
-          false //d
+            false, //w
+            false, //a
+            false, //d
+            false //q
     };
-     
+
     @Override
     public void keyTyped(KeyEvent e) {
         switch (e.getKeyChar()) {
@@ -31,9 +31,12 @@ public class InputAdapter extends KeyAdapter{
                 break;
             case 'd'://  DERECHA -->     
                 active_keys[2] = true;
-                break; 
+                break;
+            case 'q':
+                active_keys[3] = true;
+                break;
         }
-    } 
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -50,12 +53,15 @@ public class InputAdapter extends KeyAdapter{
                 active_keys[1] = false;
                 break;
             case 'd'://  DERECHA -->     
-            active_keys[2] = false;
-             break; 
+                active_keys[2] = false;
+                break;
+            case 'q':
+                active_keys[3] = false;
+                break;
         }
     }
-            
-    public boolean[] get_active_keys(){
+
+    public boolean[] get_active_keys() {
         return active_keys;
     }
 }
