@@ -19,8 +19,9 @@ public class GraphicEngine extends Canvas {
     if (buffer_strategy == null)
     {
       createBufferStrategy(2);
+      buffer_strategy = getBufferStrategy();
     }
-    buffer_strategy = getBufferStrategy();
+
     return (Graphics2D) buffer_strategy.getDrawGraphics();
   }
 
