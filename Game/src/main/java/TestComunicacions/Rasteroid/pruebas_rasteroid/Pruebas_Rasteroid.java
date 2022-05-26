@@ -232,7 +232,6 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable, ConnectionInt
     }
 
     private void addNave(GameObject nave) {
-        viewer.addPlayer(nave);
         this.naves.add(nave);
     }
 }
