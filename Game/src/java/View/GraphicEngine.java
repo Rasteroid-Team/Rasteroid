@@ -30,7 +30,7 @@ public class GraphicEngine extends Canvas {
     if (buffer_strategy != null)
     {
       buffer_strategy.show();
-      buffer_strategy.dispose();
+      buffer_strategy.getDrawGraphics().dispose();
     }
   }
 
