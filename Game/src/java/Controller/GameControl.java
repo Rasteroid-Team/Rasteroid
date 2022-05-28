@@ -2,35 +2,48 @@ package Controller;
 
 import Model.GameObject;
 import Model.Map;
+import Model.Player;
+import Testing.AvtomatV1;
 import Testing.InputAdapter;
 
 import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 public class GameControl {
 
   //objects
-  private final List<GameObject> objects = new ArrayList<>();
+  public static final List<GameObject> objects = new ArrayList<>();
+  private static List<GameObject> adding_list = new ArrayList<>();
+  private static List<GameObject> removing_list = new ArrayList<>();
 
   //for print engine values
   private boolean debug_mode;
   private GameEngine game_engine;
   DecimalFormat two_decimals = new DecimalFormat("#.00");
 
-  //player input
-  InputAdapter input;
+
 
 
   public void update()
   {
     //TODO: update here your game objects
-    for (GameObject object : objects)
+    try
     {
-      object.update(input, objects);
+      for (GameObject object : objects)
+      {
+        object.update(objects);
 
+      }
+      check_modification_list();
     }
+    catch (ConcurrentModificationException e)
+    {
+      e.printStackTrace();
+    }
+
   }
 
   public void render(Graphics2D graphics)
@@ -38,11 +51,15 @@ public class GameControl {
     //TODO: draw here your game objects
     for (GameObject object : objects) {
       object.render(graphics);
-      if (object instanceof Map && debug_mode)
+      if (debug_mode)
       {
-        graphics.setColor(Color.RED);
-        ((Map) object).draw_borders(graphics);
+        if (object instanceof Map)
+        {
+          graphics.setColor(Color.RED);
+          ((Map) object).draw_borders(graphics);
+        }
       }
+
     }
     //★ debug ~ mode ★
     if (debug_mode)
@@ -53,6 +70,14 @@ public class GameControl {
       //draw_player_nickname(graphics, player);
       //draw_player_stats(graphics, player);
     }
+  }
+
+  private void check_modification_list()
+  {
+    objects.addAll(adding_list);
+    adding_list.clear();
+    objects.removeAll(removing_list);
+    removing_list.clear();
   }
 
   private void draw_engine_values(Graphics2D graphics)
@@ -169,24 +194,19 @@ public class GameControl {
     debug_mode = is_debug;
   }
 
-  public InputAdapter get_input_adapter()
-  {
-    return input;
-  }
-
-  public void set_input_mapper(InputAdapter input_adapter)
-  {
-    input = input_adapter;
-  }
-
   //public void set_player(PlayerEntity player_entity)
   //{
   //  player = player_entity;
   //}
 
-  public void add_object(GameObject object)
+  public static void add_object(GameObject object)
   {
-    objects.add(object);
+    adding_list.add(object);
+  }
+
+  public static void remove_object(GameObject object)
+  {
+    removing_list.add(object);
   }
 
 }

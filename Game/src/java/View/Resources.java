@@ -1,5 +1,6 @@
 package View;
 
+import View.Objects.ObjectModels.Bullets.YellowBullet;
 import View.Objects.ObjectModels.Maps.MapModel;
 import View.Objects.ObjectModels.Maps.Space;
 import View.Objects.ObjectModels.ObjectModel;
@@ -34,9 +35,13 @@ public class Resources {
   protected static ObjectModel PLAYER_CIRCLE_RAW;
   public static ObjectModel PLAYER_CIRCLE()  {return ObjectModel.copy(PLAYER_CIRCLE_RAW, new HR75());}
 
+  protected static ObjectModel BULLET_YELLOW_RAW;
+  public static ObjectModel BULLET_YELLOW()  {return ObjectModel.copy(BULLET_YELLOW_RAW, new YellowBullet());}
+
+
   public int get_res_count()
   {
-    return 3;
+    return 4;
   }
 
 

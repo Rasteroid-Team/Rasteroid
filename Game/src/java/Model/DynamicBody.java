@@ -1,16 +1,15 @@
 package Model;
 
-import Testing.InputAdapter;
-
 import java.util.List;
 
 public class DynamicBody extends Body{
     
-    private float speedX, speedY;
-    private float frictionCofficient = 0.05f;
-    private int anguloFuerza = 0;
-    private int potencia = 0;
-    private boolean accelerando = false;
+    protected float speedX, speedY;
+    protected float frictionCofficient = 0.05f;
+    protected int anguloFuerza = 0;
+    protected int potencia = 0;
+    protected int potencia_aceleracion;
+    protected boolean accelerando = false;
 
     //TO DO 
     
@@ -106,12 +105,16 @@ public class DynamicBody extends Body{
         
         //IF COLISION RIGHT 
         if( ( posX + super.getRadius() )  >= map_object.get_right_border().getX() ) {
+            setPosX((float) (map_object.get_right_border().getX()-1-getRadius()));
             super.setPosX( super.getPosX() - speedX );
             speedX = -speedX;
+            collision(map_object);
         //IF COLISION LEFT
         } else if ( posX - super.getRadius() <= 0 ){
+            setPosX(1+getRadius());
             super.setPosX( super.getPosX() - speedX );
             speedX = -speedX;
+            collision(map_object);
         
         //IF NOT COLISION
         } else {
@@ -121,20 +124,42 @@ public class DynamicBody extends Body{
         
         //IF COLISION UP
         if( posY - super.getRadius() <= 0 ) {
+            setPosY(1+getRadius());
             super.setPosY( super.getPosY() - speedY );
             speedY = -speedY;
-        //IF COLISION BOTTOM
+            collision(map_object);
+            //IF COLISION BOTTOM
         } else if ( posY + super.getRadius()  >= map_object.get_bottom_border().getY() ){
+            setPosY((float) (map_object.get_bottom_border().getY()-1-getRadius()));
             super.setPosY( super.getPosY() - speedY );
             speedY = -speedY;
-        
-        //IF NOT COLISION
+            collision(map_object);
+
+            //IF NOT COLISION
         } else {
             super.setPosY( super.getPosY() + speedY );
         }
     }
-    
-   
+
+    private void checkObjectCollision(GameObject object)
+    {
+        float obj_posx = object.getBody().getPosX();
+        float obj_posy = object.getBody().getPosY();
+        double h;
+        {
+            //calculate distance between objects
+            float c1 = obj_posy - getPosY();
+            float c2 = obj_posx - getPosX();
+            h = (float) Math.sqrt(Math.pow(c1,2) + Math.pow(c2,2));
+        }
+        if (h-object.getBody().getRadius() <= getRadius())
+        {
+            collision(object);
+        }
+    }
+
+    /**Set consequence in every object body class*/
+    public void collision(GameObject object) {}
 
     private void applyFriction() {
        //SPEED LOSE
@@ -152,37 +177,37 @@ public class DynamicBody extends Body{
     }
 
     @Override
-    public void update(InputAdapter input, List<GameObject> objects) {
-        super.update(input, objects);
+    public void update(List<GameObject> objects) {
+        super.update(objects);
         for (GameObject object: objects)
         {
             if (object instanceof Map)
             {
                 this.checkBorderCollisions((Map) object);
             }
+            else
+            {
+                this.checkObjectCollision(object);
+            }
         }
 
-        accelerando = input.get_active_keys()[0];
-        if (input.get_active_keys()[1]) {
-            anguloFuerza -= 5;
-        }
-        if (input.get_active_keys()[2]) {
-            anguloFuerza += 5;
-        }
-
-        setAngle(anguloFuerza);
         if (!accelerando) {
             move(0,0);
             if( potencia > 0 )potencia-= 0.3;
         } else {
-            potencia = 80;
+            potencia = potencia_aceleracion;
             move(anguloFuerza, potencia);
         }
     }
-    
+
     public boolean is_accelerating()
     {
         return accelerando;
     }
-    
+
+    @Override
+    public void setAngle(int angle) {
+        super.setAngle(angle);
+        anguloFuerza = angle;
+    }
 }

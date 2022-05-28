@@ -1,5 +1,6 @@
 package View;
 
+import View.Objects.ObjectModels.Bullets.YellowBullet;
 import View.Objects.ObjectModels.Maps.MapModel;
 import View.Objects.ObjectModels.Maps.Space;
 import View.Objects.ObjectModels.ObjectModel;
@@ -60,6 +61,7 @@ public class ResourceLoader implements Runnable {
     Resources.MAP_SPACE_RAW = (MapModel) load(Space.class);
     Resources.PLAYER_HR75_RAW = load(HR75.class);
     Resources.PLAYER_CIRCLE_RAW = load(CirclePlayer.class);
+    Resources.BULLET_YELLOW_RAW = load(YellowBullet.class);
     is_loading = false;
   }
 

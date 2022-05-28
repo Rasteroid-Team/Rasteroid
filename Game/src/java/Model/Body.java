@@ -59,7 +59,7 @@ public class Body {
         this.radius = radius;
     }
 
-    public void update(InputAdapter input, List<GameObject> objects) {
+    public void update(List<GameObject> objects) {
 
     }
 
