@@ -265,6 +265,12 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable, ConnectionInt
                 "float[]"
         );
 
+        controller.addNewProtocol(
+                151,
+                "Shoot Bullet",
+                "null"
+        );
+
     }
 
     private void addNave(GameObject nave) {
