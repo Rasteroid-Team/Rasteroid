@@ -187,12 +187,23 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable, ConnectionInt
         System.out.println("recieved");
         switch (packet.getId()) {
             case 100 -> {
-                GameObject player = (GameObject) packet.getObject();
-                player.getDynamicBody().setPosX(100);
-                player.getDynamicBody().setPosY(100);
-                player.getDynamicBody().setSpeedX(0);
-                player.getDynamicBody().setSpeedY(0);
-                this.addNave(player);
+                Object[] recievedObject = (Object[]) packet.getObject();
+                GameObject object = (GameObject) recievedObject[0];
+//                if (object instanceof Player) {
+//                    //Check Walls (recievedObject[1])
+//                    object.getDynamicBody().setPosX(Math.abs(object.getDynamicBody().getPosX() - Size) + 1);
+//
+//                    object.getDynamicBody().setPosY(Math.abs(object.getDynamicBody().getPosY() - Size) + 1);
+//
+//
+//                    object.getDynamicBody().setSpeedX(0);
+//                    object.getDynamicBody().setSpeedY(0);
+//                    this.addNave(object);
+//                }
+//                if (object instanceof Bullet) {
+//                    object.getDynamicBody().setPosX(100);
+//                    object.getDynamicBody().setPosY(100);
+//                }
 
             }
 
@@ -235,7 +246,7 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable, ConnectionInt
     public void sendGameObject(int wall, GameObject go) {
         for (String e : connections.keySet()) {
             if (connections.get(e) == wall) {
-                controller.sendMessage(controller.createPacket(e, 100, go));
+                controller.sendMessage(controller.createPacket(e, 100, new Object[]{go, wall}));
                 System.out.println("message sent");
             }
         }
@@ -245,7 +256,7 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable, ConnectionInt
         controller.addNewProtocol(
                 100,
                 "Pasar GameObjects entre dispositivos",
-                "GameObject"
+                "Object[]"
         );
 
         controller.addNewProtocol(
