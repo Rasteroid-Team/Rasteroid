@@ -195,12 +195,30 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable, ConnectionInt
                 this.addNave(player);
 
             }
+
+            case 150 -> {
+//                Player player = mobileConnections.get(packet.getSourceID());
+//                ((GameObject) player).getDynamicBody().move(packet.getObject()[0], packet.getObject()[1]);
+            }
+
+            case 151 -> {
+//                Player player = mobileConnections.get(packet.getSourceID());
+//                Player.shoot();
+
+            }
+
         }
     }
 
     @Override
     public void onConnectionAccept(String mac) {
+        //PC
         connections.put(mac, direction);
+
+        //Mobile
+//        Player player = new Player
+//        naves.add(player)
+//        mobileConnections.put(mac, player);
 
     }
 
@@ -229,6 +247,13 @@ public class Pruebas_Rasteroid extends JFrame implements Runnable, ConnectionInt
                 "Pasar GameObjects entre dispositivos",
                 "GameObject"
         );
+
+        controller.addNewProtocol(
+                150,
+                "Move Player Object",
+                "float[]"
+        );
+
     }
 
     private void addNave(GameObject nave) {
