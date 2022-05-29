@@ -4,8 +4,13 @@ import Controller.GameControl;
 import Testing.InputAdapter;
 import View.Objects.ObjectModels.ObjectModel;
 import View.Objects.ObjectModels.Players.HR75;
+import View.Objects.ObjectModels.Players.PlayerModel;
 import View.Resources;
+import View.Sprite;
 
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class Player extends GameObject {
@@ -19,14 +24,19 @@ public class Player extends GameObject {
     protected long last_fire;
     protected InputAdapter input;
     GameControl control;
+    PlayerModel model;
+    protected Color color;
 
     /*--------------------
         Constructor
      --------------------*/
 
     //Basic constructor
-    public Player(GameControl g_control, InputAdapter adapter, ObjectModel model) {
-        super(null, true, 100, false, model);
+    public Player(GameControl g_control, InputAdapter adapter, PlayerModel player_model, Color player_color) {
+        super(null, true, 100, false, player_model);
+        color = player_color;
+        model = player_model;
+        model.set_aura_color(color);
         input = adapter;
         setBody(new PlayerBody());
         control = g_control;
@@ -117,6 +127,23 @@ public class Player extends GameObject {
 
         stateList.get(currentState).get_animation().update();
         body.update(objects);
+    }
+
+    @Override
+    public void render(Graphics2D graphics) {
+        BufferedImage aura = model.get_aura().get_image();
+        float pos_x = body.getPosX();
+        float pos_y = body.getPosY();
+        float orientation = body.getAngle();
+
+        AffineTransform affineTransform = new AffineTransform();
+        affineTransform.translate( pos_x, pos_y );
+        affineTransform.rotate( Math.toRadians( orientation ) );
+        affineTransform.translate(-aura.getWidth()/2.0, -aura.getWidth()/2.0);
+        affineTransform.scale(1,1);
+
+        graphics.drawImage(aura, affineTransform, null);
+        super.render(graphics);
     }
 
     public class PlayerBody extends DynamicBody

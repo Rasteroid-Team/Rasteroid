@@ -57,4 +57,21 @@ public class Sprite {
 
   }
 
+  public BufferedImage apply_filter(Color color) {
+    BufferedImage filtered = new BufferedImage(image.getWidth(),image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+    for (int x = 0; x < image.getWidth(); x++) {
+      for (int y = 0; y < image.getHeight(); y++) {
+        int alpha = new Color(image.getRGB(x,y), true).getAlpha();
+        Color new_color = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
+        filtered.setRGB(x, y, new_color.getRGB());
+      }
+    }
+    return filtered;
+  }
+
+  public void set_image(BufferedImage img)
+  {
+    image = img;
+  }
 }

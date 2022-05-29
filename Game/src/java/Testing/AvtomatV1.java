@@ -5,6 +5,7 @@ import Model.DynamicBody;
 import Model.GameObject;
 import Model.Player;
 import View.Objects.ObjectModels.ObjectModel;
+import View.Objects.ObjectModels.Players.PlayerModel;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -52,8 +53,8 @@ public final class AvtomatV1 extends Player {
 
   private final AI_STATE_AVTOMAT av;
 
-  public AvtomatV1(GameControl g_control, InputAdapter adp, ObjectModel model) {
-    super(g_control, adp, model);
+  public AvtomatV1(GameControl g_control, InputAdapter adp, ObjectModel model, Color av_color) {
+    super(g_control, adp, (PlayerModel) model, av_color);
     AI_STATE_AVTOMAT.AVT_ADAPTER av_adapter = new AI_STATE_AVTOMAT.AVT_ADAPTER();
     set_adapter(av_adapter);
     av = new AI_STATE_AVTOMAT(this, av_adapter);
@@ -162,7 +163,7 @@ public final class AvtomatV1 extends Player {
         //while (new_dir == excluded || new_dir < excluded+45 || new_dir > excluded-45)
         //{
           new_dir = rd.nextInt(360-excluded)+excluded;
-          System.out.println(new_dir);
+          //System.out.println(new_dir);
         //}
         return new_dir;
       }

@@ -4,6 +4,7 @@ import Testing.InputAdapter;
 import View.Objects.MachineState;
 import View.Objects.ObjectModels.Players.HR75;
 import View.Objects.ObjectModels.ObjectModel;
+import View.Resources;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -108,10 +109,8 @@ public class GameObject {
     {
         if (!invencible)
         {
-            System.out.println("damaged");
             health -= damage;
             if (health < 0) {health = 0;}
-            System.out.println("HEALTH = "+health);
             show_life_bar();
         }
     }
@@ -125,7 +124,7 @@ public class GameObject {
     {
         if (System.currentTimeMillis() - life_bar_time < life_bar_screen_time*1000)
         {
-            int offsetY = 30;
+            int offsetY = 40;
             int width = 140;
             int height = 10;
             int radius = 10;
@@ -138,9 +137,9 @@ public class GameObject {
                     RenderingHints.VALUE_ANTIALIAS_ON
                 );
                 graphics.setColor(Color.darkGray);
-                graphics.fillRoundRect((int) (getBody().getPosX()-(width/2)), (int) (getBody().getPosY()+offsetY), width, height, radius, radius);
+                graphics.drawImage(Resources.UI_LIFE_BAR.get_image(), (int) (getBody().getPosX()-(width/2)), (int) (getBody().getPosY()+offsetY), null);
                 graphics.setColor(Color.RED);
-                graphics.fillRoundRect((int) (getBody().getPosX()-(width/2)), (int) (getBody().getPosY()+offsetY), last_life_percent, height, radius, radius);
+                graphics.fillRoundRect((int) (getBody().getPosX()-(width/2)+3), (int) (getBody().getPosY()+offsetY+12), last_life_percent-3, height-4, radius, radius);
                 graphics.setRenderingHint
                 (
                     RenderingHints.KEY_ANTIALIASING,

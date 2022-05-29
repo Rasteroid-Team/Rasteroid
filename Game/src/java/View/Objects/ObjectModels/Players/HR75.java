@@ -3,15 +3,21 @@ package View.Objects.ObjectModels.Players;
 import View.Objects.Animation;
 import View.Objects.MachineState;
 import View.Objects.ObjectModels.ObjectModel;
+import View.Sprite;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class HR75 extends ObjectModel {
+public class HR75 extends PlayerModel {
 
   private final String res_path = "Game/src/Resources/players/hr75/";
 
   @Override
-  public void load_states() {
+  public void load_states()
+  {
+    load_aura_colors(res_path+"aura/hr75_aura_1.png", 150, 150);
+
     machine_states = new ArrayList<>();
 
     //IDLE
@@ -61,8 +67,6 @@ public class HR75 extends ObjectModel {
 
     machine_states.add(move_shoot);
 
-    //machine_states.add(idle);
-    //machine_states.add(idle);
-    //machine_states.add(idle);
   }
+
 }
