@@ -168,6 +168,27 @@ public class Player extends GameObject {
             setAngle(anguloFuerza);
         }
 
+        @Override
+        public void collision(GameObject object) {
+
+            if(object instanceof Player){
+               // System.out.println(getAngle());
+
+                Player player = (Player)object;
+                if(!player.equals(Player.this)){
+                    System.out.println("Choque nave");
+                    setAngle(getAngle()-180);
+                    //System.out.println(getAngle());
+
+                    setSpeedX(-getSpeedX());
+                    setSpeedY(-getSpeedY());
+                }
+            }else if(object instanceof Bullet){
+                System.out.println("Choque bala");
+                //System.out.println(getHealth());
+
+            }
+        }
     }
 
     public void shoot() {
