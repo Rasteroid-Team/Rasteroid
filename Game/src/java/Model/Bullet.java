@@ -1,7 +1,6 @@
 package Model;
 
 import Controller.GameControl;
-import Testing.InputAdapter;
 import View.Objects.ObjectModels.ObjectModel;
 
 import java.util.List;
@@ -60,8 +59,11 @@ public class Bullet extends GameObject {
             accelerando = true;
             setAngle(owner.getBody().getAngle());
             anguloFuerza = (int) angle;
-            potencia_aceleracion = 300;
+            potencia_aceleracion = 0;
             speedLimit = 300;
+            frictionCofficient = 0;
+
+            move(anguloFuerza, 1500);
         }
 
         @Override
