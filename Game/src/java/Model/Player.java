@@ -176,12 +176,42 @@ public class Player extends GameObject {
 
                 Player player = (Player)object;
                 if(!player.equals(Player.this)){
-                    System.out.println("Choque nave");
-                    setAngle(getAngle()-180);
-                    //System.out.println(getAngle());
 
-                    setSpeedX(-getSpeedX());
-                    setSpeedY(-getSpeedY());
+                    DynamicBody obj2 = (DynamicBody) object.getBody();
+                    float spFinalX;
+                    float spFinalY;
+                    //Get mass
+                    float m1 = Player.this.getBody().getWeight();
+                    float m2 = player.getBody().getWeight();
+                    //Get current X speed
+                    float v1X = this.getSpeedX();
+                    float v2X = obj2.getSpeedX();
+
+                    //Get current Y speed
+                    float v1Y = this.getSpeedY();
+                    float v2Y = obj2.getSpeedY();
+                    //Calcule X final speed
+
+                    //Formula para calcular velociadad final
+                    float ejeX = m1 * v1X + m2 * v2X;
+                    float ejeY = m1 * v1Y + m2 * v2Y;
+                    float velFinal = (float) Math.atan(ejeX/ejeY);
+
+                    //Calculo de velociadades en cada eje
+                    spFinalX = (m1 * v1X + m2 * v2X) / ((m1+m2) * velFinal);
+                    spFinalY= (m1 * v1Y + m2 * v2Y) / ((m1 + m2) * velFinal);
+                    System.out.println("vel final: " + velFinal);
+                    //Set velocidades
+
+
+                    //spFinalX *= -spFinalX *0.8;
+                    this.setSpeedX(spFinalX);
+                    this.setSpeedY(spFinalY);
+
+                    System.out.println("vel X: "+  spFinalX);
+                    System.out.println("vel Y: "+  spFinalY);
+                    System.out.println("\n");
+
                 }
             }else if(object instanceof Bullet){
                 System.out.println("Choque bala");

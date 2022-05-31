@@ -1,7 +1,5 @@
 package Model;
 
-import Testing.InputAdapter;
-
 import java.util.List;
 
 public class Body {
@@ -9,6 +7,7 @@ public class Body {
     private float posX, posY;
     private int angle;
     private float radius = 50;
+    private float weight = 500;
     
     //ESTO ES UN OBJETO ESTATICO
     //MAP SIZE --> 1000, 700
@@ -25,6 +24,14 @@ public class Body {
         this.posY = posY;
         this.angle = angle;
         this.radius = radius;
+    }
+
+    public float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
     }
 
     public float getPosX() {
