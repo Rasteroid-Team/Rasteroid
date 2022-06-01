@@ -5,6 +5,7 @@ import Testing.InputAdapter;
 import View.Objects.ObjectModels.ObjectModel;
 
 import java.util.List;
+import java.util.Random;
 
 public class Bullet extends GameObject {
     protected String ownerName;
@@ -57,11 +58,19 @@ public class Bullet extends GameObject {
                 setSpeedY(owner_body.getSpeedY());
 
             }
+            frictionCofficient = 0;
             accelerando = true;
             setAngle(owner.getBody().getAngle());
             anguloFuerza = (int) angle;
-            potencia_aceleracion = 300;
-            speedLimit = 300;
+            //potencia_aceleracion = 300;
+            speedLimit = 1500;
+            move(getAngle()+get_dispersion(), 1500);
+        }
+
+        private int get_dispersion()
+        {
+            Random rd = new Random();
+            return rd.nextInt(2)-rd.nextInt(4);
         }
 
         @Override

@@ -167,7 +167,6 @@ public class Player extends GameObject {
             }
             setAngle(anguloFuerza);
         }
-
     }
 
     public void shoot() {
@@ -177,5 +176,12 @@ public class Player extends GameObject {
             GameControl.add_object(bullet);
             last_fire = System.currentTimeMillis();
         }
+    }
+
+    @Override
+    public void die() {
+        super.die();
+        GameControl.add_object(new ParticleFx(Resources.PARTICLE_EXPLOSION(), (int) (getBody().getPosX()-50), (int) (getBody().getPosY()-50)));
+        GameControl.remove_object(this);
     }
 }

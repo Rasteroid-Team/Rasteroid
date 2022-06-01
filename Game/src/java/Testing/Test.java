@@ -34,6 +34,8 @@ public class Test {
             GameControl.add_object(new Map(Resources.MAP_SPACE()));
             GameControl.add_object(new Player(game_control, input, Resources.PLAYER_HR75(), PlayerColors.cyan));
             GameControl.add_object(new AvtomatV1(game_control, new InputAdapter(), Resources.PLAYER_HR75(), PlayerColors.red));
+            GameControl.add_object(new AvtomatV1(game_control, new InputAdapter(), Resources.PLAYER_HR75(), PlayerColors.red));
+
             MainFrame mainFrame = new MainFrame(graphics);
             mainFrame.setVisible(true);
             game_engine.init();

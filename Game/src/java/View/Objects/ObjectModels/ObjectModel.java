@@ -10,6 +10,8 @@ import java.util.List;
 
 public abstract class ObjectModel {
 
+  private String model_name;
+
   protected List<MachineState> machine_states = new ArrayList<>();
 
   public ObjectModel()
@@ -37,4 +39,15 @@ public abstract class ObjectModel {
     }
     return copy;
   }
+
+  public void set_name(String name)
+  {
+    model_name = name;
+  }
+
+  public String get_name()
+  {
+    return model_name;
+  }
+
 }

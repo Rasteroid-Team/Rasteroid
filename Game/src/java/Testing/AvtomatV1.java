@@ -10,6 +10,7 @@ import View.Objects.ObjectModels.Players.PlayerModel;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -70,15 +71,18 @@ public final class AvtomatV1 extends Player {
   {
     static int search_dx = 500;
     ContextReader cr;
-    static InputAdapter AI_ADAPTER;
-    static AvtomatV1 MACHINE;
-    static long LAST_CHANGE;
-    static int SLEEP_TIME = 1000;
+    InputAdapter AI_ADAPTER;
+    AvtomatV1 MACHINE;
+    long LAST_CHANGE;
+    int SLEEP_TIME = 1000;
+    int shoot_miss = 0;
+    AVT_CONDITION CONDITION;
     private AI_STATE_AVTOMAT(AvtomatV1 machine, InputAdapter CONTROL)
     {
-      cr = new ContextReader();
+      cr = new ContextReader(new PlayerTracker(), new AVT_RANDOMIZER());
       AI_ADAPTER = CONTROL;
       MACHINE = machine;
+      CONDITION = new AVT_CONDITION(cr, AI_ADAPTER);
     }
 
     private void update_av()
@@ -86,8 +90,8 @@ public final class AvtomatV1 extends Player {
       AI_STATE_AVTOMAT.AVT_STATE state = cr.read_context(GameControl.objects);
       switch (state)
       {
-        case ATTACK -> AVT_CONDITION.attack();
-        case SEARCH -> AVT_CONDITION.search();
+        case ATTACK -> CONDITION.attack();
+        case SEARCH -> CONDITION.search();
       }
     }
 
@@ -110,62 +114,100 @@ public final class AvtomatV1 extends Player {
 
     private class AVT_CONDITION
     {
-      private static void attack()
+      ContextReader CONTEXT;
+      InputAdapter ADAPTER;
+      AVT_RANDOMIZER RANDOMIZER;
+      public AVT_CONDITION(ContextReader context, InputAdapter adapter)
+      {
+        CONTEXT = context;
+        ADAPTER = adapter;
+        RANDOMIZER = new AVT_RANDOMIZER();
+      }
+      private void attack()
       {
         //get attack angle
-        float pl_posx = ContextReader.TRACKED_PLAYER.getBody().getPosX();
-        float pl_posy = ContextReader.TRACKED_PLAYER.getBody().getPosY();
+        float pl_posx = CONTEXT.TRACKED_PLAYER.getBody().getPosX();
+        float pl_posy = CONTEXT.TRACKED_PLAYER.getBody().getPosY();
         double obj_angle = 90 + Math.toDegrees(Math.atan2(pl_posy - MACHINE.getBody().getPosY(), pl_posx - MACHINE.getBody().getPosX()));
-        MACHINE.getBody().setAngle((int) obj_angle);
-        AI_STATE_AVTOMAT.AI_ADAPTER.get_active_keys()[0] = false;
-        AI_STATE_AVTOMAT.AI_ADAPTER.get_active_keys()[3] = true;
-      }
-      private static void search()
-      {
-        DynamicBody MACHINE_BODY = (DynamicBody) MACHINE.getBody();
-        AI_STATE_AVTOMAT.AI_ADAPTER.get_active_keys()[3] = false;
+        MACHINE.getBody().setAngle((int) obj_angle+MACHINE.av.shoot_miss);
+        ADAPTER.get_active_keys()[0] = false;
+        ADAPTER.get_active_keys()[3] = true;
         if (System.currentTimeMillis() - LAST_CHANGE > SLEEP_TIME)
         {
-          MACHINE_BODY.setAngle(AVT_RANDOMIZER.direction(0));
+          MACHINE.av.shoot_miss = RANDOMIZER.shoot_miss();
+          LAST_CHANGE = System.currentTimeMillis();
+        }
+      }
+      private void search()
+      {
+        DynamicBody MACHINE_BODY = (DynamicBody) MACHINE.getBody();
+        ADAPTER.get_active_keys()[3] = false;
+        if (System.currentTimeMillis() - LAST_CHANGE > SLEEP_TIME)
+        {
+          MACHINE_BODY.setAngle(RANDOMIZER.direction(0));
           //check_top
           if (MACHINE.getBody().getPosY() < 200) {
-            MACHINE_BODY.setAngle(AVT_RANDOMIZER.direction(180));
+            MACHINE_BODY.setAngle(RANDOMIZER.direction(180));
             MACHINE_BODY.setAngle(180);
           }
           // check_left
           if (MACHINE.getBody().getPosX() < 200) {
-            MACHINE_BODY.setAngle(AVT_RANDOMIZER.direction(90));
+            MACHINE_BODY.setAngle(RANDOMIZER.direction(90));
             MACHINE_BODY.setAngle(90);
           }
           // check_right
           if (MACHINE.getBody().getPosX() > Toolkit.getDefaultToolkit().getScreenSize().width - 200) {
-            MACHINE_BODY.setAngle(AVT_RANDOMIZER.direction(270));
+            MACHINE_BODY.setAngle(RANDOMIZER.direction(270));
             MACHINE_BODY.setAngle(270);
           }
           // check_bottom
           if (MACHINE.getBody().getPosY() > Toolkit.getDefaultToolkit().getScreenSize().height - 200) {
-            MACHINE_BODY.setAngle(AVT_RANDOMIZER.direction(45));
+            MACHINE_BODY.setAngle(RANDOMIZER.direction(45));
             MACHINE_BODY.setAngle(0);
           }
 
           LAST_CHANGE = System.currentTimeMillis();
         }
-        AI_STATE_AVTOMAT.AI_ADAPTER.get_active_keys()[0] = true;
+        ADAPTER.get_active_keys()[0] = true;
       }
     }
 
-    private static class AVT_RANDOMIZER
+    private class AVT_RANDOMIZER
     {
-      static Random rd = new Random();
-      static int direction(int excluded)
+      Random rd = new Random();
+      int direction(int excluded)
       {
         int new_dir = excluded;
         //while (new_dir == excluded || new_dir < excluded+45 || new_dir > excluded-45)
         //{
           new_dir = rd.nextInt(360-excluded)+excluded;
           //System.out.println(new_dir);
+
+
         //}
         return new_dir;
+      }
+      int shoot_miss()
+      {
+        return rd.nextInt(10)-rd.nextInt(20);
+      }
+      boolean flee_oportunity(List<GameObject> RIVAL_AV)
+      {
+        int RIVAL_AV_HEALTH = 0;
+        int RIVALS = 0;
+        for (GameObject RIVAL:RIVAL_AV) {
+          if (RIVAL instanceof Player && RIVAL != AvtomatV1.this)
+          {
+            RIVAL_AV_HEALTH+=RIVAL.getHealth();
+            RIVALS++;
+          }
+        }
+        RIVAL_AV_HEALTH /= RIVALS;
+        if (RIVAL_AV_HEALTH > getHealth())
+        {
+          return rd.nextInt(100) - 50 > 0;
+        }
+        return false;
       }
     }
 
@@ -174,9 +216,9 @@ public final class AvtomatV1 extends Player {
       SEARCH, ATTACK,
     }
 
-    private static class PlayerTracker
+    private class PlayerTracker
     {
-      private static boolean track(Player pl, AvtomatV1 this_av)
+      private boolean track(Player pl, AvtomatV1 this_av)
       {
         //get attack angle
         float pl_posx = pl.getBody().getPosX();
@@ -194,18 +236,59 @@ public final class AvtomatV1 extends Player {
 
     private class ContextReader
     {
-      private static Player TRACKED_PLAYER = null;
+      private PlayerTracker PLAYER_TRACKER;
+      private boolean POSSIBLE_FLEE;
+      private AVT_RANDOMIZER RANDOMIZER;
+      private long LAST_CHANGE = 0;
+      private ContextReader(PlayerTracker tracker, AVT_RANDOMIZER randomizer)
+      {
+        PLAYER_TRACKER = tracker;
+        RANDOMIZER = randomizer;
+      }
+      private Player TRACKED_PLAYER = null;
       public AVT_STATE read_context(List<GameObject> objects)
       {
-        for (GameObject obj:objects) {
-          if (obj instanceof Player)
+        if (System.currentTimeMillis() - LAST_CHANGE > 15000)
+        {
+          av.cr.POSSIBLE_FLEE = false;
+        }
+        else
+        {
+          LAST_CHANGE = System.currentTimeMillis();
+        }
+        if (POSSIBLE_FLEE)
+        {
+          if(RANDOMIZER.flee_oportunity(objects))
           {
-            if (obj != MACHINE)
-            {
-              if (PlayerTracker.track((Player) obj, AvtomatV1.this))
+            for (GameObject obj:objects) {
+              if (obj instanceof Player)
               {
-                TRACKED_PLAYER = (Player) obj;
-                return AVT_STATE.ATTACK;
+                if (obj != MACHINE)
+                {
+                  TRACKED_PLAYER = (Player) obj;
+                  return AVT_STATE.ATTACK;
+                }
+              }
+            }
+          }
+          else
+          {
+            TRACKED_PLAYER = null;
+            return AVT_STATE.SEARCH;
+          }
+        }
+        else
+        {
+          for (GameObject obj:objects) {
+            if (obj instanceof Player)
+            {
+              if (obj != MACHINE)
+              {
+                if (PLAYER_TRACKER.track((Player) obj, AvtomatV1.this))
+                {
+                  TRACKED_PLAYER = (Player) obj;
+                  return AVT_STATE.ATTACK;
+                }
               }
             }
           }
@@ -216,4 +299,12 @@ public final class AvtomatV1 extends Player {
     }
   }
 
+  @Override
+  public void take_damage(float damage) {
+    super.take_damage(damage);
+    if (health < 50)
+    {
+      av.cr.POSSIBLE_FLEE = true;
+    }
+  }
 }

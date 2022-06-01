@@ -113,8 +113,13 @@ public class GameObject {
             if (health < 0) {health = 0;}
             show_life_bar();
         }
+        if (health <= 0)
+        {
+            die();
+        }
     }
 
+    public void die() {}
 
     //ui methods
     private double life_bar_screen_time = 1.5;

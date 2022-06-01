@@ -45,13 +45,15 @@ public class InputAdapter extends KeyAdapter{
     @Override
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyChar()) {
+            case 'W':
             case 'w': // La tecla de arriba
                 active_keys[0] = false;
-                System.out.println("we");
                 break;
+            case 'A':
             case 'a':   //  IZQUIERDA -->   
                 active_keys[1] = false;
                 break;
+            case 'D':
             case 'd'://  DERECHA -->     
             active_keys[2] = false;
              break; 
