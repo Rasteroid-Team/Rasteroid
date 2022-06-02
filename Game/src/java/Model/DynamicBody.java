@@ -1,5 +1,8 @@
 package Model;
 
+import Controller.GameControl;
+import Controller.GameEngine;
+
 import java.util.List;
 
 public class DynamicBody extends Body{
@@ -97,48 +100,64 @@ public class DynamicBody extends Body{
         
     }
     
-    
-    public void checkBorderCollisions(Map map_object){
+
+    public int checkBorderCollisions(Map map_object){
         //CHECK COLISIONS WITH WALLS
+        int transfer = -1;
         float posX = super.getPosX();
         float posY = super.getPosY();
         
         //IF COLISION RIGHT 
         if( ( posX + super.getRadius() )  >= map_object.get_right_border().getX() ) {
             setPosX((float) (map_object.get_right_border().getX()-1-getRadius()));
-            super.setPosX( super.getPosX() - speedX );
-            speedX = -speedX;
-            collision(map_object);
+            if (GameEngine.getConnections()[1] != null){
+                transfer = 1;
+            } else {
+                super.setPosX(super.getPosX() - speedX);
+                speedX = -speedX;
+                collision(map_object);
+            }
         //IF COLISION LEFT
         } else if ( posX - super.getRadius() <= 0 ){
-            setPosX(1+getRadius());
-            super.setPosX( super.getPosX() - speedX );
-            speedX = -speedX;
-            collision(map_object);
-        
+            if (GameEngine.getConnections()[3] != null){
+                transfer = 3;
+            } else {
+                setPosX(1 + getRadius());
+                super.setPosX(super.getPosX() - speedX);
+                speedX = -speedX;
+                collision(map_object);
+            }
+
         //IF NOT COLISION
         } else {
             super.setPosX( super.getPosX() + speedX );
         }
-        
-        
+
         //IF COLISION UP
         if( posY - super.getRadius() <= 0 ) {
-            setPosY(1+getRadius());
-            super.setPosY( super.getPosY() - speedY );
-            speedY = -speedY;
-            collision(map_object);
+            if (GameEngine.getConnections()[0] != null){
+                transfer = 0;
+            } else {
+                setPosY(1 + getRadius());
+                super.setPosY(super.getPosY() - speedY);
+                speedY = -speedY;
+                collision(map_object);
+            }
             //IF COLISION BOTTOM
         } else if ( posY + super.getRadius()  >= map_object.get_bottom_border().getY() ){
-            setPosY((float) (map_object.get_bottom_border().getY()-1-getRadius()));
-            super.setPosY( super.getPosY() - speedY );
-            speedY = -speedY;
-            collision(map_object);
-
+            if (GameEngine.getConnections()[2] != null){
+                transfer = 2;
+            } else {
+                setPosY((float) (map_object.get_bottom_border().getY() - 1 - getRadius()));
+                super.setPosY(super.getPosY() - speedY);
+                speedY = -speedY;
+                collision(map_object);
+            }
             //IF NOT COLISION
         } else {
             super.setPosY( super.getPosY() + speedY );
         }
+        return transfer;
     }
 
     private void checkObjectCollision(GameObject object)
@@ -177,13 +196,14 @@ public class DynamicBody extends Body{
     }
 
     @Override
-    public void update(List<GameObject> objects) {
+    public int update(List<GameObject> objects) {
+        int transfer = -1;
         super.update(objects);
         for (GameObject object: objects)
         {
             if (object instanceof Map)
             {
-                this.checkBorderCollisions((Map) object);
+                transfer = this.checkBorderCollisions((Map) object);
             }
             else
             {
@@ -198,6 +218,7 @@ public class DynamicBody extends Body{
             potencia = potencia_aceleracion;
             move(anguloFuerza, potencia);
         }
+        return transfer;
     }
 
     public boolean is_accelerating()

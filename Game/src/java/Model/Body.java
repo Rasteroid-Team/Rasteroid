@@ -2,9 +2,11 @@ package Model;
 
 import Testing.InputAdapter;
 
+
+import java.io.Serializable;
 import java.util.List;
 
-public class Body {
+public class Body implements Serializable {
 
     private float posX, posY;
     private int angle;
@@ -59,8 +61,9 @@ public class Body {
         this.radius = radius;
     }
 
-    public void update(List<GameObject> objects) {
 
+    public int update(List<GameObject> objects) {
+        return -1;
     }
 
 }

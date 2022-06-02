@@ -8,7 +8,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Sprite {
+import java.io.Serializable;
+
+public class Sprite implements Serializable {
 
   private String path;
   private BufferedImage image;

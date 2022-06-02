@@ -5,8 +5,12 @@ import Model.Map;
 import Model.Player;
 import Testing.AvtomatV1;
 import Testing.InputAdapter;
+import View.GraphicEngine;
+import communications.CommunicationController;
 
 import java.awt.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -24,9 +28,6 @@ public class GameControl {
   private GameEngine game_engine;
   DecimalFormat two_decimals = new DecimalFormat("#.00");
 
-
-
-
   public void update()
   {
     //TODO: update here your game objects
@@ -35,7 +36,6 @@ public class GameControl {
       for (GameObject object : objects)
       {
         object.update(objects);
-
       }
       check_modification_list();
     }
@@ -56,7 +56,7 @@ public class GameControl {
         if (object instanceof Map)
         {
           graphics.setColor(Color.RED);
-          ((Map) object).draw_borders(graphics);
+          ((Map) object).draw_borders(graphics, GameEngine.getConnections());
         }
       }
 
@@ -65,6 +65,8 @@ public class GameControl {
     if (debug_mode)
     {
       draw_engine_values(graphics);
+      draw_ip_address(graphics);
+      this.drawButtons(graphics);
       //draw_object_position(graphics, player);
       //draw_object_hit_box(graphics, player);
       //draw_player_nickname(graphics, player);
@@ -72,12 +74,51 @@ public class GameControl {
     }
   }
 
+  //Nomes per a test, a nes final sa conexio entre pantalles se fera automaticament.
+  private void drawButtons(Graphics2D g){
+
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    int diameter = 25;
+
+    if (GameEngine.getConnections()[0] != null){
+      g.setColor(Color.green);
+    } else {
+      g.setColor(Color.red);
+    }
+    g.fillOval((int)(screenSize.getWidth()/2-diameter/2), 15, diameter, diameter);
+
+    if (GameEngine.getConnections()[3] != null){
+      g.setColor(Color.green);
+    } else {
+      g.setColor(Color.red);
+    }
+    g.fillOval(15, (int)(screenSize.getHeight()/2-diameter/2), diameter, diameter);
+
+    if (GameEngine.getConnections()[1] != null){
+      g.setColor(Color.green);
+    } else {
+      g.setColor(Color.red);
+    }
+    g.fillOval((int)((screenSize.getWidth()-diameter)-15), (int)(screenSize.getHeight()/2-diameter/2), diameter, diameter);
+
+    if (GameEngine.getConnections()[2] != null){
+      g.setColor(Color.green);
+    } else {
+      g.setColor(Color.red);
+    }
+    g.fillOval((int)(screenSize.getWidth()/2-diameter/2), (int)((screenSize.getHeight()-diameter)-15), diameter, diameter);
+  }
+
   private void check_modification_list()
   {
-    objects.addAll(adding_list);
-    adding_list.clear();
-    objects.removeAll(removing_list);
-    removing_list.clear();
+    synchronized (adding_list) {
+      objects.addAll(adding_list);
+      adding_list.clear();
+    }
+    synchronized (removing_list) {
+      objects.removeAll(removing_list);
+      removing_list.clear();
+    }
   }
 
   private void draw_engine_values(Graphics2D graphics)
@@ -98,6 +139,25 @@ public class GameControl {
       graphics.setColor(get_color_by_rate(fps));
       graphics.drawString(two_decimals.format(game_engine.get_average_fps()),65,70);
     }
+  }
+
+  private void draw_ip_address(Graphics2D graphics)
+  {
+    String ip;
+    try {
+      ip = InetAddress.getLocalHost().getHostAddress();
+    }
+    catch (UnknownHostException not_connected)
+    {
+      not_connected.printStackTrace();
+      ip = "Not connected ...";
+    }
+    graphics.setColor(Color.white);
+    graphics.drawLine(20, 90, 160, 90);
+    graphics.setColor(Color.MAGENTA);
+    graphics.drawString("► IPv4: ", 20,110);
+    graphics.setColor(Color.gray);
+    graphics.drawString(ip, 65, 110);
   }
 
   //private void draw_object_position(Graphics2D graphics, GameObject object)
@@ -201,13 +261,16 @@ public class GameControl {
 
   public static void add_object(GameObject object)
   {
-    adding_list.add(object);
+    synchronized (adding_list) {
+      adding_list.add(object);
+    }
   }
 
   public static void remove_object(GameObject object)
   {
-    removing_list.add(object);
+    synchronized (adding_list) {
+      removing_list.add(object);
+    }
   }
-
 }
 

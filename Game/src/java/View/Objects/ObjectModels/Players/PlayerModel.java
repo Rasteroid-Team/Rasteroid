@@ -6,9 +6,10 @@ import View.Objects.ObjectModels.ObjectModel;
 import View.Sprite;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.HashMap;
 
-public abstract class PlayerModel extends ObjectModel {
+public abstract class PlayerModel extends ObjectModel implements Serializable {
 
   private Sprite aura;
 

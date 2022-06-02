@@ -31,11 +31,14 @@ public class Map extends GameObject {
   }
 
 
-  public void draw_borders(Graphics2D graphics)
+
+  public void draw_borders(Graphics2D graphics, String[] connections)
   {
     for (Rectangle2D rectangle: borders)
     {
-      graphics.fillRect((int) rectangle.getX(), (int) rectangle.getY(), (int) rectangle.getWidth(), (int) rectangle.getHeight());
+      if (connections[borders.indexOf(rectangle)] == null) {
+        graphics.fillRect((int) rectangle.getX(), (int) rectangle.getY(), (int) rectangle.getWidth(), (int) rectangle.getHeight());
+      }
     }
   }
 
@@ -43,7 +46,7 @@ public class Map extends GameObject {
     return borders.get(0);
   }
 
-  public Rectangle2D get_left_border(){
+  public Rectangle2D get_right_border(){
     return borders.get(1);
   }
 
@@ -51,7 +54,7 @@ public class Map extends GameObject {
     return borders.get(2);
   }
 
-  public Rectangle2D get_right_border(){
+  public Rectangle2D get_left_border(){
     return borders.get(3);
   }
 

@@ -9,15 +9,19 @@ import View.Resources;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class GameObject {
+public class GameObject implements Serializable {
     protected Body body;
     protected boolean visible;
     protected float health;
     protected boolean invencible;
     protected int currentState = 0;
     protected List<MachineState> stateList;
+    protected String transferingTo;
+    protected int transferingSide;
 
     public GameObject(Body body, boolean visible, float health, boolean invencible, ObjectModel model) {
         this.body = body;
@@ -69,6 +73,19 @@ public class GameObject {
 
     public void setInvencible(boolean invencible) {
         this.invencible = invencible;
+    }
+
+
+    public void setStateList(List<MachineState> stateList) {
+        this.stateList = stateList;
+    }
+
+    public String getTransferingTo() {
+        return transferingTo;
+    }
+
+    public int getTransferingSide() {
+        return transferingSide;
     }
 
     public void update(List<GameObject> objects) {

@@ -23,8 +23,11 @@ public class Test {
         try {
             loadingDialog.get_thread().join();
             //Start game
+            //Canvas donde se pintara el juego
             GraphicEngine graphics = new GraphicEngine();
+            //Clase que actualiza los objectos del juego
             GameControl game_control = new GameControl();
+            //Clase donde esta el loop del juego i se controlan los fps
             GameEngine game_engine = new GameEngine(game_control, graphics);
             game_engine.set_max_ups(60);
             InputAdapter input = new InputAdapter();
@@ -32,10 +35,8 @@ public class Test {
             game_control.set_engine(game_engine);
             game_control.set_debug_mode(true);
             GameControl.add_object(new Map(Resources.MAP_SPACE()));
-            GameControl.add_object(new Player(game_control, input, Resources.PLAYER_HR75(), PlayerColors.cyan));
-            GameControl.add_object(new AvtomatV1(game_control, new InputAdapter(), Resources.PLAYER_HR75(), PlayerColors.red));
-            GameControl.add_object(new AvtomatV1(game_control, new InputAdapter(), Resources.PLAYER_HR75(), PlayerColors.red));
-
+            //GameControl.add_object(new Player(Resources.PLAYER_HR75(), PlayerColors.cyan, ""));
+            GameControl.add_object(new AvtomatV1(Resources.PLAYER_HR75(), PlayerColors.red));
             MainFrame mainFrame = new MainFrame(graphics);
             mainFrame.setVisible(true);
             game_engine.init();

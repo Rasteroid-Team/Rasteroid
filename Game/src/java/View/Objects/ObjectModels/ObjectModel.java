@@ -10,7 +10,6 @@ import java.util.List;
 
 public abstract class ObjectModel {
 
-  private String model_name;
 
   protected List<MachineState> machine_states = new ArrayList<>();
 
@@ -38,16 +37,6 @@ public abstract class ObjectModel {
       copy.machine_states.add(new MachineState(state.get_name(), new Animation(state.get_animation().get_sprite_list(), state.get_animation().get_loop_delay(),state.get_animation().is_loop())));
     }
     return copy;
-  }
-
-  public void set_name(String name)
-  {
-    model_name = name;
-  }
-
-  public String get_name()
-  {
-    return model_name;
   }
 
 }
