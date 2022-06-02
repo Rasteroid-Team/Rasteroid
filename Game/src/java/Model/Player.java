@@ -1,7 +1,9 @@
 package Model;
 
+import Controller.ConnectionController;
 import Controller.GameControl;
 import Controller.GameEngine;
+import Controller.ScreenConnectionController;
 import Testing.InputAdapter;
 import View.Objects.ObjectModels.ObjectModel;
 import View.Objects.ObjectModels.Players.HR75;
@@ -216,27 +218,27 @@ public class Player extends GameObject implements Serializable {
         if (transfer != -1){
             switch (transfer){
                 case 0:
-                    this.transferingTo = GameEngine.getConnections()[0];
+                    this.transferingTo = ScreenConnectionController.getConnections()[0];
                     this.transferingSide = 0;
-                    GameEngine.addTransferingObject(this);
+                    ConnectionController.addTransferingObject(this);
                     break;
 
                 case 1:
-                    this.transferingTo = GameEngine.getConnections()[1];
+                    this.transferingTo = ScreenConnectionController.getConnections()[1];
                     this.transferingSide = 1;
-                    GameEngine.addTransferingObject(this);
+                    ConnectionController.addTransferingObject(this);
                     break;
 
                 case 2:
-                    this.transferingTo = GameEngine.getConnections()[2];
+                    this.transferingTo = ScreenConnectionController.getConnections()[2];
                     this.transferingSide = 2;
-                    GameEngine.addTransferingObject(this);
+                    ConnectionController.addTransferingObject(this);
                     break;
 
                 case 3:
-                    this.transferingTo = GameEngine.getConnections()[3];
+                    this.transferingTo = ScreenConnectionController.getConnections()[3];
                     this.transferingSide = 3;
-                    GameEngine.addTransferingObject(this);
+                    ConnectionController.addTransferingObject(this);
                     break;
             }
         }

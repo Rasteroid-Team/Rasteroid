@@ -2,6 +2,7 @@ package Model;
 
 import Controller.GameControl;
 import Controller.GameEngine;
+import Controller.ScreenConnectionController;
 
 import java.util.List;
 
@@ -110,7 +111,7 @@ public class DynamicBody extends Body{
         //IF COLISION RIGHT 
         if( ( posX + super.getRadius() )  >= map_object.get_right_border().getX() ) {
             setPosX((float) (map_object.get_right_border().getX()-1-getRadius()));
-            if (GameEngine.getConnections()[1] != null){
+            if (ScreenConnectionController.getConnections()[1] != null){
                 transfer = 1;
             } else {
                 super.setPosX(super.getPosX() - speedX);
@@ -119,7 +120,7 @@ public class DynamicBody extends Body{
             }
         //IF COLISION LEFT
         } else if ( posX - super.getRadius() <= 0 ){
-            if (GameEngine.getConnections()[3] != null){
+            if (ScreenConnectionController.getConnections()[3] != null){
                 transfer = 3;
             } else {
                 setPosX(1 + getRadius());
@@ -135,7 +136,7 @@ public class DynamicBody extends Body{
 
         //IF COLISION UP
         if( posY - super.getRadius() <= 0 ) {
-            if (GameEngine.getConnections()[0] != null){
+            if (ScreenConnectionController.getConnections()[0] != null){
                 transfer = 0;
             } else {
                 setPosY(1 + getRadius());
@@ -145,7 +146,7 @@ public class DynamicBody extends Body{
             }
             //IF COLISION BOTTOM
         } else if ( posY + super.getRadius()  >= map_object.get_bottom_border().getY() ){
-            if (GameEngine.getConnections()[2] != null){
+            if (ScreenConnectionController.getConnections()[2] != null){
                 transfer = 2;
             } else {
                 setPosY((float) (map_object.get_bottom_border().getY() - 1 - getRadius()));

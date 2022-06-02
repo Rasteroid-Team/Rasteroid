@@ -56,7 +56,7 @@ public class GameControl {
         if (object instanceof Map)
         {
           graphics.setColor(Color.RED);
-          ((Map) object).draw_borders(graphics, GameEngine.getConnections());
+          ((Map) object).draw_borders(graphics, ScreenConnectionController.getConnections());
         }
       }
 
@@ -80,28 +80,28 @@ public class GameControl {
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     int diameter = 25;
 
-    if (GameEngine.getConnections()[0] != null){
+    if (ScreenConnectionController.getConnections()[0] != null){
       g.setColor(Color.green);
     } else {
       g.setColor(Color.red);
     }
     g.fillOval((int)(screenSize.getWidth()/2-diameter/2), 15, diameter, diameter);
 
-    if (GameEngine.getConnections()[3] != null){
+    if (ScreenConnectionController.getConnections()[3] != null){
       g.setColor(Color.green);
     } else {
       g.setColor(Color.red);
     }
     g.fillOval(15, (int)(screenSize.getHeight()/2-diameter/2), diameter, diameter);
 
-    if (GameEngine.getConnections()[1] != null){
+    if (ScreenConnectionController.getConnections()[1] != null){
       g.setColor(Color.green);
     } else {
       g.setColor(Color.red);
     }
     g.fillOval((int)((screenSize.getWidth()-diameter)-15), (int)(screenSize.getHeight()/2-diameter/2), diameter, diameter);
 
-    if (GameEngine.getConnections()[2] != null){
+    if (ScreenConnectionController.getConnections()[2] != null){
       g.setColor(Color.green);
     } else {
       g.setColor(Color.red);

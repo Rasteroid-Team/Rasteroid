@@ -1,9 +1,8 @@
 package Testing;
 
+import Controller.*;
 import Model.DynamicBody;
 import Model.GameObject;
-import Controller.GameControl;
-import Controller.GameEngine;
 import Model.Map;
 import Model.Player;
 import View.*;
@@ -13,6 +12,7 @@ import View.Interface.MainFrame;
 import View.Objects.ObjectModels.Players.PlayerColors;
 import View.Objects.ObjectModels.Players.PlayerModel;
 import View.Resources;
+import communications.CommunicationController;
 
 public class Test {
 
@@ -28,7 +28,11 @@ public class Test {
             //Clase que actualiza los objectos del juego
             GameControl game_control = new GameControl();
             //Clase donde esta el loop del juego i se controlan los fps
-            GameEngine game_engine = new GameEngine(game_control, graphics);
+            CommunicationController comuContr = new CommunicationController();
+            ScreenConnectionController scrConnContr = new ScreenConnectionController(comuContr);
+            PlayerConnectionController plyrConnContr = new PlayerConnectionController(comuContr);
+            ConnectionController connController = new ConnectionController(comuContr, scrConnContr, plyrConnContr);
+            GameEngine game_engine = new GameEngine(game_control, graphics, connController);
             game_engine.set_max_ups(60);
             InputAdapter input = new InputAdapter();
             graphics.addKeyListener(input);
