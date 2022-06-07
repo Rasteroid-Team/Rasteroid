@@ -63,6 +63,19 @@ public class PlayerConnectionController {
     }
 
     protected void acceptNewPlayer(String mac){
-        GameControl.add_object(new Player(Resources.PLAYER_HR75(), PlayerColors.cyan, mac));
+        int i = 0;
+        boolean found = false;
+
+        while (i < GameControl.objects.size() && !found) {
+            if (GameControl.objects.get(i) instanceof Player && ((Player)GameControl.objects.get(i)).getAssociatedMac() != null
+                    && ((Player) GameControl.objects.get(i)).getAssociatedMac().equals(mac)) {
+                found = true;
+            }
+            i++;
+        }
+
+        if (!found) {
+            GameControl.add_object(new Player(Resources.PLAYER_HR75(), PlayerColors.cyan, mac));
+        }
     }
 }
