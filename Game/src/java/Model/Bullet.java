@@ -78,7 +78,7 @@ public class Bullet extends GameObject {
             }
             if (object instanceof Player && object != player_owner)
             {
-                object.take_damage(damage);
+                object.take_damage(damage, player_owner);
                 GameControl.remove_object(Bullet.this);
             }
         }
