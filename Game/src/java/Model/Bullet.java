@@ -4,9 +4,10 @@ import Controller.GameControl;
 import Testing.InputAdapter;
 import View.Objects.ObjectModels.ObjectModel;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Bullet extends GameObject {
+public class Bullet extends GameObject implements Serializable {
     protected String ownerName;
     protected float damage;
     protected float angle;
@@ -36,11 +37,11 @@ public class Bullet extends GameObject {
 
     @Override
     public void update(List<GameObject> objects) {
+        transfer = body.update(objects);
         super.update(objects);
-        body.update(objects);
     }
 
-    public class BulletBody extends DynamicBody
+    public class BulletBody extends DynamicBody implements Serializable
     {
         private Player player_owner;
 
@@ -62,6 +63,10 @@ public class Bullet extends GameObject {
             anguloFuerza = (int) angle;
             potencia_aceleracion = 300;
             speedLimit = 300;
+        }
+
+        public void setPlayer_owner(Player player_owner) {
+            this.player_owner = player_owner;
         }
 
         @Override

@@ -1,6 +1,9 @@
 package Controller;
 
+import Model.Bullet;
+import Model.Player;
 import View.GraphicEngine;
+import View.Resources;
 import communications.CommunicationController;
 import communications.ProtocolDataPacket;
 
@@ -55,5 +58,21 @@ public class ScreenConnectionController {
             }
             i++;
         }
+    }
+
+    protected void receivePlayer(ProtocolDataPacket packet){
+        Player player = (Player) packet.getObject();
+        player.setModel(Resources.PLAYER_HR75());
+        player.getModel().set_aura_color(player.getColor());
+        player.setStateList(player.getModel().get_machine_states());
+        player.getBody().repositionAfterTransfer(player.getTransferingSide());
+        GameControl.add_object(player);
+    }
+
+    protected void receiveShoot(ProtocolDataPacket packet){
+        Bullet bullet = (Bullet) packet.getObject();
+        bullet.setStateList(Resources.BULLET_YELLOW().get_machine_states());
+        bullet.getBody().repositionAfterTransfer(bullet.getTransferingSide());
+        GameControl.add_object(bullet);
     }
 }
