@@ -75,7 +75,7 @@ public class PlayerConnectionController {
         }
 
         if (!found) {
-            GameControl.add_object(new Player(Resources.PLAYER_HR75(), PlayerColors.cyan, mac));
+            GameControl.add_object(new Player(Resources.PLAYER_PHOENIX(), PlayerColors.cyan, mac));
         }
     }
 }

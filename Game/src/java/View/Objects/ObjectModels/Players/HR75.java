@@ -11,6 +11,24 @@ import java.util.HashMap;
 
 public class HR75 extends PlayerModel {
 
+  /**
+   * META_SET
+   */
+  public HR75()
+  {
+    meta = new Meta();
+    meta.health_points = 100;
+    meta.velocity = 5;
+    meta.damage_per_bullet = 15;
+    meta.shoot_interval = 0.4;
+    meta.bullet_offset_x_y_list = new ArrayList<>();
+    meta.bullet_offset_x_y_list.add(new int[]{0,-40});
+  }
+
+  /**
+   * RESOURCE_SET
+   */
+
   private final String res_path = "Game/src/Resources/players/hr75/";
 
   @Override
