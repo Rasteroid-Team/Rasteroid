@@ -69,6 +69,10 @@ public class ConnectionController implements ConnectionInterface {
             case 151 -> {
                 playerConnController.recievePlayerShoot(packet);
             }
+            case 156 -> {
+                System.out.println("Modelo recibido");
+                playerConnController.setPlayerModel(packet.getObject().toString(), packet.getSourceID());
+            }
         }
     }
 
