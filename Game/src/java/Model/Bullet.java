@@ -29,7 +29,7 @@ public class Bullet extends GameObject {
     public Bullet(Player owner, ObjectModel model, int off_x, int off_y, int bullet_damage)
     {
         super(null, true, 1, true, model);
-        damage = bullet_damage;
+        damage = 0;
         offset_x = off_x;
         offset_y = off_y;
         ownerName = owner.getName();
