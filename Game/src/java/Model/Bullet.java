@@ -9,6 +9,8 @@ public class Bullet extends GameObject {
     protected String ownerName;
     protected float damage;
     protected float angle;
+    protected int offset_x;
+    protected int offset_y;
 
     /*--------------------
         Constructor
@@ -23,10 +25,13 @@ public class Bullet extends GameObject {
 
     // ★ Pruebas Josel ★
 
-    public Bullet(Player owner, ObjectModel model)
+    //TODO: Ajustar las nuevas implementaciones junto a las comunicaciones
+    public Bullet(Player owner, ObjectModel model, int off_x, int off_y, int bullet_damage)
     {
         super(null, true, 1, true, model);
-        damage = 5;
+        damage = bullet_damage;
+        offset_x = off_x;
+        offset_y = off_y;
         ownerName = owner.getName();
         angle = owner.getBody().getAngle();
         BulletBody body = new BulletBody(owner);
@@ -46,9 +51,11 @@ public class Bullet extends GameObject {
         protected BulletBody(Player owner)
         {
             player_owner = owner;
+
             setRadius(20);
-            setPosX((float) (owner.getBody().getPosX() + 50*Math.cos(Math.toRadians(angle-90))));
-            setPosY((float) (owner.getBody().getPosY() + 50*Math.sin(Math.toRadians(angle-90))));
+            int[] offset = lengthdir_xy(offset_x, offset_y, angle);
+            setPosX(owner.getBody().getPosX() + offset[0]);
+            setPosY(owner.getBody().getPosY() + offset[1]);
             {
                 // conserve relative speed moment at shoot
                 DynamicBody owner_body = (DynamicBody) owner.getBody();
@@ -66,9 +73,17 @@ public class Bullet extends GameObject {
             move(anguloFuerza, 1500);
         }
 
+        public int[] lengthdir_xy(int offset_x, int offset_y, double angle)
+        {
+            int lenX = (int) ((offset_x) * Math.cos(Math.toRadians(angle)) - (offset_y) * Math.sin(Math.toRadians(angle)));
+            int lenY = (int) ((offset_x) * Math.sin(Math.toRadians(angle)) + (offset_y) * Math.cos(Math.toRadians(angle)));
+
+            return new int[]{lenX, lenY};
+        }
+
         @Override
-        public void update(List<GameObject> objects) {
-            super.update(objects);
+        public int update(List<GameObject> objects) {
+            return super.update(objects);
         }
 
         @Override
@@ -89,6 +104,7 @@ public class Bullet extends GameObject {
     /*--------------------
         Getters/Setters
      --------------------*/
+
 
     public String getOwnerName() {
         return ownerName;

@@ -1,6 +1,9 @@
 package Model;
 
+import Controller.ConnectionController;
 import Controller.GameControl;
+import Controller.GameEngine;
+import Controller.ScreenConnectionController;
 import Testing.InputAdapter;
 import View.Objects.ObjectModels.ObjectModel;
 import View.Objects.ObjectModels.Players.HR75;
@@ -11,9 +14,10 @@ import View.Sprite;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.List;
 
-public class Player extends GameObject {
+public class Player extends GameObject implements Serializable {
     protected String name;
     protected float bulletDamage;
     protected float bulletSpeed;
@@ -22,30 +26,29 @@ public class Player extends GameObject {
 
     protected double fire_interval_seconds;
     protected long last_fire;
-    protected InputAdapter input;
-    GameControl control;
     PlayerModel model;
     protected Color color;
+    private String associatedMac;
+    private boolean shooting;
 
     /*--------------------
         Constructor
      --------------------*/
 
     //Basic constructor
-    public Player(GameControl g_control, InputAdapter adapter, PlayerModel player_model, Color player_color) {
-        super(null, true, 100, false, player_model);
+    public Player(PlayerModel player_model, Color player_color, String associatedMac) {
+        super(null, true, player_model.get_meta().health_points, false, player_model);
         color = player_color;
         model = player_model;
         model.set_aura_color(color);
-        input = adapter;
         setBody(new PlayerBody());
-        control = g_control;
-        this.bulletDamage = 5;
+        this.bulletDamage = model.get_meta().damage_per_bullet;
         this.bulletSpeed = 1;
         this.ammo = 10000;
         this.killCount = 0;
-        this.fire_interval_seconds = 0.3;
+        this.fire_interval_seconds = model.get_meta().shoot_interval;
         this.last_fire = 0;
+        this.associatedMac = associatedMac;
     }
 
     /*--------------------
@@ -92,7 +95,29 @@ public class Player extends GameObject {
         this.killCount = killCount;
     }
 
-    public void set_adapter(InputAdapter adapter) { input = adapter; }
+    public void setModel(PlayerModel model) {
+        this.model = model;
+    }
+
+    public PlayerModel getModel() {
+        return model;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public String getAssociatedMac() {
+        return associatedMac;
+    }
+
+    public PlayerBody getPlayerBody(){
+        return (PlayerBody)this.body;
+    }
+
+    public void setShooting(boolean shooting) {
+        this.shooting = shooting;
+    }
 
     /*--------------------
             Methods
@@ -106,27 +131,29 @@ public class Player extends GameObject {
         currentState = 0;
 
         //MOVE
-        if (input.get_active_keys()[0])
+        if (((PlayerBody)body).is_accelerating())
         {
             currentState = 1;
         }
 
         //SHOOT
-        if (input.get_active_keys()[3])
+        if (shooting)
         {
             currentState = 2;
             shoot();
         }
 
         //MOVE-SHOOT
-        if (input.get_active_keys()[0] && input.get_active_keys()[3])
+        if (((PlayerBody)body).is_accelerating() && shooting)
         {
             currentState = 3;
             shoot();
         }
 
+        shooting = false;
         stateList.get(currentState).get_animation().update();
-        body.update(objects);
+        int transfer = body.update(objects);
+        this.checkPlayerTransfer(transfer);
     }
 
     @Override
@@ -144,28 +171,42 @@ public class Player extends GameObject {
 
         graphics.drawImage(aura, affineTransform, null);
         super.render(graphics);
+
+        /*
+            Debug para el spawn de las balas
+        */
+        //graphics.drawRect((int) (body.getPosX()-5), (int) (body.getPosY()-5), 5, 5);
+        ////bullets_spawn_points
+        //graphics.setColor(Color.RED);
+        //for (int[] bullet_spawn_xy:model.get_meta().bullet_offset_x_y_list) {
+        //    //formula
+        //    int x = (int) (getPlayerBody().getPosX() + (bullet_spawn_xy[0]) * Math.cos(Math.toRadians(getPlayerBody().getAngle())) - (bullet_spawn_xy[1]) * Math.sin(Math.toRadians(getPlayerBody().getAngle())));
+        //    int y = (int) (getPlayerBody().getPosY() + (bullet_spawn_xy[0]) * Math.sin(Math.toRadians(getPlayerBody().getAngle())) + (bullet_spawn_xy[1]) * Math.cos(Math.toRadians(getPlayerBody().getAngle())));
+        //    //drawing
+        //    graphics.drawRect(x-5, y-5, 5, 5);
+        //}
     }
 
-    public class PlayerBody extends DynamicBody
+
+    public class PlayerBody extends DynamicBody implements Serializable
     {
 
         public PlayerBody() {
-            potencia_aceleracion = 80;
-            speedLimit = 5;
+            speedLimit = Player.this.model.get_meta().velocity;
+        }
+
+        public void setAccelerando(boolean accelerando) {
+            this.accelerando = accelerando;
+        }
+
+        public void setPotenciaAcceleracion(int strength) {
+            this.potencia_aceleracion = strength;
         }
 
         @Override
-        public void update(List<GameObject> objects) {
-            super.update(objects);
-
-            accelerando = input.get_active_keys()[0];
-            if (input.get_active_keys()[1]) {
-                anguloFuerza -= 5;
-            }
-            if (input.get_active_keys()[2]) {
-                anguloFuerza += 5;
-            }
-            setAngle(anguloFuerza);
+        public int update(List<GameObject> objects) {
+            int transfer = super.update(objects);
+            return transfer;
         }
 
         @Override
@@ -224,9 +265,92 @@ public class Player extends GameObject {
     public void shoot() {
         if ((System.currentTimeMillis()-last_fire)/1000.0 >= fire_interval_seconds)
         {
-            Bullet bullet = new Bullet(this, Resources.BULLET_YELLOW());
-            GameControl.add_object(bullet);
-            last_fire = System.currentTimeMillis();
+            for (int[] bullet_off_x_y : model.get_meta().bullet_offset_x_y_list) {
+                Bullet bullet = new Bullet(this, Resources.BULLET_YELLOW(), bullet_off_x_y[0], bullet_off_x_y[1], model.get_meta().damage_per_bullet);
+                GameControl.add_object(bullet);
+                last_fire = System.currentTimeMillis();
+            }
         }
     }
+
+    @Override
+    public void die() {
+        super.die();
+        GameControl.add_object(new ParticleFx(Resources.PARTICLE_EXPLOSION(), (int) (getBody().getPosX()-50), (int) (getBody().getPosY()-50)));
+        GameControl.remove_object(this);
+    }
+
+    //up 0, right 1, down 2, left 3
+    private void checkPlayerTransfer(int transfer){
+        if (transfer != -1){
+            switch (transfer){
+                case 0:
+                    this.transferingTo = ScreenConnectionController.getConnections()[0];
+                    this.transferingSide = 0;
+                    ConnectionController.addTransferingObject(this);
+                    break;
+
+                case 1:
+                    this.transferingTo = ScreenConnectionController.getConnections()[1];
+                    this.transferingSide = 1;
+                    ConnectionController.addTransferingObject(this);
+                    break;
+
+                case 2:
+                    this.transferingTo = ScreenConnectionController.getConnections()[2];
+                    this.transferingSide = 2;
+                    ConnectionController.addTransferingObject(this);
+                    break;
+
+                case 3:
+                    this.transferingTo = ScreenConnectionController.getConnections()[3];
+                    this.transferingSide = 3;
+                    ConnectionController.addTransferingObject(this);
+                    break;
+            }
+        }
+    }
+
+    public void repositionBeforeTransfer() {
+        switch (transferingSide) {
+            case 0:
+            case 2:
+                float x = this.body.getPosX();
+                int totalWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+                this.body.setPosX((x * 100) / totalWidth);
+                break;
+
+            case 1:
+            case 3:
+                float y = this.body.getPosY();
+                int totalHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+                this.body.setPosY((y * 100) / totalHeight);
+                break;
+        }
+    }
+
+    public void repositionAfterTransfer() {
+        switch (transferingSide) {
+            case 0:
+                this.body.setPosY(Toolkit.getDefaultToolkit().getScreenSize().height-70);
+                this.body.setPosX((this.body.getPosX() * Toolkit.getDefaultToolkit().getScreenSize().width) / 100);
+                break;
+
+            case 1:
+                this.body.setPosX(70);
+                this.body.setPosY((this.body.getPosY() * Toolkit.getDefaultToolkit().getScreenSize().height) / 100);
+                break;
+
+            case 2:
+                this.body.setPosY(70);
+                this.body.setPosX((this.body.getPosX() * Toolkit.getDefaultToolkit().getScreenSize().width) / 100);
+                break;
+
+            case 3:
+                this.body.setPosX(Toolkit.getDefaultToolkit().getScreenSize().width-70);
+                this.body.setPosY((this.body.getPosY() * Toolkit.getDefaultToolkit().getScreenSize().height) / 100);
+                break;
+        }
+    }
+
 }

@@ -44,8 +44,8 @@ public class Space extends MapModel {
     Rectangle2D right_border = new Rectangle(screen_size.width-10,0,10, screen_size.height);
 
     borders.add(top_border);
-    borders.add(left_border);
-    borders.add(bottom_border);
     borders.add(right_border);
+    borders.add(bottom_border);
+    borders.add(left_border);
   }
 }

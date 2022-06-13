@@ -104,4 +104,6 @@ public class Animation {
     return loop_forever;
   }
 
+  public boolean has_finished() {return is_finished;}
+
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 public abstract class ObjectModel {
 
+
   protected List<MachineState> machine_states = new ArrayList<>();
 
   public ObjectModel()
@@ -37,4 +38,5 @@ public abstract class ObjectModel {
     }
     return copy;
   }
+
 }

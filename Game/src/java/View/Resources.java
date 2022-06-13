@@ -5,7 +5,9 @@ import View.Objects.ObjectModels.Bullets.YellowBullet;
 import View.Objects.ObjectModels.Maps.MapModel;
 import View.Objects.ObjectModels.Maps.Space;
 import View.Objects.ObjectModels.ObjectModel;
+import View.Objects.ObjectModels.Particles.ExplosionFx;
 import View.Objects.ObjectModels.Players.HR75;
+import View.Objects.ObjectModels.Players.Phoenix;
 import View.Objects.ObjectModels.Players.PlayerModel;
 import View.Sprite;
 
@@ -35,18 +37,24 @@ public class Resources {
   protected static PlayerModel PLAYER_HR75_RAW;
   public static PlayerModel PLAYER_HR75() {return PlayerModel.copy(PLAYER_HR75_RAW, new HR75());}
 
+  protected static PlayerModel PLAYER_PHOENIX_RAW;
+  public static PlayerModel PLAYER_PHOENIX() {return PlayerModel.copy(PLAYER_PHOENIX_RAW, new Phoenix());}
+
   protected static ObjectModel PLAYER_CIRCLE_RAW;
   public static ObjectModel PLAYER_CIRCLE()  {return ObjectModel.copy(PLAYER_CIRCLE_RAW, new HR75());}
 
   protected static ObjectModel BULLET_YELLOW_RAW;
   public static ObjectModel BULLET_YELLOW()  {return ObjectModel.copy(BULLET_YELLOW_RAW, new YellowBullet());}
 
+  protected static ObjectModel PARTICLE_EXPLOSION_RAW;
+  public static ObjectModel PARTICLE_EXPLOSION()  {return ObjectModel.copy(PARTICLE_EXPLOSION_RAW, new ExplosionFx());}
+
   //raw res
   public static Sprite UI_LIFE_BAR;
 
   public int get_res_count()
   {
-    return 5;
+    return 7;
   }
 
 

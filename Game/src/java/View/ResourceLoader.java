@@ -5,8 +5,10 @@ import View.Objects.ObjectModels.Bullets.YellowBullet;
 import View.Objects.ObjectModels.Maps.MapModel;
 import View.Objects.ObjectModels.Maps.Space;
 import View.Objects.ObjectModels.ObjectModel;
+import View.Objects.ObjectModels.Particles.ExplosionFx;
 import View.Objects.ObjectModels.Players.CirclePlayer;
 import View.Objects.ObjectModels.Players.HR75;
+import View.Objects.ObjectModels.Players.Phoenix;
 import View.Objects.ObjectModels.Players.PlayerModel;
 
 public class ResourceLoader implements Runnable {
@@ -81,8 +83,10 @@ public class ResourceLoader implements Runnable {
     //loading elements
     Resources.MAP_SPACE_RAW = (MapModel) load(Space.class);
     Resources.PLAYER_HR75_RAW = load_player(HR75.class);
+    Resources.PLAYER_PHOENIX_RAW = load_player(Phoenix.class);
     Resources.PLAYER_CIRCLE_RAW = load(CirclePlayer.class);
     Resources.BULLET_YELLOW_RAW = load(YellowBullet.class);
+    Resources.PARTICLE_EXPLOSION_RAW = load(ExplosionFx.class);
     Resources.UI_LIFE_BAR = load("Game/src/Resources/ui/life_bar.png");
     is_loading = false;
   }

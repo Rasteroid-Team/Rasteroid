@@ -10,6 +10,7 @@ import View.Objects.ObjectModels.Players.PlayerModel;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -53,11 +54,12 @@ public final class AvtomatV1 extends Player {
 
   private final AI_STATE_AVTOMAT av;
 
-  public AvtomatV1(GameControl g_control, InputAdapter adp, ObjectModel model, Color av_color) {
-    super(g_control, adp, (PlayerModel) model, av_color);
+
+  public AvtomatV1(ObjectModel model, Color av_color) {
+    super((PlayerModel) model, av_color, null);
     AI_STATE_AVTOMAT.AVT_ADAPTER av_adapter = new AI_STATE_AVTOMAT.AVT_ADAPTER();
-    set_adapter(av_adapter);
     av = new AI_STATE_AVTOMAT(this, av_adapter);
+    ((PlayerBody)body).setPotenciaAcceleracion(80);
   }
 
   @Override
@@ -83,6 +85,39 @@ public final class AvtomatV1 extends Player {
 
     private void update_av()
     {
+
+
+      //IDLE
+      currentState = 0;
+
+      //MOVE
+      if (AI_ADAPTER.get_active_keys()[0])
+      {
+        currentState = 1;
+      }
+
+      //SHOOT
+      if (AI_ADAPTER.get_active_keys()[3])
+      {
+        currentState = 2;
+        shoot();
+      }
+
+      //MOVE-SHOOT
+      if (AI_ADAPTER.get_active_keys()[0] && AI_ADAPTER.get_active_keys()[3])
+      {
+        currentState = 3;
+        shoot();
+      }
+
+
+      if (AI_ADAPTER.get_active_keys()[1]) {
+        body.setAngle(body.getAngle() - 5);
+      }
+      if (AI_ADAPTER.get_active_keys()[2]) {
+        body.setAngle(body.getAngle() + 5);
+      }
+
       AI_STATE_AVTOMAT.AVT_STATE state = cr.read_context(GameControl.objects);
       switch (state)
       {
@@ -118,6 +153,7 @@ public final class AvtomatV1 extends Player {
         double obj_angle = 90 + Math.toDegrees(Math.atan2(pl_posy - MACHINE.getBody().getPosY(), pl_posx - MACHINE.getBody().getPosX()));
         MACHINE.getBody().setAngle((int) obj_angle);
         AI_STATE_AVTOMAT.AI_ADAPTER.get_active_keys()[0] = false;
+        ((PlayerBody)MACHINE.body).setAccelerando(false);
         AI_STATE_AVTOMAT.AI_ADAPTER.get_active_keys()[3] = true;
       }
       private static void search()
@@ -151,6 +187,7 @@ public final class AvtomatV1 extends Player {
           LAST_CHANGE = System.currentTimeMillis();
         }
         AI_STATE_AVTOMAT.AI_ADAPTER.get_active_keys()[0] = true;
+        ((PlayerBody)MACHINE.body).setAccelerando(true);
       }
     }
 
@@ -173,6 +210,7 @@ public final class AvtomatV1 extends Player {
     {
       SEARCH, ATTACK,
     }
+
 
     private static class PlayerTracker
     {
