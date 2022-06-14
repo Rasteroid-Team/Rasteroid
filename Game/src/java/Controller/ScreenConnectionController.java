@@ -62,6 +62,7 @@ public class ScreenConnectionController {
 
     protected void receivePlayer(ProtocolDataPacket packet){
         Player player = (Player) packet.getObject();
+        player.setLast_fire(System.currentTimeMillis()-1000);
         player.setModel(Resources.PLAYER_HR75());
         player.getModel().set_aura_color(player.getColor());
         player.setStateList(player.getModel().get_machine_states());

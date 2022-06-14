@@ -119,6 +119,10 @@ public class Player extends GameObject implements Serializable {
         this.shooting = shooting;
     }
 
+    public void setLast_fire(long last_fire) {
+        this.last_fire = last_fire;
+    }
+
     /*--------------------
             Methods
      --------------------*/
@@ -139,16 +143,15 @@ public class Player extends GameObject implements Serializable {
         {
             currentState = 2;
             shoot();
+            shooting = false;
         }
 
         //MOVE-SHOOT
         if (((PlayerBody)body).is_accelerating() && shooting)
         {
             currentState = 3;
-            shoot();
         }
 
-        shooting = false;
         stateList.get(currentState).get_animation().update();
         transfer = body.update(objects);
         super.update(objects);

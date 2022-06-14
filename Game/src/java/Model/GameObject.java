@@ -91,6 +91,8 @@ public class GameObject implements Serializable {
         return transferingSide;
     }
 
+    /*If the object could be sent to another pc
+    call this method inside it's implementation (super.update) after body.update*/
     public void update(List<GameObject> objects) {
         this.checkObjectTransfer();
     }

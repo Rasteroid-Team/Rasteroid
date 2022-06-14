@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * TO DO: Check if we need to use public, private, default or protected for our methods
@@ -352,10 +353,11 @@ public class CommunicationController {
      * @param command Id of the packet
      * @param data Object to be sent with the packet
      */
-    public void sendToNeighbors(int command, Object data){
-        synchronized(this.pcConnections){
-            for(Connection e : this.pcConnections){
-                if(e != null){
+    public void sendToNeighbors(int command, Object data, Connection conn){
+        ArrayList<Connection> connections = this.getAllConnections();
+        synchronized(connections){
+            for(Connection e : connections){
+                if(e != null && e != conn){
                     e.send(new ProtocolDataPacket(this.localMAC,e.getConnectedMAC(),command,data));
                 }
             }
@@ -411,7 +413,7 @@ public class CommunicationController {
      */
     HashMap<String, Integer> joinMaps(){
         HashMap<String,Integer> map = new HashMap<>();
-        HashMap<String,Integer> pointerMap = new HashMap<>();
+        ConcurrentHashMap<String,Integer> pointerMap = new ConcurrentHashMap<>();
         ArrayList<Connection> allConnections = this.getAllConnections();
         for(Connection e : allConnections){
             if(e != null){
@@ -506,6 +508,7 @@ public class CommunicationController {
                 ServerHealth health = new ServerHealth(this,conn);
                 conn.setServerHealth(health);
                 synchronized(this.pcConnections){
+                    pcConnections.remove(null);
                     pcConnections.add(conn);
                 }
             }
