@@ -204,7 +204,10 @@ public class DynamicBody extends Body{
         {
             if (object instanceof Map)
             {
-                transfer = this.checkBorderCollisions((Map) object);
+                int result = this.checkBorderCollisions((Map) object);
+                if (result != -1){
+                    transfer = result;
+                }
             }
             else
             {

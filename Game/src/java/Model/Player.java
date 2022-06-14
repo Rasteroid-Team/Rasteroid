@@ -119,14 +119,16 @@ public class Player extends GameObject implements Serializable {
         this.shooting = shooting;
     }
 
+    public void setLast_fire(long last_fire) {
+        this.last_fire = last_fire;
+    }
+
     /*--------------------
             Methods
      --------------------*/
 
     @Override
     public void update(List<GameObject> objects) {
-        super.update(objects);
-
         //IDLE
         currentState = 0;
 
@@ -141,19 +143,18 @@ public class Player extends GameObject implements Serializable {
         {
             currentState = 2;
             shoot();
+            shooting = false;
         }
 
         //MOVE-SHOOT
         if (((PlayerBody)body).is_accelerating() && shooting)
         {
             currentState = 3;
-            shoot();
         }
 
-        shooting = false;
         stateList.get(currentState).get_animation().update();
-        int transfer = body.update(objects);
-        this.checkPlayerTransfer(transfer);
+        transfer = body.update(objects);
+        super.update(objects);
     }
 
     @Override
@@ -212,78 +213,4 @@ public class Player extends GameObject implements Serializable {
         GameControl.add_object(new ParticleFx(Resources.PARTICLE_EXPLOSION(), (int) (getBody().getPosX()-50), (int) (getBody().getPosY()-50)));
         GameControl.remove_object(this);
     }
-
-    //up 0, right 1, down 2, left 3
-    private void checkPlayerTransfer(int transfer){
-        if (transfer != -1){
-            switch (transfer){
-                case 0:
-                    this.transferingTo = ScreenConnectionController.getConnections()[0];
-                    this.transferingSide = 0;
-                    ConnectionController.addTransferingObject(this);
-                    break;
-
-                case 1:
-                    this.transferingTo = ScreenConnectionController.getConnections()[1];
-                    this.transferingSide = 1;
-                    ConnectionController.addTransferingObject(this);
-                    break;
-
-                case 2:
-                    this.transferingTo = ScreenConnectionController.getConnections()[2];
-                    this.transferingSide = 2;
-                    ConnectionController.addTransferingObject(this);
-                    break;
-
-                case 3:
-                    this.transferingTo = ScreenConnectionController.getConnections()[3];
-                    this.transferingSide = 3;
-                    ConnectionController.addTransferingObject(this);
-                    break;
-            }
-        }
-    }
-
-    public void repositionBeforeTransfer() {
-        switch (transferingSide) {
-            case 0:
-            case 2:
-                float x = this.body.getPosX();
-                int totalWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
-                this.body.setPosX((x * 100) / totalWidth);
-                break;
-
-            case 1:
-            case 3:
-                float y = this.body.getPosY();
-                int totalHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
-                this.body.setPosY((y * 100) / totalHeight);
-                break;
-        }
-    }
-
-    public void repositionAfterTransfer() {
-        switch (transferingSide) {
-            case 0:
-                this.body.setPosY(Toolkit.getDefaultToolkit().getScreenSize().height-70);
-                this.body.setPosX((this.body.getPosX() * Toolkit.getDefaultToolkit().getScreenSize().width) / 100);
-                break;
-
-            case 1:
-                this.body.setPosX(70);
-                this.body.setPosY((this.body.getPosY() * Toolkit.getDefaultToolkit().getScreenSize().height) / 100);
-                break;
-
-            case 2:
-                this.body.setPosY(70);
-                this.body.setPosX((this.body.getPosX() * Toolkit.getDefaultToolkit().getScreenSize().width) / 100);
-                break;
-
-            case 3:
-                this.body.setPosX(Toolkit.getDefaultToolkit().getScreenSize().width-70);
-                this.body.setPosY((this.body.getPosY() * Toolkit.getDefaultToolkit().getScreenSize().height) / 100);
-                break;
-        }
-    }
-
 }

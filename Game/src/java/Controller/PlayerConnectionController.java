@@ -14,15 +14,6 @@ public class PlayerConnectionController {
         this.comController = comController;
     }
 
-    protected void receivePlayer(ProtocolDataPacket packet){
-        Player player = (Player) packet.getObject();
-        player.setModel(Resources.PLAYER_HR75());
-        player.getModel().set_aura_color(player.getColor());
-        player.setStateList(player.getModel().get_machine_states());
-        player.repositionAfterTransfer();
-        GameControl.add_object(player);
-    }
-
     protected void recievePlayerMovement(ProtocolDataPacket packet){
         int[] movement = (int[]) packet.getObject();
         int strength = movement[0];
@@ -47,7 +38,7 @@ public class PlayerConnectionController {
         }
     }
 
-    protected void recievePlayerShoot(ProtocolDataPacket packet){
+    protected void recievePlayerShootOrder(ProtocolDataPacket packet){
         int i = 0;
         boolean found = false;
 
