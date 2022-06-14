@@ -65,7 +65,7 @@ class ConnectionInterfaceInitiater {
     
     /**
      * Called when a connection has it's lookup updated
-     * @param mac Mac address of the peer to be disconnected
+     * @param macs Mac address of the peer to be disconnected
      */
     synchronized void lookupEvent(ArrayList<String> macs){
         for(ConnectionInterface conn : closingListeners){

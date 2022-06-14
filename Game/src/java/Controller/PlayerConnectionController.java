@@ -2,7 +2,9 @@ package Controller;
 
 import Model.Player;
 import View.Objects.ObjectModels.Players.PlayerColors;
+import View.Objects.ObjectModels.Players.PlayerModel;
 import View.Resources;
+import api.ApiService;
 import communications.CommunicationController;
 import communications.ProtocolDataPacket;
 
@@ -66,7 +68,18 @@ public class PlayerConnectionController {
         }
 
         if (!found) {
-            GameControl.add_object(new Player(Resources.PLAYER_HR75(), PlayerColors.cyan, mac));
+            //protocolo 155 = preguntar modelo nave
+            //protocolo 156 = devuelve mensaje
+            //Mandamos un mensaje para preguntar el modelo elegido al móvil
+            comController.sendMessage(comController.createPacket(mac, 155,null));
+            System.out.println("enviado");
+            //GameControl.add_object(new Player(Resources.PLAYER_PHOENIX(), PlayerColors.cyan, mac));
         }
     }
+
+    protected void setPlayerModel(String modelID, String mac){
+        PlayerModel model = ApiService.getPlayerModel(ApiService.getPlayerById(modelID));
+        GameControl.add_object(new Player(model, PlayerColors.cyan, mac));
+    }
+
 }

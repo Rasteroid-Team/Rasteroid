@@ -80,6 +80,10 @@ public class ConnectionController implements ConnectionInterface {
             case 161 -> {
                 screenConnController.receiveShoot(packet);
             }
+            case 156 -> {
+                System.out.println("Modelo recibido");
+                playerConnController.setPlayerModel(packet.getObject().toString(), packet.getSourceID());
+            }
         }
     }
 

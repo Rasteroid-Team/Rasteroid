@@ -37,16 +37,16 @@ public class Player extends GameObject implements Serializable {
 
     //Basic constructor
     public Player(PlayerModel player_model, Color player_color, String associatedMac) {
-        super(null, true, 100, false, player_model);
+        super(null, true, player_model.get_meta().health_points, false, player_model);
         color = player_color;
         model = player_model;
         model.set_aura_color(color);
         setBody(new PlayerBody());
-        this.bulletDamage = 5;
+        this.bulletDamage = model.get_meta().damage_per_bullet;
         this.bulletSpeed = 1;
         this.ammo = 10000;
         this.killCount = 0;
-        this.fire_interval_seconds = 0.3;
+        this.fire_interval_seconds = model.get_meta().shoot_interval;
         this.last_fire = 0;
         this.associatedMac = associatedMac;
     }
@@ -172,6 +172,20 @@ public class Player extends GameObject implements Serializable {
 
         graphics.drawImage(aura, affineTransform, null);
         super.render(graphics);
+
+        /*
+            Debug para el spawn de las balas
+        */
+        //graphics.drawRect((int) (body.getPosX()-5), (int) (body.getPosY()-5), 5, 5);
+        ////bullets_spawn_points
+        //graphics.setColor(Color.RED);
+        //for (int[] bullet_spawn_xy:model.get_meta().bullet_offset_x_y_list) {
+        //    //formula
+        //    int x = (int) (getPlayerBody().getPosX() + (bullet_spawn_xy[0]) * Math.cos(Math.toRadians(getPlayerBody().getAngle())) - (bullet_spawn_xy[1]) * Math.sin(Math.toRadians(getPlayerBody().getAngle())));
+        //    int y = (int) (getPlayerBody().getPosY() + (bullet_spawn_xy[0]) * Math.sin(Math.toRadians(getPlayerBody().getAngle())) + (bullet_spawn_xy[1]) * Math.cos(Math.toRadians(getPlayerBody().getAngle())));
+        //    //drawing
+        //    graphics.drawRect(x-5, y-5, 5, 5);
+        //}
     }
 
 
@@ -179,7 +193,7 @@ public class Player extends GameObject implements Serializable {
     {
 
         public PlayerBody() {
-            speedLimit = 5;
+            speedLimit = Player.this.model.get_meta().velocity;
         }
 
         public void setAccelerando(boolean accelerando) {
@@ -196,14 +210,33 @@ public class Player extends GameObject implements Serializable {
             return transfer;
         }
 
+        @Override
+        public void collision(GameObject object) {
+
+            if(object instanceof Player) {
+                // System.out.println(getAngle());
+
+                Player player = (Player) object;
+                if (!player.equals(Player.this)) {
+
+                    this.setPosX(this.getOldPosX());
+                    this.setPosY(this.getOldPosY());
+
+                }
+            }
+
+        }
+
     }
 
     public void shoot() {
         if ((System.currentTimeMillis()-last_fire)/1000.0 >= fire_interval_seconds)
         {
-            Bullet bullet = new Bullet(this, Resources.BULLET_YELLOW());
-            GameControl.add_object(bullet);
-            last_fire = System.currentTimeMillis();
+            for (int[] bullet_off_x_y : model.get_meta().bullet_offset_x_y_list) {
+                Bullet bullet = new Bullet(this, Resources.BULLET_YELLOW(), bullet_off_x_y[0], bullet_off_x_y[1], model.get_meta().damage_per_bullet);
+                GameControl.add_object(bullet);
+                last_fire = System.currentTimeMillis();
+            }
         }
     }
 

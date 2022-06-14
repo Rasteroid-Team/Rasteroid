@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Body implements Serializable {
 
-    private float posX, posY;
+    private float posX, posY, oldPosX, oldPosY;
     private int angle;
     private float radius = 50;
     
@@ -60,6 +60,22 @@ public class Body implements Serializable {
 
     public void setRadius(float radius) {
         this.radius = radius;
+    }
+
+    public float getOldPosX() {
+        return oldPosX;
+    }
+
+    public void setOldPosX(float oldPosX) {
+        this.oldPosX = oldPosX;
+    }
+
+    public float getOldPosY() {
+        return oldPosY;
+    }
+
+    public void setOldPosY(float oldPosY) {
+        this.oldPosY = oldPosY;
     }
 
     public int update(List<GameObject> objects) {

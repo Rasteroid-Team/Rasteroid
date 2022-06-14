@@ -7,6 +7,7 @@ import View.Objects.ObjectModels.Maps.Space;
 import View.Objects.ObjectModels.ObjectModel;
 import View.Objects.ObjectModels.Particles.ExplosionFx;
 import View.Objects.ObjectModels.Players.HR75;
+import View.Objects.ObjectModels.Players.Phoenix;
 import View.Objects.ObjectModels.Players.PlayerModel;
 import View.Sprite;
 
@@ -36,6 +37,9 @@ public class Resources {
   protected static PlayerModel PLAYER_HR75_RAW;
   public static PlayerModel PLAYER_HR75() {return PlayerModel.copy(PLAYER_HR75_RAW, new HR75());}
 
+  protected static PlayerModel PLAYER_PHOENIX_RAW;
+  public static PlayerModel PLAYER_PHOENIX() {return PlayerModel.copy(PLAYER_PHOENIX_RAW, new Phoenix());}
+
   protected static ObjectModel PLAYER_CIRCLE_RAW;
   public static ObjectModel PLAYER_CIRCLE()  {return ObjectModel.copy(PLAYER_CIRCLE_RAW, new HR75());}
 
@@ -50,7 +54,7 @@ public class Resources {
 
   public int get_res_count()
   {
-    return 6;
+    return 7;
   }
 
 
