@@ -209,6 +209,23 @@ public class Player extends GameObject implements Serializable {
             return transfer;
         }
 
+        @Override
+        public void collision(GameObject object) {
+
+            if(object instanceof Player) {
+                // System.out.println(getAngle());
+
+                Player player = (Player) object;
+                if (!player.equals(Player.this)) {
+
+                    this.setPosX(this.getOldPosX());
+                    this.setPosY(this.getOldPosY());
+
+                }
+            }
+
+        }
+
     }
 
     public void shoot() {
