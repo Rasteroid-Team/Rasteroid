@@ -26,6 +26,7 @@ public class Player extends GameObject implements Serializable {
 
     protected double fire_interval_seconds;
     protected long last_fire;
+    protected String modelID;
     PlayerModel model;
     protected Color color;
     private String associatedMac;
@@ -121,6 +122,14 @@ public class Player extends GameObject implements Serializable {
 
     public void setLast_fire(long last_fire) {
         this.last_fire = last_fire;
+    }
+
+    public void setModelID(String modelID) {
+        this.modelID = modelID;
+    }
+
+    public String getModelID() {
+        return modelID;
     }
 
     /*--------------------

@@ -40,7 +40,7 @@ public class Test {
             game_control.set_debug_mode(true);
             GameControl.add_object(new Map(Resources.MAP_SPACE()));
             //GameControl.add_object(new Player(Resources.PLAYER_PHOENIX(), PlayerColors.cyan, ""));
-            GameControl.add_object(new AvtomatV1(Resources.PLAYER_HR75(), PlayerColors.red));
+            //GameControl.add_object(new AvtomatV1(Resources.PLAYER_HR75(), PlayerColors.red));
             MainFrame mainFrame = new MainFrame(graphics);
             mainFrame.setVisible(true);
             game_engine.init();

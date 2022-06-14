@@ -4,6 +4,7 @@ import Model.Bullet;
 import Model.Player;
 import View.GraphicEngine;
 import View.Resources;
+import api.ApiService;
 import communications.CommunicationController;
 import communications.ProtocolDataPacket;
 
@@ -63,7 +64,7 @@ public class ScreenConnectionController {
     protected void receivePlayer(ProtocolDataPacket packet){
         Player player = (Player) packet.getObject();
         player.setLast_fire(System.currentTimeMillis()-1000);
-        player.setModel(Resources.PLAYER_HR75());
+        player.setModel(ApiService.getPlayerModel(ApiService.getPlayerById(player.getModelID())));
         player.getModel().set_aura_color(player.getColor());
         player.setStateList(player.getModel().get_machine_states());
         player.getBody().repositionAfterTransfer(player.getTransferingSide());

@@ -79,7 +79,9 @@ public class PlayerConnectionController {
 
     protected void setPlayerModel(String modelID, String mac){
         PlayerModel model = ApiService.getPlayerModel(ApiService.getPlayerById(modelID));
-        GameControl.add_object(new Player(model, PlayerColors.cyan, mac));
+        Player player = new Player(model, PlayerColors.cyan, mac);
+        player.setModelID(modelID);
+        GameControl.add_object(player);
     }
 
 }
