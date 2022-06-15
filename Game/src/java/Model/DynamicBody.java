@@ -70,6 +70,8 @@ public class DynamicBody extends Body{
     
     public void move( float angulo, float potencia ) {
 
+        this.setOldPosX(this.getPosX());
+        this.setOldPosY(this.getPosY());
         //APLICAR FOLMULA PARA SACAR FUERZA DE X e Y - sin cos
         double anguloRad = Math.toRadians(angulo);
         float sin = potencia * (float)Math.sin(anguloRad);
@@ -204,7 +206,10 @@ public class DynamicBody extends Body{
         {
             if (object instanceof Map)
             {
-                transfer = this.checkBorderCollisions((Map) object);
+                int result = this.checkBorderCollisions((Map) object);
+                if (result != -1){
+                    transfer = result;
+                }
             }
             else
             {
