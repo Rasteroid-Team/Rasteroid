@@ -109,8 +109,8 @@ public class Player extends GameObject implements Serializable {
         return associatedMac;
     }
 
-    public PlayerBody getPlayerBody(){
-        return (PlayerBody)this.body;
+    public PlayerBody getPlayerBody() {
+        return (PlayerBody) this.body;
     }
 
     public void setShooting(boolean shooting) {
@@ -139,22 +139,19 @@ public class Player extends GameObject implements Serializable {
         currentState = 0;
 
         //MOVE
-        if (((PlayerBody)body).is_accelerating())
-        {
+        if (((PlayerBody) body).is_accelerating()) {
             currentState = 1;
         }
 
         //SHOOT
-        if (shooting)
-        {
+        if (shooting) {
             currentState = 2;
             shoot();
             shooting = false;
         }
 
         //MOVE-SHOOT
-        if (((PlayerBody)body).is_accelerating() && shooting)
-        {
+        if (((PlayerBody) body).is_accelerating() && shooting) {
             currentState = 3;
         }
 
@@ -171,10 +168,10 @@ public class Player extends GameObject implements Serializable {
         float orientation = body.getAngle();
 
         AffineTransform affineTransform = new AffineTransform();
-        affineTransform.translate( pos_x, pos_y );
-        affineTransform.rotate( Math.toRadians( orientation ) );
-        affineTransform.translate(-aura.getWidth()/2.0, -aura.getWidth()/2.0);
-        affineTransform.scale(1,1);
+        affineTransform.translate(pos_x, pos_y);
+        affineTransform.rotate(Math.toRadians(orientation));
+        affineTransform.translate(-aura.getWidth() / 2.0, -aura.getWidth() / 2.0);
+        affineTransform.scale(1, 1);
 
         graphics.drawImage(aura, affineTransform, null);
         super.render(graphics);
@@ -195,8 +192,7 @@ public class Player extends GameObject implements Serializable {
     }
 
 
-    public class PlayerBody extends DynamicBody implements Serializable
-    {
+    public class PlayerBody extends DynamicBody implements Serializable {
 
         public PlayerBody() {
             speedLimit = Player.this.model.get_meta().velocity;
@@ -219,7 +215,7 @@ public class Player extends GameObject implements Serializable {
         @Override
         public void collision(GameObject object) {
 
-            if(object instanceof Player) {
+            if (object instanceof Player) {
                 // System.out.println(getAngle());
 
                 Player player = (Player) object;
@@ -236,8 +232,7 @@ public class Player extends GameObject implements Serializable {
     }
 
     public void shoot() {
-        if ((System.currentTimeMillis()-last_fire)/1000.0 >= fire_interval_seconds)
-        {
+        if ((System.currentTimeMillis() - last_fire) / 1000.0 >= fire_interval_seconds) {
             for (int[] bullet_off_x_y : model.get_meta().bullet_offset_x_y_list) {
                 Bullet bullet = new Bullet(this, Resources.BULLET_YELLOW(), bullet_off_x_y[0], bullet_off_x_y[1], model.get_meta().damage_per_bullet);
                 GameControl.add_object(bullet);
@@ -249,10 +244,13 @@ public class Player extends GameObject implements Serializable {
     @Override
     public void die() {
         super.die();
-        GameControl.add_object(new ParticleFx(Resources.PARTICLE_EXPLOSION(), (int) (getBody().getPosX()-50), (int) (getBody().getPosY()-50)));
+        GameControl.add_object(new ParticleFx(Resources.PARTICLE_EXPLOSION(), (int) (getBody().getPosX() - 50), (int) (getBody().getPosY() - 50)));
         GameControl.remove_object(this);
 
-        this.comController.sendMessage(comController.createPacket(this.associatedMac, 200, null));
-        this.comController.closeMobileConnections(this.associatedMac);
+        if (this.getClass() == Player.class) {
+            this.comController.sendMessage(comController.createPacket(this.associatedMac, 200, null));
+            this.comController.closeMobileConnections(this.associatedMac);
+
+        }
     }
 }
