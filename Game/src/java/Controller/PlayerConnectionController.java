@@ -2,7 +2,9 @@ package Controller;
 
 import Model.Player;
 import View.Objects.ObjectModels.Players.PlayerColors;
+import View.Objects.ObjectModels.Players.PlayerModel;
 import View.Resources;
+import api.ApiService;
 import communications.CommunicationController;
 import communications.ProtocolDataPacket;
 
@@ -12,15 +14,6 @@ public class PlayerConnectionController {
 
     public PlayerConnectionController(CommunicationController comController) {
         this.comController = comController;
-    }
-
-    protected void receivePlayer(ProtocolDataPacket packet){
-        Player player = (Player) packet.getObject();
-        player.setModel(Resources.PLAYER_HR75());
-        player.getModel().set_aura_color(player.getColor());
-        player.setStateList(player.getModel().get_machine_states());
-        player.repositionAfterTransfer();
-        GameControl.add_object(player);
     }
 
     protected void recievePlayerMovement(ProtocolDataPacket packet){
@@ -47,7 +40,7 @@ public class PlayerConnectionController {
         }
     }
 
-    protected void recievePlayerShoot(ProtocolDataPacket packet){
+    protected void recievePlayerShootOrder(ProtocolDataPacket packet){
         int i = 0;
         boolean found = false;
 
@@ -63,6 +56,32 @@ public class PlayerConnectionController {
     }
 
     protected void acceptNewPlayer(String mac){
-        GameControl.add_object(new Player(Resources.PLAYER_HR75(), PlayerColors.cyan, mac));
+        int i = 0;
+        boolean found = false;
+
+        while (i < GameControl.objects.size() && !found) {
+            if (GameControl.objects.get(i) instanceof Player && ((Player)GameControl.objects.get(i)).getAssociatedMac() != null
+                    && ((Player) GameControl.objects.get(i)).getAssociatedMac().equals(mac)) {
+                found = true;
+            }
+            i++;
+        }
+
+        if (!found) {
+            //protocolo 155 = preguntar modelo nave
+            //protocolo 156 = devuelve mensaje
+            //Mandamos un mensaje para preguntar el modelo elegido al móvil
+            comController.sendMessage(comController.createPacket(mac, 155,null));
+            System.out.println("enviado");
+            //GameControl.add_object(new Player(Resources.PLAYER_PHOENIX(), PlayerColors.cyan, mac));
+        }
     }
+
+    protected void setPlayerModel(String modelID, String mac){
+        PlayerModel model = ApiService.getPlayerModel(ApiService.getPlayerById(modelID));
+        Player player = new Player(model, PlayerColors.cyan, mac);
+        player.setModelID(modelID);
+        GameControl.add_object(player);
+    }
+
 }

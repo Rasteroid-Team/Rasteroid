@@ -1,7 +1,9 @@
 package Controller;
 
+import Model.Bullet;
 import Model.GameObject;
 import Model.Player;
+import Testing.AvtomatV1;
 import View.GraphicEngine;
 import communications.CommunicationController;
 import communications.ConnectionInterface;
@@ -32,12 +34,18 @@ public class ConnectionController implements ConnectionInterface {
     public void transferObjects(){
         synchronized (transferingList) {
             for (GameObject object : transferingList) {
-                if (object instanceof Player) {
+                if (object instanceof Player && !(object instanceof AvtomatV1)) {
                     ((Player)object).setModel(null);
                     object.setStateList(null);
-                    ((Player)object).repositionBeforeTransfer();
+                    object.getBody().repositionBeforeTransfer(object.getTransferingSide());
                     comController.sendMessage(comController.createPacket(object.getTransferingTo(), 150, object));
                     comController.sendMessage(comController.createPacket(((Player)object).getAssociatedMac(), 180,object.getTransferingTo()));
+                }
+                else if (object instanceof Bullet){
+                    object.setStateList(null);
+                    ((Bullet.BulletBody)((Bullet)object).getBody()).setPlayer_owner(null);
+                    object.getBody().repositionBeforeTransfer(object.getTransferingSide());
+                    comController.sendMessage(comController.createPacket(object.getTransferingTo(), 161, object));
                 }
             }
             transferingList.clear();
@@ -59,10 +67,25 @@ public class ConnectionController implements ConnectionInterface {
     @Override
     public void onMessageReceived(ProtocolDataPacket packet) {
         switch (packet.getId()) {
-            case 150 -> playerConnController.receivePlayer(packet);
-            case 120 -> screenConnController.recieveConnectionPosition(packet);
-            case 152 -> playerConnController.recievePlayerMovement(packet);
-            case 151 -> playerConnController.recievePlayerShoot(packet);
+            case 150 -> {
+                screenConnController.receivePlayer(packet);
+            }
+            case 120 -> {
+                screenConnController.recieveConnectionPosition(packet);
+            }
+            case 152 -> {
+                playerConnController.recievePlayerMovement(packet);
+            }
+            case 151 -> {
+                playerConnController.recievePlayerShootOrder(packet);
+            }
+            case 161 -> {
+                screenConnController.receiveShoot(packet);
+            }
+            case 156 -> {
+                System.out.println("Modelo recibido");
+                playerConnController.setPlayerModel(packet.getObject().toString(), packet.getSourceID());
+            }
         }
     }
 
