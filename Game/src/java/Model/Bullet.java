@@ -49,10 +49,12 @@ public class Bullet extends GameObject implements Serializable {
     public class BulletBody extends DynamicBody implements Serializable
     {
         private Player player_owner;
+        private String playerOwnerMac;
 
         protected BulletBody(Player owner)
         {
             player_owner = owner;
+            playerOwnerMac = owner.getAssociatedMac();
 
             setRadius(20);
             int[] offset = lengthdir_xy(offset_x, offset_y, angle);
@@ -96,7 +98,7 @@ public class Bullet extends GameObject implements Serializable {
             {
                 GameControl.remove_object(Bullet.this);
             }
-            if (object instanceof Player && object != player_owner)
+            if (object instanceof Player && !((Player)object).getAssociatedMac().equals(this.playerOwnerMac))
             {
                 object.take_damage(damage);
                 GameControl.remove_object(Bullet.this);
