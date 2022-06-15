@@ -25,6 +25,8 @@ public class ConnectionController implements ConnectionInterface {
         this.comController.addAllListeners(this);
         this.screenConnController = screenConnController;
         this.playerConnController = playerConnController;
+
+        this.setupProtocols();
     }
 
     public void transferObjects(){
@@ -57,18 +59,10 @@ public class ConnectionController implements ConnectionInterface {
     @Override
     public void onMessageReceived(ProtocolDataPacket packet) {
         switch (packet.getId()) {
-            case 150 -> {
-                playerConnController.receivePlayer(packet);
-            }
-            case 120 -> {
-                screenConnController.recieveConnectionPosition(packet);
-            }
-            case 152 -> {
-                playerConnController.recievePlayerMovement(packet);
-            }
-            case 151 -> {
-                playerConnController.recievePlayerShoot(packet);
-            }
+            case 150 -> playerConnController.receivePlayer(packet);
+            case 120 -> screenConnController.recieveConnectionPosition(packet);
+            case 152 -> playerConnController.recievePlayerMovement(packet);
+            case 151 -> playerConnController.recievePlayerShoot(packet);
         }
     }
 
@@ -94,4 +88,36 @@ public class ConnectionController implements ConnectionInterface {
 
     }
 
+    private void setupProtocols() {
+        comController.addNewProtocol(
+                120,
+                "(Testing) Tell the new device the side from where it's coming the Player",
+                "int"
+        );
+
+        comController.addNewProtocol(
+                150,
+                "Send Player between devices",
+                "Object[]"
+        );
+
+        comController.addNewProtocol(
+                152,
+                "Move Player",
+                "float[]"
+        );
+
+        comController.addNewProtocol(
+                151,
+                "Shoot Bullet",
+                "null"
+        );
+
+        comController.addNewProtocol(
+                180,
+                "Send device MAC to a Mobile Connection",
+                "String"
+        );
+
+    }
 }
