@@ -1,15 +1,9 @@
 package Model;
 
-import Controller.ConnectionController;
 import Controller.GameControl;
-import Controller.GameEngine;
-import Controller.ScreenConnectionController;
-import Testing.InputAdapter;
-import View.Objects.ObjectModels.ObjectModel;
-import View.Objects.ObjectModels.Players.HR75;
 import View.Objects.ObjectModels.Players.PlayerModel;
 import View.Resources;
-import View.Sprite;
+import communications.CommunicationController;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -32,12 +26,13 @@ public class Player extends GameObject implements Serializable {
     private String associatedMac;
     private boolean shooting;
 
+    private CommunicationController comController;
     /*--------------------
         Constructor
      --------------------*/
 
     //Basic constructor
-    public Player(PlayerModel player_model, Color player_color, String associatedMac) {
+    public Player(PlayerModel player_model, Color player_color, String associatedMac, CommunicationController comController) {
         super(null, true, player_model.get_meta().health_points, false, player_model);
         color = player_color;
         model = player_model;
@@ -50,6 +45,8 @@ public class Player extends GameObject implements Serializable {
         this.fire_interval_seconds = model.get_meta().shoot_interval;
         this.last_fire = 0;
         this.associatedMac = associatedMac;
+
+        this.comController = comController;
     }
 
     /*--------------------
@@ -254,5 +251,8 @@ public class Player extends GameObject implements Serializable {
         super.die();
         GameControl.add_object(new ParticleFx(Resources.PARTICLE_EXPLOSION(), (int) (getBody().getPosX()-50), (int) (getBody().getPosY()-50)));
         GameControl.remove_object(this);
+
+        this.comController.sendMessage(comController.createPacket(this.associatedMac, 200, null));
+        this.comController.closeMobileConnections(this.associatedMac);
     }
 }

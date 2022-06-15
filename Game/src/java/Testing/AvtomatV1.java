@@ -10,7 +10,6 @@ import View.Objects.ObjectModels.Players.PlayerModel;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -56,7 +55,7 @@ public final class AvtomatV1 extends Player {
 
 
   public AvtomatV1(ObjectModel model, Color av_color) {
-    super((PlayerModel) model, av_color, null);
+    super((PlayerModel) model, av_color, null, null);
     AI_STATE_AVTOMAT.AVT_ADAPTER av_adapter = new AI_STATE_AVTOMAT.AVT_ADAPTER();
     av = new AI_STATE_AVTOMAT(this, av_adapter);
     ((PlayerBody)body).setPotenciaAcceleracion(80);

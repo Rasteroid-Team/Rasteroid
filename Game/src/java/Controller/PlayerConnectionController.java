@@ -3,7 +3,6 @@ package Controller;
 import Model.Player;
 import View.Objects.ObjectModels.Players.PlayerColors;
 import View.Objects.ObjectModels.Players.PlayerModel;
-import View.Resources;
 import api.ApiService;
 import communications.CommunicationController;
 import communications.ProtocolDataPacket;
@@ -79,7 +78,7 @@ public class PlayerConnectionController {
 
     protected void setPlayerModel(String modelID, String mac){
         PlayerModel model = ApiService.getPlayerModel(ApiService.getPlayerById(modelID));
-        Player player = new Player(model, PlayerColors.cyan, mac);
+        Player player = new Player(model, PlayerColors.cyan, mac, comController);
         player.setModelID(modelID);
         GameControl.add_object(player);
     }
