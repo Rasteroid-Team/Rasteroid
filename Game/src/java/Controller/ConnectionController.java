@@ -67,27 +67,19 @@ public class ConnectionController implements ConnectionInterface {
     @Override
     public void onMessageReceived(ProtocolDataPacket packet) {
         switch (packet.getId()) {
-            case 150 -> {
-                screenConnController.receivePlayer(packet);
-            }
-            case 120 -> {
-                screenConnController.recieveConnectionPosition(packet);
-            }
-            case 152 -> {
-                playerConnController.recievePlayerMovement(packet);
-            }
-            case 151 -> {
-                playerConnController.recievePlayerShootOrder(packet);
-            }
-            case 161 -> {
-                screenConnController.receiveShoot(packet);
-            }
+            case 120 -> screenConnController.recieveConnectionPosition(packet);
+            case 150 -> screenConnController.receivePlayer(packet);
+            case 151 -> playerConnController.recievePlayerShootOrder(packet);
+            case 152 -> playerConnController.recievePlayerMovement(packet);
             case 156 -> {
                 System.out.println("Modelo recibido");
                 playerConnController.setPlayerModel(packet.getObject().toString(), packet.getSourceID());
             }
+            case 161 -> screenConnController.receiveShoot(packet);
         }
     }
+
+
 
     @Override
     public void onConnectionAccept(String mac) {
@@ -125,15 +117,33 @@ public class ConnectionController implements ConnectionInterface {
         );
 
         comController.addNewProtocol(
+                151,
+                "Shoot Bullet",
+                "null"
+        );
+
+        comController.addNewProtocol(
                 152,
                 "Move Player",
                 "float[]"
         );
 
         comController.addNewProtocol(
-                151,
-                "Shoot Bullet",
+                155,
+                "Request for Protocol 156. Asks for the model type the player has chosen",
                 "null"
+        );
+
+        comController.addNewProtocol(
+                156,
+                "Receive Player's chosen model",
+                "String"
+        );
+
+        comController.addNewProtocol(
+                161,
+                "Send Bullet",
+                "Bullet"
         );
 
         comController.addNewProtocol(
