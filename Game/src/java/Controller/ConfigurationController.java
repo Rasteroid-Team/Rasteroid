@@ -4,6 +4,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -20,8 +22,11 @@ public class ConfigurationController {
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
-        ip = i.getHostAddress();
-        nombre = "C:\\Users\\David\\Desktop\\PruebaGitKraken\\Rasteroid\\Game\\src\\Resources\\config\\"+ ip.replace(".", "") + ".properties";
+        ip = i.getHostAddress().replace(".", "") + ".properties";
+        Path path = Paths.get(ip);
+        String ruta = String.valueOf(path.toAbsolutePath());
+        System.out.println("Ruta: " + ruta.replace(ip,"Game\\src\\Resources\\config\\")+ip);
+        nombre = ruta.replace(ip,"Game\\src\\Resources\\config\\")+ip;
     }
 
     public ArrayList<String> connect(){
