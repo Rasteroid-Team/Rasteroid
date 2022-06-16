@@ -25,15 +25,13 @@ public class ScreenConnectionController {
         return connections;
     }
 
-    public void connectAnotherScreen(int conPosition, GraphicEngine graphics){
+    public void connectAnotherScreen(int conPosition){
         ConfigurationController p = new ConfigurationController();
         if(connections[conPosition] == null){
-            //show a panel asking for an ip
-            //String ip = JOptionPane.showInputDialog(graphics,
-            // "Ip to connect to?", null);
+            //connect screens
+            ArrayList<String> connect = new ArrayList<>();
+            connect = p.connect();
             if (conPosition == 0){
-                ArrayList<String> connect = new ArrayList<>();
-                connect = p.connect();
                 String ip = connect.get(0);
                 if(ip != null && !ip.isEmpty()){
                     comController.connectToIp(ip);
@@ -41,8 +39,6 @@ public class ScreenConnectionController {
                 }
             }
             if (conPosition == 1){
-                ArrayList<String> connect = new ArrayList<>();
-                connect = p.connect();
                 String ip = connect.get(1);
                 if(ip != null && !ip.isEmpty()){
                     comController.connectToIp(ip);
@@ -50,8 +46,6 @@ public class ScreenConnectionController {
                 }
             }
             if (conPosition == 2){
-                ArrayList<String> connect = new ArrayList<>();
-                connect = p.connect();
                 String ip = connect.get(2);
                 if(ip != null && !ip.isEmpty()){
                     comController.connectToIp(ip);
@@ -59,8 +53,6 @@ public class ScreenConnectionController {
                 }
             }
             if (conPosition == 3){
-                ArrayList<String> connect = new ArrayList<>();
-                connect = p.connect();
                 String ip = connect.get(3);
                 if(ip != null && !ip.isEmpty()){
                     comController.connectToIp(ip);

@@ -59,7 +59,7 @@ public class ConnectionController implements ConnectionInterface {
     }
 
     public void connectAnotherScreen(int conPosition , GraphicEngine graphics){
-        screenConnController.connectAnotherScreen(conPosition, graphics);
+        screenConnController.connectAnotherScreen(conPosition);
     }
 
     @Override
