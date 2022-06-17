@@ -9,6 +9,7 @@ import communications.CommunicationController;
 import communications.ProtocolDataPacket;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ScreenConnectionController {
@@ -25,44 +26,82 @@ public class ScreenConnectionController {
         return connections;
     }
 
-    public void connectAnotherScreen(int conPosition){
-        ConfigurationController p = new ConfigurationController();
-        if(connections[conPosition] == null){
-            //connect screens
-            ArrayList<String> connect = new ArrayList<>();
-            connect = p.connect();
-            if (conPosition == 0){
-                String ip = connect.get(0);
-                if(ip != null && !ip.isEmpty()){
-                    comController.connectToIp(ip);
-                    connections[conPosition] = "waiting";
+    public void connectAnotherScreen() {
+        boolean activo = true;
+        while (activo) {
+            for (int i = 0; i < 4; i++) {
+                ConfigurationController p = new ConfigurationController();
+                try {
+                    if (connections[i] == null) {
+                        //connect screens
+                        ArrayList<String> connect = new ArrayList<>();
+                        connect = p.connect();
+                        if (i == 0) {
+                            String ip = connect.get(0);
+                            try {
+                                if (ip != null && !ip.isEmpty()) {
+                                    comController.connectToIp(ip);
+                                    connections[i] = "waiting";
+                                    activo = false;
+                                }else{
+                                    activo = false;
+                                }
+                            }catch (Exception e){
+                                e.printStackTrace();
+                                activo = true;
+                            }
+                        }
+                        if (i == 1) {
+                            String ip = connect.get(1);
+                            try {
+                                if (ip != null && !ip.isEmpty()) {
+                                    comController.connectToIp(ip);
+                                    connections[i] = "waiting";
+                                    activo = false;
+                                }else{
+                                    activo = false;
+                                }
+                            }catch (Exception e) {
+                                e.printStackTrace();
+                                activo = true;
+                            }
+                        }
+                        if (i == 2) {
+                            String ip = connect.get(2);
+                            try {
+                                if (ip != null && !ip.isEmpty()) {
+                                    comController.connectToIp(ip);
+                                    connections[i] = "waiting";
+                                    activo = false;
+                                }else{
+                                    activo = false;
+                                }
+                            }catch (Exception e) {
+                                    e.printStackTrace();
+                                    activo = true;
+                                }
+                        }
+                        if (i == 3) {
+                            String ip = connect.get(3);
+                            try {
+                                if (ip != null && !ip.isEmpty()) {
+                                    comController.connectToIp(ip);
+                                    connections[i] = "waiting";
+                                    activo = false;
+                                }else{
+                                    activo = false;
+                                }
+                            }catch (Exception e) {
+                                    e.printStackTrace();
+                                    activo = true;
+                                }
+                        }
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    activo = true;
                 }
             }
-            if (conPosition == 1){
-                String ip = connect.get(1);
-                if(ip != null && !ip.isEmpty()){
-                    comController.connectToIp(ip);
-                    connections[conPosition] = "waiting";
-                }
-            }
-            if (conPosition == 2){
-                String ip = connect.get(2);
-                if(ip != null && !ip.isEmpty()){
-                    comController.connectToIp(ip);
-                    connections[conPosition] = "waiting";
-                }
-            }
-            if (conPosition == 3){
-                String ip = connect.get(3);
-                if(ip != null && !ip.isEmpty()){
-                    comController.connectToIp(ip);
-                    connections[conPosition] = "waiting";
-                }
-            }
-        }else{
-            //show panel with connection info and disconnect button
-            //ipLabel.setText(main.getInfo(3));
-            //dataDialog.setVisible(true);
         }
     }
 

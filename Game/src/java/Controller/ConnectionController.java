@@ -58,8 +58,8 @@ public class ConnectionController implements ConnectionInterface {
         GameControl.remove_object(object);
     }
 
-    public void connectAnotherScreen(int conPosition , GraphicEngine graphics){
-        screenConnController.connectAnotherScreen(conPosition);
+    public void connectAnotherScreen(GraphicEngine graphics){
+            screenConnController.connectAnotherScreen();
     }
 
     @Override
