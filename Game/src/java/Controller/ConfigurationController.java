@@ -11,37 +11,65 @@ import java.util.List;
 import java.util.Properties;
 
 public class ConfigurationController {
-    Properties p = new Properties();
-    InetAddress i;
-    String ip;
-    String nombre;
+    private Properties p = new Properties();
+    private InetAddress inetAddress;
+    private String ip;
+    private String nombre;
+
+    public Properties getP() {
+        return p;
+    }
+
+    public InetAddress getInetAddress() {
+        return inetAddress;
+    }
+
+    public void setInetAddress(InetAddress inetAddress) {
+        this.inetAddress = inetAddress;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
     public ConfigurationController() {
         try {
-            i = InetAddress.getLocalHost();
+            this.setInetAddress(InetAddress.getLocalHost());
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
-        ip = i.getHostAddress().replace(".", "") + ".properties";
-        Path path = Paths.get(ip);
+        this.setIp(this.getInetAddress().getHostAddress().replace(".", "") + ".properties");
+        Path path = Paths.get(this.getIp());
         String ruta = String.valueOf(path.toAbsolutePath());
-        System.out.println("Ruta: " + ruta.replace(ip,"Game\\src\\Resources\\config\\")+ip);
-        nombre = ruta.replace(ip,"Game\\src\\Resources\\config\\")+ip;
+        System.out.println("Ruta: " + ruta.replace(this.getIp(),"Game\\src\\Resources\\config\\")+this.getIp());
+        this.setNombre(ruta.replace(ip,"Game\\src\\Resources\\config\\")+this.getIp());
     }
 
     public ArrayList<String> connect(){
         ArrayList<String> listConnection = new ArrayList<>();
-        if (ip != null) {
+        if (this.getIp() != null) {
             try {
-                String n = nombre;
-                p.load(new FileReader(n));
-                String top = p.getProperty("0");
+                String n = this.getNombre();
+                this.getP().load(new FileReader(n));
+                String top = this.getP().getProperty("0");
                 listConnection.add(top);
-                String right = p.getProperty("1");
+                String right = this.getP().getProperty("1");
                 listConnection.add(right);
-                String bottom = p.getProperty("2");
+                String bottom = this.getP().getProperty("2");
                 listConnection.add(bottom);
-                String left = p.getProperty("3");
+                String left = this.getP().getProperty("3");
                 listConnection.add(left);
 
             } catch (IOException e) {
