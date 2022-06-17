@@ -38,67 +38,50 @@ public class ScreenConnectionController {
                         connect = p.connect();
                         if (i == 0) {
                             String ip = connect.get(0);
-                            try {
-                                if (ip != null && !ip.isEmpty()) {
-                                    comController.connectToIp(ip);
-                                    connections[i] = "waiting";
-                                    activo = false;
-                                }else{
-                                    activo = false;
-                                }
-                            }catch (Exception e){
-                                e.printStackTrace();
-                                activo = true;
+                            if (!ip.equals("null")) {
+                                comController.connectToIp(ip);
+                                connections[i] = "waiting";
+                                activo = false;
+                            }else{
+                                activo = false;
                             }
                         }
                         if (i == 1) {
                             String ip = connect.get(1);
-                            try {
-                                if (ip != null && !ip.isEmpty()) {
-                                    comController.connectToIp(ip);
-                                    connections[i] = "waiting";
-                                    activo = false;
-                                }else{
-                                    activo = false;
-                                }
-                            }catch (Exception e) {
-                                e.printStackTrace();
-                                activo = true;
+                            if (!ip.equals("null")) {
+                                comController.connectToIp(ip);
+                                connections[i] = "waiting";
+                                activo = false;
+                            }else{
+                                activo = false;
                             }
                         }
                         if (i == 2) {
                             String ip = connect.get(2);
-                            try {
-                                if (ip != null && !ip.isEmpty()) {
-                                    comController.connectToIp(ip);
-                                    connections[i] = "waiting";
-                                    activo = false;
-                                }else{
-                                    activo = false;
-                                }
-                            }catch (Exception e) {
-                                    e.printStackTrace();
-                                    activo = true;
-                                }
+                            if (!ip.equals("null")) {
+                                comController.connectToIp(ip);
+                                connections[i] = "waiting";
+                                activo = false;
+                            }else{
+                                activo = false;
+                            }
                         }
                         if (i == 3) {
                             String ip = connect.get(3);
-                            try {
-                                if (ip != null && !ip.isEmpty()) {
-                                    comController.connectToIp(ip);
-                                    connections[i] = "waiting";
-                                    activo = false;
-                                }else{
-                                    activo = false;
-                                }
-                            }catch (Exception e) {
-                                    e.printStackTrace();
-                                    activo = true;
-                                }
+
+                            if (!ip.equals("null")) {
+                                comController.connectToIp(ip);
+                                connections[i] = "waiting";
+                                activo = false;
+                            }else{
+                                activo = false;
+                            }
+
                         }
                     }
                 }catch (Exception e){
                     e.printStackTrace();
+                    System.out.println("Error Global" );
                     activo = true;
                 }
             }
