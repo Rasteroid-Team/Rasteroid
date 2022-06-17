@@ -38,6 +38,7 @@ public class GameControl {
         object.update(objects);
       }
       check_modification_list();
+      checkVictory();
     }
     catch (ConcurrentModificationException e)
     {
@@ -118,6 +119,30 @@ public class GameControl {
     synchronized (removing_list) {
       objects.removeAll(removing_list);
       removing_list.clear();
+    }
+  }
+
+  //comprueba la lista de GameObjects para declarar ganador, no funciona porque las pantallas no comparten la lista(?)
+  public void checkVictory() {
+    int i = 0;
+    boolean victory = false;
+    boolean onePlayer = true;
+    Player winPlayer = null;
+    for (GameObject object : objects) {
+      if (object instanceof Player) {
+        if (!onePlayer) {
+          victory = false;
+        }
+        if (onePlayer) {
+          winPlayer = (Player) object;
+          victory = true;
+          onePlayer = false;
+        }
+
+      }
+    }
+    if (victory) {
+      System.out.println(winPlayer.getName() + "is the winner");
     }
   }
 

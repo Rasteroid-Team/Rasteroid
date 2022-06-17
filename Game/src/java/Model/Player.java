@@ -254,5 +254,7 @@ public class Player extends GameObject implements Serializable {
         super.die();
         GameControl.add_object(new ParticleFx(Resources.PARTICLE_EXPLOSION(), (int) (getBody().getPosX()-50), (int) (getBody().getPosY()-50)));
         GameControl.remove_object(this);
+        //deberia comunicar de manera global que ha sido eliminado, restando de un contador de jugadores, cuando el contador
+        //llegue a 1 significa que el jugador que queda es el ganador
     }
 }
