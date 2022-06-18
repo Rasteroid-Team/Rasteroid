@@ -69,6 +69,20 @@ public class ConnectionController implements ConnectionInterface {
             case 151 -> {
                 playerConnController.recievePlayerShoot(packet);
             }
+            case 500 -> {
+                /*
+                if (GameControl.getStatus() == Lobby) {
+                    try {
+                        Thread.sleep(30000); //Wait 30s
+                        GameControl.startGame(); //Set Game to Start
+
+                     } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                     }
+                }
+
+                 */
+            }
         }
     }
 
