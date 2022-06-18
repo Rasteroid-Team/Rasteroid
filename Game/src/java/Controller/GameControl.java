@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.GameObject;
+import Model.GameRules;
 import Model.Map;
 import Model.Player;
 import Testing.AvtomatV1;
@@ -38,7 +39,6 @@ public class GameControl {
         object.update(objects);
       }
       check_modification_list();
-      checkVictory();
     }
     catch (ConcurrentModificationException e)
     {
@@ -122,8 +122,9 @@ public class GameControl {
     }
   }
 
-  //comprueba la lista de GameObjects para declarar ganador, no funciona porque las pantallas no comparten la lista(?)
-  public void checkVictory() {
+  //comprueba la lista de GameObjects para declarar ganador
+  //si numPlayers es igual a 1 el jugador que quede en la partida es el ganador
+  public static void checkVictory() {
     int i = 0;
     boolean victory = false;
     boolean onePlayer = true;
@@ -141,8 +142,8 @@ public class GameControl {
 
       }
     }
-    if (victory) {
-      System.out.println(winPlayer.getName() + "is the winner");
+    if (victory && GameRules.numPlayers == 1) {
+      System.out.println(winPlayer.getName() + "is the winner!!!");
     }
   }
 

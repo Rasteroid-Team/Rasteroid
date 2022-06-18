@@ -4,6 +4,7 @@ public class GameRules {
 
     //valores default a gamerules
     //valores se sobreescriben con fichero de configuracion(?)
+    public static int numPlayers = 1;
     private float baseBulletDamage = 10.0f;
     private float baseBulletSpreen = 3.0f;
     private float baseBulletLifeSpan = 10.0f;
