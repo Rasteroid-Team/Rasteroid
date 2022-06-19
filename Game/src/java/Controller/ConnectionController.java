@@ -86,12 +86,12 @@ public class ConnectionController implements ConnectionInterface {
                 this.notifyPlayerJoin();
             }
             case 300 -> {
-                System.out.println("Added Player");
                 GameRules.numPlayers++;
+                System.out.println("Added Player " + GameRules.numPlayers);
             }
             case 301 -> {
-                System.out.println("Removed Player");
                 GameRules.numPlayers--;
+                System.out.println("Removed Player " + GameRules.numPlayers);
             }
         }
     }
@@ -132,6 +132,7 @@ public class ConnectionController implements ConnectionInterface {
             }
         }
         GameRules.numPlayers++;
+        System.out.println("Added Local Player " + GameRules.numPlayers);
 
     }
 
@@ -148,6 +149,7 @@ public class ConnectionController implements ConnectionInterface {
             }
         }
         GameRules.numPlayers--;
+        System.out.println("Added Local Player " + GameRules.numPlayers);
 
     }
 }
