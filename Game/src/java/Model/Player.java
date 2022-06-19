@@ -31,13 +31,15 @@ public class Player extends GameObject implements Serializable {
     protected Color color;
     private String associatedMac;
     private boolean shooting;
+    private ConnectionController conController;
+
 
     /*--------------------
         Constructor
      --------------------*/
 
     //Basic constructor
-    public Player(PlayerModel player_model, Color player_color, String associatedMac) {
+    public Player(PlayerModel player_model, Color player_color, String associatedMac, ConnectionController conController) {
         super(null, true, player_model.get_meta().health_points, false, player_model);
         color = player_color;
         model = player_model;
@@ -50,6 +52,8 @@ public class Player extends GameObject implements Serializable {
         this.fire_interval_seconds = model.get_meta().shoot_interval;
         this.last_fire = 0;
         this.associatedMac = associatedMac;
+        this.conController = conController;
+
     }
 
     /*--------------------
@@ -254,6 +258,8 @@ public class Player extends GameObject implements Serializable {
         super.die();
         GameControl.add_object(new ParticleFx(Resources.PARTICLE_EXPLOSION(), (int) (getBody().getPosX()-50), (int) (getBody().getPosY()-50)));
         GameControl.remove_object(this);
+
+        conController.notifyPlayerDeath();
         GameControl.checkVictory();
         //deberia comunicar de manera global que ha sido eliminado, restando de un contador de jugadores, cuando el contador
         //llegue a 1 significa que el jugador que queda es el ganador
