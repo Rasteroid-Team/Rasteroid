@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.GameRules;
 import Model.Player;
 import View.Objects.ObjectModels.Players.PlayerColors;
 import View.Objects.ObjectModels.Players.PlayerModel;
@@ -79,9 +80,43 @@ public class PlayerConnectionController {
 
     protected void setPlayerModel(String modelID, String mac){
         PlayerModel model = ApiService.getPlayerModel(ApiService.getPlayerById(modelID));
-        Player player = new Player(model, PlayerColors.cyan, mac);
+        Player player = new Player(model, PlayerColors.cyan, mac, this);
         player.setModelID(modelID);
         GameControl.add_object(player);
+    }
+
+    /**
+     * Sends packet to all ConnectedPCs to update the amount of total players and updates this pc's total players.
+     */
+    public void notifyPlayerJoin() {
+        //Gets all Mac Addresses (not LocalMac)
+        for (String mac : comController.getConnectedMacs()) {
+            //Checks if Mac is PC
+            if (comController.getConnectedDeviceType(mac) == CommunicationController.PC) {
+                comController.sendMessage(comController.createPacket(mac, 300, null));
+
+            }
+        }
+        GameRules.numPlayers++;
+        System.out.println("Added Local Player " + GameRules.numPlayers);
+
+    }
+
+    /**
+     * Sends packet to all ConnectedPCs to update the amount of total players and updates this pc's total players.
+     */
+    public void notifyPlayerDeath() {
+        //Gets all Mac Addresses (not LocalMac)
+        for (String mac : comController.getConnectedMacs()) {
+            //Checks if Mac is PC
+            if (comController.getConnectedDeviceType(mac) == CommunicationController.PC) {
+                comController.sendMessage(comController.createPacket(mac, 301, null));
+
+            }
+        }
+        GameRules.numPlayers--;
+        System.out.println("Removed Local Player " + GameRules.numPlayers);
+
     }
 
 }

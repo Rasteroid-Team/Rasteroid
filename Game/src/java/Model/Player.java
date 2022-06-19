@@ -1,9 +1,6 @@
 package Model;
 
-import Controller.ConnectionController;
-import Controller.GameControl;
-import Controller.GameEngine;
-import Controller.ScreenConnectionController;
+import Controller.*;
 import Testing.InputAdapter;
 import View.Objects.ObjectModels.ObjectModel;
 import View.Objects.ObjectModels.Players.HR75;
@@ -31,7 +28,7 @@ public class Player extends GameObject implements Serializable {
     protected Color color;
     private String associatedMac;
     private boolean shooting;
-    private ConnectionController conController;
+    private PlayerConnectionController playerConnectionController;
 
 
     /*--------------------
@@ -39,7 +36,7 @@ public class Player extends GameObject implements Serializable {
      --------------------*/
 
     //Basic constructor
-    public Player(PlayerModel player_model, Color player_color, String associatedMac, ConnectionController conController) {
+    public Player(PlayerModel player_model, Color player_color, String associatedMac, PlayerConnectionController playerConnectionController) {
         super(null, true, player_model.get_meta().health_points, false, player_model);
         color = player_color;
         model = player_model;
@@ -52,7 +49,9 @@ public class Player extends GameObject implements Serializable {
         this.fire_interval_seconds = model.get_meta().shoot_interval;
         this.last_fire = 0;
         this.associatedMac = associatedMac;
-        this.conController = conController;
+        this.playerConnectionController = playerConnectionController;
+        if (this.playerConnectionController != null) playerConnectionController.notifyPlayerDeath();
+
 
     }
 
@@ -259,7 +258,7 @@ public class Player extends GameObject implements Serializable {
         GameControl.add_object(new ParticleFx(Resources.PARTICLE_EXPLOSION(), (int) (getBody().getPosX()-50), (int) (getBody().getPosY()-50)));
         GameControl.remove_object(this);
 
-        conController.notifyPlayerDeath();
+        if (this.playerConnectionController != null) playerConnectionController.notifyPlayerDeath();
         GameControl.checkVictory();
         //deberia comunicar de manera global que ha sido eliminado, restando de un contador de jugadores, cuando el contador
         //llegue a 1 significa que el jugador que queda es el ganador
