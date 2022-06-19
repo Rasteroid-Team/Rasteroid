@@ -50,9 +50,7 @@ public class Player extends GameObject implements Serializable {
         this.last_fire = 0;
         this.associatedMac = associatedMac;
         this.playerConnectionController = playerConnectionController;
-        if (this.playerConnectionController != null) playerConnectionController.notifyPlayerDeath();
-
-
+        if (this.playerConnectionController != null) playerConnectionController.notifyPlayerJoin();
     }
 
     /*--------------------
