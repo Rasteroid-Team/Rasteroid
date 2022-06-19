@@ -12,6 +12,8 @@ import org.json.simple.parser.ParseException;
 import java.awt.*;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -31,9 +33,13 @@ public class HR75 extends PlayerModel {
    * RESOURCE_SET
    */
   public void asignarValoresJSON() {
+    String json = "HR75.json";
+    Path path = Paths.get(json);
+    String ruta = String.valueOf(path.toAbsolutePath());
+    String rutaAbsoluta = ruta.replace(json,"Game\\src\\Resources\\config\\")+json;
     {
       try {
-        object = parser.parse(new FileReader("D:\\DAM2\\Rasteroid\\Game\\src\\Resources\\config\\HR75.json"));
+        object = parser.parse(new FileReader(rutaAbsoluta));
       } catch (IOException e) {
         throw new RuntimeException(e);
       } catch (ParseException e) {
