@@ -15,6 +15,7 @@ import java.util.List;
 
 public class ConnectionController implements ConnectionInterface {
 
+    int contadorJugadores;
     CommunicationController comController;
     ScreenConnectionController screenConnController;
     PlayerConnectionController playerConnController;
@@ -80,7 +81,9 @@ public class ConnectionController implements ConnectionInterface {
                 screenConnController.receiveShoot(packet);
             }
             case 156 -> {
+                contadorJugadores += 1;
                 System.out.println("Modelo recibido");
+                System.out.println("Jugadores: " + contadorJugadores);
                 playerConnController.setPlayerModel(packet.getObject().toString(), packet.getSourceID());
                 this.notifyPlayerJoin();
             }
