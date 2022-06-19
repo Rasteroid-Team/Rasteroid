@@ -2,7 +2,13 @@ package View.Objects.ObjectModels.Players;
 
 import View.Objects.Animation;
 import View.Objects.MachineState;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Phoenix extends PlayerModel {
@@ -10,16 +16,48 @@ public class Phoenix extends PlayerModel {
   /**
    * META_SET
    */
+  JSONParser parser = new JSONParser();
+  Object object;
   public Phoenix()
   {
-    meta = new Meta();
-    meta.health_points = 70;
-    meta.velocity = 7;
-    meta.damage_per_bullet = 5;
-    meta.shoot_interval = 0.2;
-    meta.bullet_offset_x_y_list = new ArrayList<>();
-    meta.bullet_offset_x_y_list.add(new int[]{-30,-10});
-    meta.bullet_offset_x_y_list.add(new int[]{30,-10});
+    asignarValoresJSON();
+  }
+
+  public void asignarValoresJSON() {
+    {
+      try {
+        object = parser.parse(new FileReader("D:\\DAM2\\Rasteroid\\Game\\src\\Resources\\config\\Phoenix.json"));
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      } catch (ParseException e) {
+        throw new RuntimeException(e);
+      }
+    }
+
+    JSONObject config = (JSONObject) object;
+    String vel = (String) config.get("velocity");
+    String health = (String) config.get("health_points");
+    String damage = (String) config.get("damage_per_bullet");
+    String shoot = (String) config.get("shoot_interval");
+
+    JSONArray arr = (JSONArray) config.get("BulletOffset");
+
+    for (int i = 0; i < arr.size(); i++) {
+      JSONObject j = (JSONObject) arr.get(i);
+      String x = j.get("x").toString();
+      String y = j.get("y").toString();
+      String x2 = j.get("x2").toString();
+      String y2 = j.get("y2").toString();
+
+      meta = new Meta();
+      meta.health_points = Integer.parseInt(health);
+      meta.velocity = Integer.parseInt(vel);
+      meta.damage_per_bullet = Integer.parseInt(damage);
+      meta.shoot_interval = Double.parseDouble(shoot);
+      meta.bullet_offset_x_y_list = new ArrayList<>();
+      meta.bullet_offset_x_y_list.add(new int[]{Integer.parseInt(x), Integer.parseInt(y)});
+      meta.bullet_offset_x_y_list.add(new int[]{Integer.parseInt(x2), Integer.parseInt(y2)});
+    }
   }
 
   /**
