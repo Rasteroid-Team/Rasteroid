@@ -9,6 +9,8 @@ import api.ApiService;
 import communications.CommunicationController;
 import communications.ProtocolDataPacket;
 
+import java.util.Objects;
+
 public class PlayerConnectionController {
 
     public CommunicationController comController;
@@ -91,8 +93,9 @@ public class PlayerConnectionController {
     public void notifyPlayerJoin() {
         //Gets all Mac Addresses (not LocalMac)
         for (String mac : comController.getConnectedMacs()) {
-            //Checks if Mac is PC
-            if (comController.getConnectedDeviceType(mac) == CommunicationController.PC) {
+            System.out.println(comController.getConnectedMacs());
+            //Checks if Mac is PC and is not this PC
+            if (comController.getConnectedDeviceType(mac) == CommunicationController.PC && !Objects.equals(comController.getLocalMAC(), mac)) {
                 comController.sendMessage(comController.createPacket(mac, 300, null));
 
             }
@@ -108,6 +111,7 @@ public class PlayerConnectionController {
     public void notifyPlayerDeath() {
         //Gets all Mac Addresses (not LocalMac)
         for (String mac : comController.getConnectedMacs()) {
+            System.out.println(comController.getConnectedMacs());
             //Checks if Mac is PC
             if (comController.getConnectedDeviceType(mac) == CommunicationController.PC) {
                 comController.sendMessage(comController.createPacket(mac, 301, null));

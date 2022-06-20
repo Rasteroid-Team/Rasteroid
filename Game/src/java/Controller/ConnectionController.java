@@ -93,6 +93,9 @@ public class ConnectionController implements ConnectionInterface {
                 GameRules.numPlayers--;
                 System.out.println("Removed Player " + GameRules.numPlayers);
             }
+            case 123123 -> {
+                System.out.println("Broadcast Received");
+            }
         }
     }
 

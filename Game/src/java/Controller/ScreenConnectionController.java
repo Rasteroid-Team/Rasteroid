@@ -32,6 +32,9 @@ public class ScreenConnectionController {
             if(ip != null && !ip.isEmpty()){
                 comController.connectToIp(ip);
                 connections[conPosition] = "waiting";
+                comController.sendBroadcastMessage(123123, null);
+
+
             }
         }else{
             //show panel with connection info and disconnect button
