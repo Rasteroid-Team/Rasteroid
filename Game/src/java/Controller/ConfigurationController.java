@@ -16,15 +16,15 @@ import java.util.List;
 import java.util.Properties;
 
 public class ConfigurationController {
-    private Properties p = new Properties();
+    private Properties properties = new Properties();
     private InetAddress inetAddress;
     private String ip;
     private String nombre;
     JSONParser parser = new JSONParser();
     Object object;
 
-    public Properties getP() {
-        return p;
+    public Properties getProperties() {
+        return properties;
     }
 
     public InetAddress getInetAddress() {
@@ -69,14 +69,14 @@ public class ConfigurationController {
         if (this.getIp() != null) {
             try {
                 String n = this.getNombre();
-                this.getP().load(new FileReader(n));
-                String top = this.getP().getProperty("0");
+                this.getProperties().load(new FileReader(n));
+                String top = this.getProperties().getProperty("0");
                 listConnection.add(top);
-                String right = this.getP().getProperty("1");
+                String right = this.getProperties().getProperty("1");
                 listConnection.add(right);
-                String bottom = this.getP().getProperty("2");
+                String bottom = this.getProperties().getProperty("2");
                 listConnection.add(bottom);
-                String left = this.getP().getProperty("3");
+                String left = this.getProperties().getProperty("3");
                 listConnection.add(left);
 
             } catch (IOException e) {
@@ -104,9 +104,9 @@ public class ConfigurationController {
 
         JSONObject config = (JSONObject) object;
         String name = (String) config.get("nombre");
-        int kills = (int) config.get("kills");
+        String oldKills = (String) config.get("kills");
         records.add(name);
-        records.add(String.valueOf(kills));
+        records.add(oldKills);
         return records;
     }
 
@@ -114,16 +114,16 @@ public class ConfigurationController {
         int oldKills = Integer.parseInt(readRecord().get(1));
         if (newKills > oldKills)
         {
+            String kills = String.valueOf(newKills);
             JSONObject json = new JSONObject();
             json.put("nombre", name);
-            json.put("kills", newKills);
+            json.put("kills", kills);
             try {
                 String jsonFile = "record.json";
                 Path path = Paths.get(jsonFile);
                 String ruta = String.valueOf(path.toAbsolutePath());
                 String rutaAbsoluta = ruta.replace(jsonFile,"Game\\src\\Resources\\config\\")+jsonFile;
-                // Para sobreescribir el fichero hay que añadir 'true' como segundo parámetro.
-                FileWriter file = new FileWriter(rutaAbsoluta, true);
+                FileWriter file = new FileWriter(rutaAbsoluta);
                 file.write(json.toJSONString());
                 file.flush();
                 file.close();
