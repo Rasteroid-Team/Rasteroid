@@ -100,7 +100,7 @@ public class Bullet extends GameObject implements Serializable {
             }
             if (object instanceof Player && !((Player)object).getAssociatedMac().equals(this.playerOwnerMac))
             {
-                object.take_damage(damage);
+                object.take_damage(damage, player_owner);
                 GameControl.remove_object(Bullet.this);
             }
         }
