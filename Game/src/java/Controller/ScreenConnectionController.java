@@ -81,7 +81,6 @@ public class ScreenConnectionController {
                     }
                 }catch (Exception e){
                     e.printStackTrace();
-                    System.out.println("Error Global" );
                     activo = true;
                 }
             }

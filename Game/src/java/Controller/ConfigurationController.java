@@ -60,7 +60,6 @@ public class ConfigurationController {
         this.setIp(this.getInetAddress().getHostAddress().replace(".", "") + ".properties");
         Path path = Paths.get(this.getIp());
         String ruta = String.valueOf(path.toAbsolutePath());
-        System.out.println("Ruta: " + ruta.replace(this.getIp(),"Game\\src\\Resources\\config\\")+this.getIp());
         this.setNombre(ruta.replace(ip,"Game\\src\\Resources\\config\\")+this.getIp());
     }
 
