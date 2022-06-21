@@ -1,9 +1,6 @@
 package Model;
 
-import Controller.ConnectionController;
-import Controller.GameControl;
-import Controller.GameEngine;
-import Controller.ScreenConnectionController;
+import Controller.*;
 import Testing.InputAdapter;
 import View.Objects.ObjectModels.ObjectModel;
 import View.Objects.ObjectModels.Players.HR75;
@@ -252,6 +249,9 @@ public class Player extends GameObject implements Serializable {
     @Override
     public void die() {
         super.die();
+        ConfigurationController confContr = new ConfigurationController();
+        //Si se ejecuta desde la rama config this.getName() es null por lo que hay que introducir una string hardcoded.
+        confContr.writeRecord(this.getName(), this.getKillCount());
         GameControl.add_object(new ParticleFx(Resources.PARTICLE_EXPLOSION(), (int) (getBody().getPosX()-50), (int) (getBody().getPosY()-50)));
         GameControl.remove_object(this);
     }

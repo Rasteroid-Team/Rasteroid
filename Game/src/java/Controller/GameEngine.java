@@ -47,6 +47,7 @@ public class GameEngine extends Thread{
   public void init() {
     is_running = true;
     start();
+    connController.connectAnotherScreen(graphics);
   }
 
   @Override
@@ -143,22 +144,22 @@ public class GameEngine extends Thread{
         if(e.getX() <= screenSize.getWidth()/2+diameter/2 && e.getX() >= screenSize.getWidth()/2-diameter/2 &&
                 e.getY() <= screenSize.getHeight()-15 && e.getY() >= screenSize.getHeight()-diameter-15){
           System.out.println("Pressed bottom");
-          connController.connectAnotherScreen(2, graphics);
+          connController.connectAnotherScreen(graphics);
         }//then check top mid
         else if(e.getX() <= screenSize.getWidth()/2+diameter/2 && e.getX() >= screenSize.getWidth()/2-diameter/2 &&
                 e.getY() <= 15+diameter && e.getY() >= 15){
           System.out.println("Pressed top");
-          connController.connectAnotherScreen(0, graphics);
+          connController.connectAnotherScreen(graphics);
         }//then check right
         else if(e.getX() <= screenSize.getWidth()-15 && e.getX() >= screenSize.getWidth()-diameter-15 &&
                 e.getY() <= screenSize.getHeight()/2+diameter/2 && e.getY() >= screenSize.getHeight()/2-diameter/2){
           System.out.println("Pressed right");
-          connController.connectAnotherScreen(1, graphics);
+          connController.connectAnotherScreen(graphics);
         }//finally check left
         else if(e.getX() <= 0+diameter+15 && e.getX() >= 15 &&
                 e.getY() <= screenSize.getHeight()/2+diameter/2 && e.getY() >= screenSize.getHeight()/2-diameter/2){
           System.out.println("Pressed left");
-          connController.connectAnotherScreen(3, graphics);
+          connController.connectAnotherScreen(graphics);
         }
       }
       @Override
