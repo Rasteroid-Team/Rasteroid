@@ -1,0 +1,10 @@
+{
+  "velocity"  : "5",
+  "health_points" : "100",
+  "damage_per_bullet" : "15",
+  "shoot_interval" : "0.4",
+  "BulletOffset" : [{
+    "x" : "0",
+    "y" : "-40"
+  }]
+}
