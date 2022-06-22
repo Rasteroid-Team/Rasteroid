@@ -161,7 +161,7 @@ public class GameControl {
 
       }
     }
-    if (victory && GameRules.numPlayers == 1) {
+    if (victory && GameRules.numPlayers == 1 && GameEngine.phase == GameEngine.GamePhase.IN_GAME) {
       System.out.println(winPlayer.getName() + "is the winner!!!");
     }
   }
