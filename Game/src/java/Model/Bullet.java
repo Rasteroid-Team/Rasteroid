@@ -107,7 +107,6 @@ public class Bullet extends GameObject implements Serializable {
                     object.take_damage(damage, player_owner);
 
                 }
-
                 GameControl.remove_object(Bullet.this);
             }
         }

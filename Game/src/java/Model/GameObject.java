@@ -140,7 +140,6 @@ public class GameObject implements Serializable {
             die();
             Player player = (Player) bulletOwner;
             player.setKillCount(player.getKillCount()+1);
-            System.out.println("Kill count: "+player.getKillCount());
         }
     }
 
