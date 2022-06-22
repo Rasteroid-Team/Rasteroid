@@ -9,6 +9,8 @@ import communications.CommunicationController;
 import communications.ProtocolDataPacket;
 
 import javax.swing.*;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class ScreenConnectionController {
 
@@ -24,19 +26,34 @@ public class ScreenConnectionController {
         return connections;
     }
 
-    public void connectAnotherScreen(int conPosition, GraphicEngine graphics){
-        if(connections[conPosition] == null){
-            //show a panel asking for an ip
-            String ip = JOptionPane.showInputDialog(graphics,
-                    "Ip to connect to?", null);
-            if(ip != null && !ip.isEmpty()){
-                comController.connectToIp(ip);
-                connections[conPosition] = "waiting";
+    public void connectAnotherScreen() {
+        int activo = 0;
+        int noNulls = 0;
+        ConfigurationController p = new ConfigurationController();
+        ArrayList<String> connect = p.connect();
+
+        for (String checkingIp : connect){
+            if (!checkingIp.equals("null")){
+                noNulls++;
             }
-        }else{
-            //show panel with connection info and disconnect button
-            //ipLabel.setText(main.getInfo(3));
-            //dataDialog.setVisible(true);
+        }
+
+        while (activo < noNulls) {
+            for (int i = 0; i < 4; i++) {
+                try {
+                    if (connections[i] == null) {
+                        //connect screens
+                        String ip = connect.get(i);
+                        if (!ip.equals("null")) {
+                            comController.connectToIp(ip);
+                            connections[i] = "waiting";
+                            activo ++;
+                        }
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
