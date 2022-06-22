@@ -481,7 +481,7 @@ public class CommunicationController {
             Connection conn = new Connection(this, socket,initiater, protocol);
             Thread thread = new Thread(conn);
             thread.start();
-        }catch(IOException ex){
+        }catch(Exception ex){
             System.out.println("Problem creating a connection: " + ex.getMessage());
         }
     }
@@ -576,7 +576,8 @@ public class CommunicationController {
         ArrayList<Connection> allConnections = this.getAllConnections();
         for(String str : joinedMap.keySet()){
             for(Connection e : allConnections){
-                if(e.getLookup().containsKey(str) && e.getLookup().get(str).equals(joinedMap.get(str))){
+                if(e != null && e.getSocket() != null && e.getLookup().containsKey(str) &&
+                        e.getLookup().get(str).equals(joinedMap.get(str))){
                     returnMap.put(str, e);
                     break;
                 }

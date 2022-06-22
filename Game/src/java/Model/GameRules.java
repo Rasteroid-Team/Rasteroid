@@ -1,17 +1,21 @@
 package Model;
 
 public class GameRules {
-    private float baseBulletDamage;
-    private float baseBulletSpreen;
-    private float baseBulletLifeSpan;
-    private float basePlayerHealth;
-    private float basePlayerShootCoolDown;
-    private boolean breakableWalls;
-    private float environmentFriction;
-    private int goal;
-    private float maxPlayerSpeed;
-    private boolean peaceful;
-    private int startBreaktimeDuration;
+
+    //valores default a gamerules
+    //valores se sobreescriben con fichero de configuracion(?)
+    public static int numPlayers = 0;
+    private float baseBulletDamage = 10.0f;
+    private float baseBulletSpreen = 3.0f;
+    private float baseBulletLifeSpan = 10.0f;
+    private float basePlayerHealth = 100.0f;
+    private float basePlayerShootCoolDown = 1.5f;
+    private boolean breakableWalls = false;
+    private float environmentFriction = 0.3f;
+    private int goal = 10;
+    private float maxPlayerSpeed = 5.0f;
+    private boolean peaceful = false;
+    private int startBreaktimeDuration = 4;
 
     public float getBaseBulletDamage() {
         return baseBulletDamage;

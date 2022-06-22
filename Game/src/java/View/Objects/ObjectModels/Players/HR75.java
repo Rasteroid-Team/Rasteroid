@@ -4,8 +4,16 @@ import View.Objects.Animation;
 import View.Objects.MachineState;
 import View.Objects.ObjectModels.ObjectModel;
 import View.Sprite;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.awt.*;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,21 +22,53 @@ public class HR75 extends PlayerModel {
   /**
    * META_SET
    */
+  JSONParser parser = new JSONParser();
+  Object object;
   public HR75()
   {
-    meta = new Meta();
-    meta.health_points = 100;
-    meta.velocity = 5;
-    meta.damage_per_bullet = 15;
-    meta.shoot_interval = 0.4;
-    meta.bullet_offset_x_y_list = new ArrayList<>();
-    meta.bullet_offset_x_y_list.add(new int[]{0,-40});
+    asignarValoresJSON();
   }
 
   /**
    * RESOURCE_SET
    */
+  public void asignarValoresJSON() {
+    String json = "HR75.json";
+    Path path = Paths.get(json);
+    String ruta = String.valueOf(path.toAbsolutePath());
+    String rutaAbsoluta = ruta.replace(json,"Game\\src\\Resources\\config\\")+json;
+    {
+      try {
+        object = parser.parse(new FileReader(rutaAbsoluta));
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      } catch (ParseException e) {
+        throw new RuntimeException(e);
+      }
+    }
 
+    JSONObject config = (JSONObject) object;
+    String vel = (String) config.get("velocity");
+    String health = (String) config.get("health_points");
+    String damage = (String) config.get("damage_per_bullet");
+    String shoot = (String) config.get("shoot_interval");
+
+    JSONArray arr = (JSONArray) config.get("BulletOffset");
+
+    for (int i = 0; i < arr.size(); i++) {
+      JSONObject j = (JSONObject) arr.get(i);
+      String x = j.get("x").toString();
+      String y = j.get("y").toString();
+
+      meta = new Meta();
+      meta.health_points = Integer.parseInt(health);
+      meta.velocity = Integer.parseInt(vel);
+      meta.damage_per_bullet = Integer.parseInt(damage);
+      meta.shoot_interval = Double.parseDouble(shoot);
+      meta.bullet_offset_x_y_list = new ArrayList<>();
+      meta.bullet_offset_x_y_list.add(new int[]{Integer.parseInt(x), Integer.parseInt(y)});
+    }
+  }
   private final String res_path = "Game/src/Resources/players/hr75/";
 
   @Override
