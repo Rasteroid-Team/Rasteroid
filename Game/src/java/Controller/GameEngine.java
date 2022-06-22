@@ -1,11 +1,22 @@
 package Controller;
 
 
+import Model.GameObject;
+import Model.Player;
+import Testing.InputAdapter;
 import View.GraphicEngine;
+import View.Objects.ObjectModels.Players.PlayerColors;
+import View.Resources;
+import communications.CommunicationController;
+import communications.ConnectionInterface;
+import communications.ProtocolDataPacket;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameEngine extends Thread {
 
@@ -119,10 +130,10 @@ public class GameEngine extends Thread {
         }
     }
 
-    public void set_max_ups(int ups) {
-        ups_max = ups;
-        ups_period = 1E+3 / ups_max;
-    }
+  public void set_max_ups(int ups) {
+    ups_max = ups;
+    ups_period = 1E+3 / ups_max;
+  }
 
     private void addMouseClickDetector() {
         graphics.addMouseListener(new MouseListener() {
