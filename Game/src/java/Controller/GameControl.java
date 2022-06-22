@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.GameObject;
+import Model.GameRules;
 import Model.Map;
 import Model.Player;
 import Testing.AvtomatV1;
@@ -9,12 +10,17 @@ import View.GraphicEngine;
 import communications.CommunicationController;
 
 import java.awt.*;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.LineNumberReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
+import java.util.Properties;
 
 public class GameControl {
 
@@ -27,6 +33,19 @@ public class GameControl {
   private boolean debug_mode;
   private GameEngine game_engine;
   DecimalFormat two_decimals = new DecimalFormat("#.00");
+
+  public static int readyPCs = 0;
+  public static int expectedPCs;
+
+  static {
+    try {
+      Properties properties = new Properties();
+      properties.load(new FileReader("Game\\src\\Resources\\config\\ipconfig.properties"));
+      expectedPCs = Integer.parseInt(properties.getProperty("total"));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
 
   public void update()
   {
@@ -67,6 +86,7 @@ public class GameControl {
       draw_engine_values(graphics);
       draw_ip_address(graphics);
       this.drawButtons(graphics);
+      draw_game_phase(graphics);
       //draw_object_position(graphics, player);
       //draw_object_hit_box(graphics, player);
       //draw_player_nickname(graphics, player);
@@ -121,6 +141,31 @@ public class GameControl {
     }
   }
 
+  //comprueba la lista de GameObjects para declarar ganador
+  //si numPlayers es igual a 1 el jugador que quede en la partida es el ganador
+  public static void checkVictory() {
+    int i = 0;
+    boolean victory = false;
+    boolean onePlayer = true;
+    Player winPlayer = null;
+    for (GameObject object : objects) {
+      if (object instanceof Player) {
+        if (!onePlayer) {
+          victory = false;
+        }
+        if (onePlayer) {
+          winPlayer = (Player) object;
+          victory = true;
+          onePlayer = false;
+        }
+
+      }
+    }
+    if (victory && GameRules.numPlayers == 1 && GameEngine.phase == GameEngine.GamePhase.IN_GAME) {
+      System.out.println(winPlayer.getName() + "is the winner!!!");
+    }
+  }
+
   private void draw_engine_values(Graphics2D graphics)
   {
     if (game_engine != null)
@@ -158,6 +203,16 @@ public class GameControl {
     graphics.drawString("► IPv4: ", 20,110);
     graphics.setColor(Color.gray);
     graphics.drawString(ip, 65, 110);
+  }
+  private void draw_game_phase(Graphics2D graphics)
+  {
+    String phase = String.valueOf(GameEngine.phase);
+
+    graphics.setColor(Color.white);
+    graphics.setColor(Color.MAGENTA);
+    graphics.drawString("► PHASE: ", 20,130);
+    graphics.setColor(Color.gray);
+    graphics.drawString(phase, 95, 130);
   }
 
   //private void draw_object_position(Graphics2D graphics, GameObject object)

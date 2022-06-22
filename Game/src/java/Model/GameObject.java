@@ -1,5 +1,7 @@
 package Model;
 
+import Controller.ConnectionController;
+import Controller.ScreenConnectionController;
 import Testing.InputAdapter;
 import View.Objects.MachineState;
 import View.Objects.ObjectModels.Players.HR75;
@@ -22,6 +24,7 @@ public class GameObject implements Serializable {
     protected List<MachineState> stateList;
     protected String transferingTo;
     protected int transferingSide;
+    protected int transfer = -1;
 
     public GameObject(Body body, boolean visible, float health, boolean invencible, ObjectModel model) {
         this.body = body;
@@ -88,8 +91,10 @@ public class GameObject implements Serializable {
         return transferingSide;
     }
 
+    /*If the object could be sent to another pc
+    call this method inside it's implementation (super.update) after body.update*/
     public void update(List<GameObject> objects) {
-
+        this.checkObjectTransfer();
     }
 
     public void render(Graphics2D graphics)
@@ -175,5 +180,40 @@ public class GameObject implements Serializable {
 
     private void show_life_bar() {
         life_bar_time = System.currentTimeMillis();
+    }
+
+    //up 0, right 1, down 2, left 3
+    private void checkObjectTransfer(){
+        if (this.transfer != -1){
+            switch (this.transfer){
+                case 0:
+                    this.transferingTo = ScreenConnectionController.getConnections()[0];
+                    this.transferingSide = 0;
+                    this.transfer = -1;
+                    ConnectionController.addTransferingObject(this);
+                    break;
+
+                case 1:
+                    this.transferingTo = ScreenConnectionController.getConnections()[1];
+                    this.transferingSide = 1;
+                    this.transfer = -1;
+                    ConnectionController.addTransferingObject(this);
+                    break;
+
+                case 2:
+                    this.transferingTo = ScreenConnectionController.getConnections()[2];
+                    this.transferingSide = 2;
+                    this.transfer = -1;
+                    ConnectionController.addTransferingObject(this);
+                    break;
+
+                case 3:
+                    this.transferingTo = ScreenConnectionController.getConnections()[3];
+                    this.transferingSide = 3;
+                    this.transfer = -1;
+                    ConnectionController.addTransferingObject(this);
+                    break;
+            }
+        }
     }
 }

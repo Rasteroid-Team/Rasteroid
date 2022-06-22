@@ -8,6 +8,7 @@ import View.Sprite;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 
 public abstract class PlayerModel extends ObjectModel implements Serializable {
 
@@ -54,5 +55,26 @@ public abstract class PlayerModel extends ObjectModel implements Serializable {
   }
 
   public Sprite get_aura() {return aura;}
+
+
+  /**
+   * <h2>💀 Meta options and configuration 💀</h2>
+   * <p>Add here any property that can be used to distinct each model</p>
+   * <p><b>Warning :</b>
+   * <br>
+   * &nbsp;&nbsp;&nbsp;&nbsp; You need to create a new instance of {@link Meta} inside any model<br>
+   * &nbsp;&nbsp;&nbsp;&nbsp; "<code>Class<?extends PlayerModel></code>" and be sure to set all of these variables<br>
+   * &nbsp;&nbsp;&nbsp;&nbsp; to have a good in-game performance</p>
+   */
+  Meta meta;
+  public Meta get_meta() {return meta;}
+  public static class Meta
+  {
+    public int health_points;
+    public int damage_per_bullet;
+    public double shoot_interval;
+    public List<int[]> bullet_offset_x_y_list;
+    public int velocity;
+  }
 
 }
