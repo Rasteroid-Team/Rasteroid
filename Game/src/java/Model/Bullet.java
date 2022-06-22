@@ -1,15 +1,19 @@
 package Model;
 
 import Controller.GameControl;
+import Testing.AvtomatV1;
 import Testing.InputAdapter;
 import View.Objects.ObjectModels.ObjectModel;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Bullet extends GameObject {
+public class Bullet extends GameObject implements Serializable {
     protected String ownerName;
     protected float damage;
     protected float angle;
+    protected int offset_x;
+    protected int offset_y;
 
     /*--------------------
         Constructor
@@ -24,10 +28,13 @@ public class Bullet extends GameObject {
 
     // ★ Pruebas Josel ★
 
-    public Bullet(Player owner, ObjectModel model)
+    //TODO: Ajustar las nuevas implementaciones junto a las comunicaciones
+    public Bullet(Player owner, ObjectModel model, int off_x, int off_y, int bullet_damage)
     {
         super(null, true, 1, true, model);
-        damage = 5;
+        damage = bullet_damage;
+        offset_x = off_x;
+        offset_y = off_y;
         ownerName = owner.getName();
         angle = owner.getBody().getAngle();
         BulletBody body = new BulletBody(owner);
@@ -36,20 +43,24 @@ public class Bullet extends GameObject {
 
     @Override
     public void update(List<GameObject> objects) {
+        transfer = body.update(objects);
         super.update(objects);
-        body.update(objects);
     }
 
-    public class BulletBody extends DynamicBody
+    public class BulletBody extends DynamicBody implements Serializable
     {
         private Player player_owner;
+        private String playerOwnerMac;
 
         protected BulletBody(Player owner)
         {
             player_owner = owner;
+            playerOwnerMac = owner.getAssociatedMac();
+
             setRadius(20);
-            setPosX((float) (owner.getBody().getPosX() + 50*Math.cos(Math.toRadians(angle-90))));
-            setPosY((float) (owner.getBody().getPosY() + 50*Math.sin(Math.toRadians(angle-90))));
+            int[] offset = lengthdir_xy(offset_x, offset_y, angle);
+            setPosX(owner.getBody().getPosX() + offset[0]);
+            setPosY(owner.getBody().getPosY() + offset[1]);
             {
                 // conserve relative speed moment at shoot
                 DynamicBody owner_body = (DynamicBody) owner.getBody();
@@ -64,6 +75,18 @@ public class Bullet extends GameObject {
             speedLimit = 300;
         }
 
+        public void setPlayer_owner(Player player_owner) {
+            this.player_owner = player_owner;
+        }
+
+        public int[] lengthdir_xy(int offset_x, int offset_y, double angle)
+        {
+            int lenX = (int) ((offset_x) * Math.cos(Math.toRadians(angle)) - (offset_y) * Math.sin(Math.toRadians(angle)));
+            int lenY = (int) ((offset_x) * Math.sin(Math.toRadians(angle)) + (offset_y) * Math.cos(Math.toRadians(angle)));
+
+            return new int[]{lenX, lenY};
+        }
+
         @Override
         public int update(List<GameObject> objects) {
             return super.update(objects);
@@ -76,7 +99,8 @@ public class Bullet extends GameObject {
             {
                 GameControl.remove_object(Bullet.this);
             }
-            if (object instanceof Player && object != player_owner)
+            if (object instanceof Player && !(object instanceof AvtomatV1) &&
+                    !((Player)object).getAssociatedMac().equals(this.playerOwnerMac))
             {
                 object.take_damage(damage);
                 GameControl.remove_object(Bullet.this);
@@ -87,6 +111,7 @@ public class Bullet extends GameObject {
     /*--------------------
         Getters/Setters
      --------------------*/
+
 
     public String getOwnerName() {
         return ownerName;
