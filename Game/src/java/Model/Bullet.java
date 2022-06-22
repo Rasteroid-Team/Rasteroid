@@ -1,6 +1,7 @@
 package Model;
 
 import Controller.GameControl;
+import Controller.GameEngine;
 import Testing.AvtomatV1;
 import Testing.InputAdapter;
 import View.Objects.ObjectModels.ObjectModel;
@@ -102,7 +103,11 @@ public class Bullet extends GameObject implements Serializable {
             if (object instanceof Player && !(object instanceof AvtomatV1) &&
                     !((Player)object).getAssociatedMac().equals(this.playerOwnerMac))
             {
-                object.take_damage(damage);
+                if (GameEngine.phase != GameEngine.GamePhase.LOBBY) {
+                    object.take_damage(damage, player_owner);
+
+                }
+
                 GameControl.remove_object(Bullet.this);
             }
         }

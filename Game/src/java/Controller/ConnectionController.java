@@ -15,7 +15,6 @@ import java.util.List;
 
 public class ConnectionController implements ConnectionInterface {
 
-    int contadorJugadores;
     CommunicationController comController;
     ScreenConnectionController screenConnController;
     PlayerConnectionController playerConnController;
@@ -58,8 +57,8 @@ public class ConnectionController implements ConnectionInterface {
         GameControl.remove_object(object);
     }
 
-    public void connectAnotherScreen(int conPosition, GraphicEngine graphics) {
-        screenConnController.connectAnotherScreen(conPosition, graphics);
+    public void connectAnotherScreen(GraphicEngine graphics){
+            screenConnController.connectAnotherScreen();
     }
 
     @Override
@@ -92,6 +91,26 @@ public class ConnectionController implements ConnectionInterface {
             case 301 -> {
                 GameRules.numPlayers--;
                 System.out.println("Removed Player. " + GameRules.numPlayers + "remain.");
+            }
+            case 302 -> {
+                System.out.println("Ready PC Added.");
+                GameControl.readyPCs++;
+
+                if (GameControl.readyPCs == GameControl.expectedPCs && GameEngine.phase == GameEngine.GamePhase.SETUP) {
+                    GameEngine.phase = GameEngine.GamePhase.LOBBY;
+                }
+            }
+            case 501 -> {
+                if (GameEngine.phase == GameEngine.GamePhase.LOBBY) {
+                    GameEngine.phase = GameEngine.GamePhase.IN_GAME;
+                    try {
+                        Thread.sleep(15000);
+                        this.comController.sendBroadcastMessage(502, null);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
             }
         }
     }
