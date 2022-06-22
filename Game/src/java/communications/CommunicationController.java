@@ -20,27 +20,23 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CommunicationController {
 
+    public static final int PC = 37;
+    public static final int MVL = 38;
+    static final int SERVER = 24;
+    static final int CLIENT = 25;
+    static final int MAXATTEMPTS = 30;
     public final int PORT;
     public final int SERVERHEALTHMAXWAIT;
     public final int ACKMAXWAIT;
-
-    public static final int PC = 37;
-    public static final int MVL = 38;
-
-    static final int SERVER = 24;
-    static final int CLIENT = 25;
-
-    static final int MAXATTEMPTS = 30;
-
     final ArrayList<Connection> pcConnections = new ArrayList<>();
     final ArrayList<Connection> mobileConnections = new ArrayList<>();
     private final int maxPc;
+    Protocol protocol;
     private ServerConnector serverConn;
     private ClientConnector clientConn;
     private ConnectionInterfaceInitiater initiater;
     private String localMAC;
     private InetAddress localIP;
-    Protocol protocol;
 
     /**
      * Empty constructor, starts port as 42069, healthwait 1500, ackwait = 2500
@@ -607,11 +603,10 @@ public class CommunicationController {
         System.out.println(allConnections);
         for (String str : joinedMap.keySet()) {
             for (Connection e : allConnections) {
-                if (e != null) {
-                    if (e.getLookup().containsKey(str) && e.getLookup().get(str).equals(joinedMap.get(str))) {
-                        returnMap.put(str, e);
-                        break;
-                    }
+                if (e.getLookup().containsKey(str) && e.getLookup().get(str).equals(joinedMap.get(str))) {
+                    returnMap.put(str, e);
+                    break;
+
                 }
             }
         }

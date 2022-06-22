@@ -87,14 +87,11 @@ public class ConnectionController implements ConnectionInterface {
             }
             case 300 -> {
                 GameRules.numPlayers++;
-                System.out.println("Added Player " + GameRules.numPlayers);
+                System.out.println("Added Player. " + GameRules.numPlayers + "remain.");
             }
             case 301 -> {
                 GameRules.numPlayers--;
-                System.out.println("Removed Player " + GameRules.numPlayers);
-            }
-            case 123123 -> {
-                System.out.println("Broadcast Received");
+                System.out.println("Removed Player. " + GameRules.numPlayers + "remain.");
             }
         }
     }
