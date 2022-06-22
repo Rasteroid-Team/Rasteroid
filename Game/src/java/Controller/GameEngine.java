@@ -66,11 +66,24 @@ public class GameEngine extends Thread {
         while (is_running) {
             switch (phase) {
                 case SETUP -> {
-                    System.out.println("Waiting for Set-Up");
                     try {
-                        Thread.sleep(300);
+                        synchronized (graphics) {
+                            game.update();
+                            update_count++;
+                            game.render(graphics.lock_canvas());
+                            Thread.sleep(500);
+                        }
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
+                    } finally {
+                        if (graphics != null) {
+                            try {
+                                graphics.unlock_and_post();
+                                frame_count++;
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }
 
