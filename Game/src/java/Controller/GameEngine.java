@@ -28,7 +28,7 @@ public class GameEngine extends Thread {
     private double ups_average;
     private double fps_average;
     private ConnectionController connController;
-    private GamePhase phase = GamePhase.START;
+    public static GamePhase phase;
 
     public GameEngine(GameControl game, GraphicEngine graphics, ConnectionController connController) {
         this.game = game;
@@ -46,7 +46,7 @@ public class GameEngine extends Thread {
     }
 
     public void init() {
-        this.phase = GamePhase.START;
+        if (phase == null) phase = GamePhase.SETUP;
         is_running = true;
         start();
     }
@@ -65,12 +65,16 @@ public class GameEngine extends Thread {
         init_time = System.currentTimeMillis();
         while (is_running) {
             switch (phase) {
-                case START -> {
+                case SETUP -> {
+                    System.out.println("Waiting for Set-Up");
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
 
-                }
-                case LOBBY -> {
-                }
-                case IN_GAME -> {
+                case IN_GAME, LOBBY -> {
                     //Intentamos actualizar y renderizar los objetos de la clase Juego
                     try {
                         synchronized (graphics) {
@@ -130,10 +134,10 @@ public class GameEngine extends Thread {
         }
     }
 
-  public void set_max_ups(int ups) {
-    ups_max = ups;
-    ups_period = 1E+3 / ups_max;
-  }
+    public void set_max_ups(int ups) {
+        ups_max = ups;
+        ups_period = 1E+3 / ups_max;
+    }
 
     private void addMouseClickDetector() {
         graphics.addMouseListener(new MouseListener() {
@@ -163,22 +167,22 @@ public class GameEngine extends Thread {
                 if (e.getX() <= screenSize.getWidth() / 2 + diameter / 2 && e.getX() >= screenSize.getWidth() / 2 - diameter / 2 &&
                             e.getY() <= screenSize.getHeight() - 15 && e.getY() >= screenSize.getHeight() - diameter - 15) {
                     System.out.println("Pressed bottom");
-                    connController.connectAnotherScreen(2, graphics);
+                    connController.connectAnotherScreen(graphics);
                 }//then check top mid
                 else if (e.getX() <= screenSize.getWidth() / 2 + diameter / 2 && e.getX() >= screenSize.getWidth() / 2 - diameter / 2 &&
                                  e.getY() <= 15 + diameter && e.getY() >= 15) {
                     System.out.println("Pressed top");
-                    connController.connectAnotherScreen(0, graphics);
+                    connController.connectAnotherScreen(graphics);
                 }//then check right
                 else if (e.getX() <= screenSize.getWidth() - 15 && e.getX() >= screenSize.getWidth() - diameter - 15 &&
                                  e.getY() <= screenSize.getHeight() / 2 + diameter / 2 && e.getY() >= screenSize.getHeight() / 2 - diameter / 2) {
                     System.out.println("Pressed right");
-                    connController.connectAnotherScreen(1, graphics);
+                    connController.connectAnotherScreen(graphics);
                 }//finally check left
                 else if (e.getX() <= 0 + diameter + 15 && e.getX() >= 15 &&
                                  e.getY() <= screenSize.getHeight() / 2 + diameter / 2 && e.getY() >= screenSize.getHeight() / 2 - diameter / 2) {
                     System.out.println("Pressed left");
-                    connController.connectAnotherScreen(3, graphics);
+                    connController.connectAnotherScreen(graphics);
                 }
             }
 
@@ -188,8 +192,8 @@ public class GameEngine extends Thread {
         });
     }
 
-    private enum GamePhase {
-        START,
+    public enum GamePhase {
+        SETUP,
         LOBBY,
         IN_GAME,
         NONE

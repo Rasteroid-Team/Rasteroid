@@ -84,19 +84,25 @@ public class ConnectionController implements ConnectionInterface {
                 System.out.println("Modelo recibido");
                 playerConnController.setPlayerModel(packet.getObject().toString(), packet.getSourceID());
             }
-            case 500 -> {
-                /*
-                if (GameControl.getStatus() == Lobby) {
-                    try {
-                        Thread.sleep(30000); //Wait 30s
-                        GameControl.startGame(); //Set Game to Start
+            case 302 -> {
+                System.out.println("Ready PC Added.");
+                GameControl.readyPCs++;
 
-                     } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                     }
+                if (GameControl.readyPCs == GameControl.expectedPCs && GameEngine.phase == GameEngine.GamePhase.SETUP) {
+                    GameEngine.phase = GameEngine.GamePhase.LOBBY;
                 }
+            }
+            case 501 -> {
+                if (GameEngine.phase == GameEngine.GamePhase.LOBBY) {
+                    GameEngine.phase = GameEngine.GamePhase.IN_GAME;
+                    try {
+                        Thread.sleep(15000);
+                        this.comController.sendBroadcastMessage(502, null);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
 
-                 */
+                }
             }
         }
     }
