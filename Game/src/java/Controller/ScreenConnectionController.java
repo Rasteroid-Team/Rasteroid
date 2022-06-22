@@ -27,61 +27,31 @@ public class ScreenConnectionController {
     }
 
     public void connectAnotherScreen() {
-        boolean activo = true;
-        while (activo) {
+        int activo = 0;
+        int noNulls = 0;
+        ConfigurationController p = new ConfigurationController();
+        ArrayList<String> connect = p.connect();
+
+        for (String checkingIp : connect){
+            if (!checkingIp.equals("null")){
+                noNulls++;
+            }
+        }
+
+        while (activo < noNulls) {
             for (int i = 0; i < 4; i++) {
-                ConfigurationController p = new ConfigurationController();
                 try {
                     if (connections[i] == null) {
                         //connect screens
-                        ArrayList<String> connect = new ArrayList<>();
-                        connect = p.connect();
-                        if (i == 0) {
-                            String ip = connect.get(0);
-                            if (!ip.equals("null")) {
-                                comController.connectToIp(ip);
-                                connections[i] = "waiting";
-                                activo = false;
-                            }else{
-                                activo = false;
-                            }
-                        }
-                        if (i == 1) {
-                            String ip = connect.get(1);
-                            if (!ip.equals("null")) {
-                                comController.connectToIp(ip);
-                                connections[i] = "waiting";
-                                activo = false;
-                            }else{
-                                activo = false;
-                            }
-                        }
-                        if (i == 2) {
-                            String ip = connect.get(2);
-                            if (!ip.equals("null")) {
-                                comController.connectToIp(ip);
-                                connections[i] = "waiting";
-                                activo = false;
-                            }else{
-                                activo = false;
-                            }
-                        }
-                        if (i == 3) {
-                            String ip = connect.get(3);
-
-                            if (!ip.equals("null")) {
-                                comController.connectToIp(ip);
-                                connections[i] = "waiting";
-                                activo = false;
-                            }else{
-                                activo = false;
-                            }
-
+                        String ip = connect.get(i);
+                        if (!ip.equals("null")) {
+                            comController.connectToIp(ip);
+                            connections[i] = "waiting";
+                            activo ++;
                         }
                     }
                 }catch (Exception e){
                     e.printStackTrace();
-                    activo = true;
                 }
             }
         }

@@ -17,9 +17,8 @@ import java.util.Properties;
 
 public class ConfigurationController {
     private Properties properties = new Properties();
-    private InetAddress inetAddress;
-    private String ip;
-    private String nombre;
+    private String file;
+    private String connectionsPath;
     JSONParser parser = new JSONParser();
     Object object;
 
@@ -27,57 +26,22 @@ public class ConfigurationController {
         return properties;
     }
 
-    public InetAddress getInetAddress() {
-        return inetAddress;
-    }
-
-    public void setInetAddress(InetAddress inetAddress) {
-        this.inetAddress = inetAddress;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public ConfigurationController() {
-        try {
-            this.setInetAddress(InetAddress.getLocalHost());
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
-        this.setIp(this.getInetAddress().getHostAddress().replace(".", "") + ".properties");
-        Path path = Paths.get(this.getIp());
+        file = "connections.properties";
+        Path path = Paths.get(file);
         String ruta = String.valueOf(path.toAbsolutePath());
-        this.setNombre(ruta.replace(ip,"Game\\src\\Resources\\config\\")+this.getIp());
+        connectionsPath = ruta.replace(file,"Game\\src\\Resources\\config\\")+file;
     }
 
     public ArrayList<String> connect(){
         ArrayList<String> listConnection = new ArrayList<>();
-        if (this.getIp() != null) {
+        if (connectionsPath != null) {
             try {
-                String n = this.getNombre();
-                this.getProperties().load(new FileReader(n));
-                String top = this.getProperties().getProperty("0");
-                listConnection.add(top);
-                String right = this.getProperties().getProperty("1");
-                listConnection.add(right);
-                String bottom = this.getProperties().getProperty("2");
-                listConnection.add(bottom);
-                String left = this.getProperties().getProperty("3");
-                listConnection.add(left);
-
+                this.getProperties().load(new FileReader(connectionsPath));
+                //positions: 0 top, 1 right, 2 bottom, 3 left
+                for (int i=0; i<4; i++){
+                    listConnection.add(this.getProperties().getProperty(""+i));
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
