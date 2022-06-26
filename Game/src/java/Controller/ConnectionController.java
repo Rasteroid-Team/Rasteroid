@@ -5,6 +5,7 @@ import Model.GameObject;
 import Model.Player;
 import Testing.AvtomatV1;
 import View.GraphicEngine;
+import View.Interface.MainFrame;
 import communications.CommunicationController;
 import communications.ConnectionInterface;
 import communications.ProtocolDataPacket;
@@ -44,7 +45,6 @@ public class ConnectionController implements ConnectionInterface {
                 }
                 else if (object instanceof Bullet){
                     object.setStateList(null);
-                    ((Bullet.BulletBody)((Bullet)object).getBody()).setPlayer_owner(null);
                     object.getBody().repositionBeforeTransfer(object.getTransferingSide());
                     comController.sendMessage(comController.createPacket(object.getTransferingTo(), 161, object));
                 }
@@ -96,18 +96,39 @@ public class ConnectionController implements ConnectionInterface {
             case 156 -> {
                 System.out.println("Modelo recibido");
                 playerConnController.setPlayerModel(packet.getObject().toString(), packet.getSourceID());
+
+                if (!ConfigurationController.mainFrame){
+                    comController.sendMessage(comController.createPacket(ConfigurationController.macMainFrame,
+                            501,null));
+                } else {
+                    if (phaseController.getGamePhase() == GamePhaseController.GamePhase.LOBBY) {
+                        comController.sendBroadcastMessage(502,null);
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        phaseController.setGamePhase(GamePhaseController.GamePhase.IN_GAME);
+                    }
+                }
             }
             case 301 -> {
                 if (!ConfigurationController.mainFrame){
                     comController.sendMessage(comController.createPacket(packet.getSourceID(),302,ConfigurationController.pcNumber));
+                    ConfigurationController.macMainFrame = packet.getSourceID();
                 }
             }
             case 302 -> {
                 System.out.println("Ready PC Added.");
                 if (ConfigurationController.mainFrame){
                     if (ConfigurationController.addPcInformation(packet.getSourceID(), (int)packet.getObject())){
-                        phaseController.setGamePhase(GamePhaseController.GamePhase.LOBBY);
                         comController.sendBroadcastMessage(303,null);
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        phaseController.setGamePhase(GamePhaseController.GamePhase.LOBBY);
                     }
                 }
             }
@@ -118,16 +139,20 @@ public class ConnectionController implements ConnectionInterface {
             }
             case 501 -> {
                 System.out.println("Starting game");
-                /*if (GameEngine.phase == GameEngine.GamePhase.LOBBY) {
-                    GameEngine.phase = GameEngine.GamePhase.IN_GAME;
-                    try {
-                        Thread.sleep(15000);
-                        this.comController.sendBroadcastMessage(502, null);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                if (ConfigurationController.mainFrame){
+                    if (phaseController.getGamePhase() == GamePhaseController.GamePhase.LOBBY) {
+                        comController.sendBroadcastMessage(502,null);
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        phaseController.setGamePhase(GamePhaseController.GamePhase.IN_GAME);
                     }
-
-                }*/
+                }
+            }
+            case 502 ->{
+                phaseController.setGamePhase(GamePhaseController.GamePhase.IN_GAME);
             }
         }
     }
@@ -136,7 +161,11 @@ public class ConnectionController implements ConnectionInterface {
     public void onConnectionAccept(String mac) {
 
         if (comController.getConnectedDeviceType(mac) == CommunicationController.MVL){
-            playerConnController.acceptNewPlayer(mac);
+            if (ConfigurationController.mainFrame && phaseController.getGamePhase() == GamePhaseController.GamePhase.LOBBY) {
+                playerConnController.acceptNewPlayer(mac);
+            } else {
+                comController.disconnect(mac);
+            }
         }
         else {
             screenConnController.returnConnectionPosition(mac);

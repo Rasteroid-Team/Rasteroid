@@ -25,7 +25,9 @@ public class ConfigurationController {
 
     public static int pcNumber;
     public static boolean mainFrame = false;
-    public static String[] pcsInformation;
+    public static String macMainFrame;
+    public static boolean playerConnected = false;
+    public static String[][] pcsInformation;
 
     public Properties getProperties() {
         return properties;
@@ -45,8 +47,9 @@ public class ConfigurationController {
                 mainFrame = true;
             }
             if (mainFrame) {
-                pcsInformation = new String[Integer.parseInt(properties.getProperty("total"))];
-                pcsInformation[pcNumber] = "this";
+                //0 mac (o this si si es mainframe), 1 mac movil (sino mvl, null)
+                pcsInformation = new String[Integer.parseInt(properties.getProperty("total"))][2];
+                pcsInformation[pcNumber-1][0] = "this";
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -57,13 +60,13 @@ public class ConfigurationController {
     public static synchronized boolean addPcInformation(String mac, int postion){
         boolean filled = false;
 
-        if (pcsInformation[postion - 1] == null) {
-            pcsInformation[postion - 1] = mac;
+        if (pcsInformation[postion - 1][0] == null) {
+            pcsInformation[postion - 1][0] = mac;
 
             filled = true;
             int i = 0;
             while (filled && i < pcsInformation.length) {
-                if (pcsInformation[i] == null) {
+                if (pcsInformation[i][0] == null) {
                     filled = false;
                 }
                 i++;

@@ -39,11 +39,12 @@ public class Lobby extends Thread{
     }
 
     public void render (Graphics2D graphics){
+        graphics.setColor(Color.black);
+        graphics.fill3DRect(0,0,(int)screenSize.getWidth(), (int)screenSize.getHeight(),false);
+        graphics.setColor(Color.white);
+        graphics.setFont(new Font("Monospaced", Font.BOLD, 320));
+        graphics.drawString(""+ConfigurationController.pcNumber,(int)screenSize.getWidth()/2-100,(int)screenSize.getHeight()/2);
         graphics.setFont(new Font("Monospaced", Font.BOLD, 60));
-        graphics.drawString("PC",(int)screenSize.getWidth()/2-20,(int)screenSize.getHeight()/2-50);
-        graphics.setFont(new Font("Monospaced", Font.BOLD, 120));
-        graphics.drawString(""+ConfigurationController.pcNumber,(int)screenSize.getWidth()/2-40,(int)screenSize.getHeight()/2);
-        graphics.setFont(new Font("Monospaced", Font.BOLD, 60));
-        graphics.drawString("WAITING PLAYERS",(int)screenSize.getWidth()/2-40,(int)screenSize.getHeight()/2);
+        graphics.drawString("WAITING PLAYERS",(int)screenSize.getWidth()/2-260,(int)screenSize.getHeight()/2+150);
     }
 }

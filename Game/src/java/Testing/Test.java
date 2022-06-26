@@ -35,13 +35,14 @@ public class Test {
             mainFrame.setVisible(true);
             setUp.start();
             setUp.join();
+            //Clase que actualiza los objectos del juego
+            GameControl game_control = new GameControl();
             Lobby lobby = new Lobby(graphics, phaseContr);
             lobby.start();
             System.out.println("hola");
             lobby.join();
             System.out.println("adios");
-            //Clase que actualiza los objectos del juego
-            GameControl game_control = new GameControl();
+            Thread.sleep(5000);
             //Clase donde esta el loop del juego i se controlan los fps
             GameEngine game_engine = new GameEngine(game_control, graphics, connController);
             game_engine.set_max_ups(60);
@@ -49,7 +50,7 @@ public class Test {
             graphics.addKeyListener(input);
             game_control.set_engine(game_engine);
             game_control.set_debug_mode(true);
-            GameControl.add_object(new Map(Resources.MAP_SPACE()));
+            GameControl.add_object(new Map(Resources.MAP_SPACE()), 0);
             //GameControl.add_object(new Player(Resources.PLAYER_PHOENIX(), PlayerColors.cyan, ""));
             //GameControl.add_object(new AvtomatV1(Resources.PLAYER_HR75(), PlayerColors.red));
 

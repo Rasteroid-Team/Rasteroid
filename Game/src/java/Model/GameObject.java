@@ -127,7 +127,7 @@ public class GameObject implements Serializable {
         draw_life_bar(graphics);
     }
 
-    public void take_damage(float damage, GameObject bulletOwner)
+    public void take_damage(float damage)
     {
         if (!invencible)
         {
@@ -138,9 +138,6 @@ public class GameObject implements Serializable {
         if (health <= 0)
         {
             die();
-            Player player = (Player) bulletOwner;
-            player.setKillCount(player.getKillCount()+1);
-            System.out.println("Kill count: "+player.getKillCount());
         }
     }
 

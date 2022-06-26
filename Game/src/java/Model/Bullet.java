@@ -50,12 +50,10 @@ public class Bullet extends GameObject implements Serializable {
 
     public class BulletBody extends DynamicBody implements Serializable
     {
-        private Player player_owner;
         private String playerOwnerMac;
 
         protected BulletBody(Player owner)
         {
-            player_owner = owner;
             playerOwnerMac = owner.getAssociatedMac();
 
             setRadius(20);
@@ -74,10 +72,6 @@ public class Bullet extends GameObject implements Serializable {
             anguloFuerza = (int) angle;
             potencia_aceleracion = 300;
             speedLimit = 300;
-        }
-
-        public void setPlayer_owner(Player player_owner) {
-            this.player_owner = player_owner;
         }
 
         public int[] lengthdir_xy(int offset_x, int offset_y, double angle)
@@ -103,7 +97,7 @@ public class Bullet extends GameObject implements Serializable {
             if (object instanceof Player && !(object instanceof AvtomatV1) &&
                     !((Player)object).getAssociatedMac().equals(this.playerOwnerMac))
             {
-                object.take_damage(damage, player_owner);
+                object.take_damage(damage);
                 GameControl.remove_object(Bullet.this);
             }
         }

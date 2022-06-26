@@ -38,5 +38,5 @@ public class ParticleFx extends GameObject {
     }
 
     @Override
-    public void take_damage(float damage, GameObject object) {}
+    public void take_damage(float damage) {}
 }

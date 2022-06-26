@@ -282,6 +282,13 @@ public class GameControl {
     }
   }
 
+  public static void add_object(GameObject object, int position)
+  {
+    synchronized (adding_list) {
+      adding_list.add(position,object);
+    }
+  }
+
   public static void remove_object(GameObject object)
   {
     synchronized (adding_list) {
