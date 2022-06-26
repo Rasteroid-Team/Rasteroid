@@ -17,16 +17,19 @@ public class ConnectionController implements ConnectionInterface {
     CommunicationController comController;
     ScreenConnectionController screenConnController;
     PlayerConnectionController playerConnController;
+    GamePhaseController phaseController;
+
 
     private static List<GameObject> transferingList = new ArrayList<>();
 
-    public ConnectionController(CommunicationController comController,
-        ScreenConnectionController screenConnController, PlayerConnectionController playerConnController) {
+    public ConnectionController(CommunicationController comController, ScreenConnectionController screenConnController,
+            PlayerConnectionController playerConnController, GamePhaseController phaseController) {
 
         this.comController = comController;
         this.comController.addAllListeners(this);
         this.screenConnController = screenConnController;
         this.playerConnController = playerConnController;
+        this.phaseController = phaseController;
     }
 
     public void transferObjects(){
@@ -59,7 +62,17 @@ public class ConnectionController implements ConnectionInterface {
     }
 
     public void connectAnotherScreen(GraphicEngine graphics){
-            screenConnController.connectAnotherScreen();
+        screenConnController.connectAnotherScreen();
+        if (ConfigurationController.mainFrame){
+            while(phaseController.getGamePhase() == GamePhaseController.GamePhase.SETUP) {
+                comController.sendBroadcastMessage(301, null);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override
@@ -84,16 +97,28 @@ public class ConnectionController implements ConnectionInterface {
                 System.out.println("Modelo recibido");
                 playerConnController.setPlayerModel(packet.getObject().toString(), packet.getSourceID());
             }
+            case 301 -> {
+                if (!ConfigurationController.mainFrame){
+                    comController.sendMessage(comController.createPacket(packet.getSourceID(),302,ConfigurationController.pcNumber));
+                }
+            }
             case 302 -> {
                 System.out.println("Ready PC Added.");
-                GameControl.readyPCs++;
-
-                if (GameControl.readyPCs == GameControl.expectedPCs && GameEngine.phase == GameEngine.GamePhase.SETUP) {
-                    GameEngine.phase = GameEngine.GamePhase.LOBBY;
+                if (ConfigurationController.mainFrame){
+                    if (ConfigurationController.addPcInformation(packet.getSourceID(), (int)packet.getObject())){
+                        phaseController.setGamePhase(GamePhaseController.GamePhase.LOBBY);
+                        comController.sendBroadcastMessage(303,null);
+                    }
+                }
+            }
+            case 303 -> {
+                if (!ConfigurationController.mainFrame){
+                    phaseController.setGamePhase(GamePhaseController.GamePhase.LOBBY);
                 }
             }
             case 501 -> {
-                if (GameEngine.phase == GameEngine.GamePhase.LOBBY) {
+                System.out.println("Starting game");
+                /*if (GameEngine.phase == GameEngine.GamePhase.LOBBY) {
                     GameEngine.phase = GameEngine.GamePhase.IN_GAME;
                     try {
                         Thread.sleep(15000);
@@ -102,7 +127,7 @@ public class ConnectionController implements ConnectionInterface {
                         throw new RuntimeException(e);
                     }
 
-                }
+                }*/
             }
         }
     }

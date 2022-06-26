@@ -28,7 +28,7 @@ public class GameEngine extends Thread {
     private double ups_average;
     private double fps_average;
     private ConnectionController connController;
-    public static GamePhase phase;
+    //public static GamePhase phase;
 
     public GameEngine(GameControl game, GraphicEngine graphics, ConnectionController connController) {
         this.game = game;
@@ -46,7 +46,7 @@ public class GameEngine extends Thread {
     }
 
     public void init() {
-        if (phase == null) phase = GamePhase.SETUP;
+        //if (phase == null) phase = GamePhase.SETUP;
         is_running = true;
         start();
     }
@@ -64,7 +64,7 @@ public class GameEngine extends Thread {
         //El loop del juego
         init_time = System.currentTimeMillis();
         while (is_running) {
-            switch (phase) {
+            /*switch (phase) {
                 case SETUP -> {
                     try {
                         synchronized (graphics) {
@@ -87,7 +87,7 @@ public class GameEngine extends Thread {
                     }
                 }
 
-                case IN_GAME, LOBBY -> {
+                case IN_GAME, LOBBY -> {*/
                     //Intentamos actualizar y renderizar los objetos de la clase Juego
                     try {
                         synchronized (graphics) {
@@ -139,11 +139,11 @@ public class GameEngine extends Thread {
                         frame_count = 0;
                         init_time = System.currentTimeMillis();
                     }
-                }
+                /*}
                 case NONE -> {
                     System.exit(404);
                 }
-            }
+            }*/
         }
     }
 
@@ -205,10 +205,4 @@ public class GameEngine extends Thread {
         });
     }
 
-    public enum GamePhase {
-        SETUP,
-        LOBBY,
-        IN_GAME,
-        NONE
-    }
 }

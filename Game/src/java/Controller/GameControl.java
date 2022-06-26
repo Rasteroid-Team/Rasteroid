@@ -27,24 +27,12 @@ public class GameControl {
   public static final List<GameObject> objects = new ArrayList<>();
   private static List<GameObject> adding_list = new ArrayList<>();
   private static List<GameObject> removing_list = new ArrayList<>();
+  Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
   //for print engine values
   private boolean debug_mode;
   private GameEngine game_engine;
   DecimalFormat two_decimals = new DecimalFormat("#.00");
-
-  public static int readyPCs = 0;
-  public static int expectedPCs;
-
-  static {
-    try {
-      Properties properties = new Properties();
-      properties.load(new FileReader("Game\\src\\Resources\\config\\ipconfig.properties"));
-      expectedPCs = Integer.parseInt(properties.getProperty("total"));
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
 
   public void update()
   {
@@ -96,7 +84,6 @@ public class GameControl {
   //Nomes per a test, a nes final sa conexio entre pantalles se fera automaticament.
   private void drawButtons(Graphics2D g){
 
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     int diameter = 25;
 
     if (ScreenConnectionController.getConnections()[0] != null){
@@ -180,7 +167,7 @@ public class GameControl {
   }
   private void draw_game_phase(Graphics2D graphics)
   {
-    String phase = String.valueOf(GameEngine.phase);
+    String phase = "IN_GAME";
 
     graphics.setColor(Color.white);
     graphics.setColor(Color.MAGENTA);

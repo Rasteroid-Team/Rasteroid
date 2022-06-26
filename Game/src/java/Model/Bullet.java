@@ -103,11 +103,7 @@ public class Bullet extends GameObject implements Serializable {
             if (object instanceof Player && !(object instanceof AvtomatV1) &&
                     !((Player)object).getAssociatedMac().equals(this.playerOwnerMac))
             {
-                if (GameEngine.phase != GameEngine.GamePhase.LOBBY) {
-                    object.take_damage(damage, player_owner);
-
-                }
-
+                object.take_damage(damage, player_owner);
                 GameControl.remove_object(Bullet.this);
             }
         }

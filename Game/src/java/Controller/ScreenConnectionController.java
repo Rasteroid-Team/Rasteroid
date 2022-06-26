@@ -18,17 +18,9 @@ public class ScreenConnectionController {
     private static String[] connections = new String[4];
     public CommunicationController comController;
     private int expectedConnections = 0;
-    private ConfigurationController p;
 
     public ScreenConnectionController(CommunicationController comController) {
         this.comController = comController;
-        if (this.checkReady()) {
-            comController.sendBroadcastMessage(302, null);
-            GameControl.readyPCs++;
-            if (GameControl.readyPCs == GameControl.expectedPCs) {
-                GameEngine.phase = GameEngine.GamePhase.LOBBY;
-            }
-        }
     }
 
     public static String[] getConnections() {
@@ -37,17 +29,16 @@ public class ScreenConnectionController {
 
     public void connectAnotherScreen() {
         int activo = 0;
-        int noNulls = 0;
         ConfigurationController p = new ConfigurationController();
         ArrayList<String> connect = p.connect();
 
         for (String checkingIp : connect){
             if (!checkingIp.equals("null")){
-                noNulls++;
+                this.expectedConnections++;
             }
         }
 
-        while (activo < noNulls) {
+        while (activo < this.expectedConnections) {
             for (int i = 0; i < 4; i++) {
                 try {
                     if (connections[i] == null) {
@@ -64,21 +55,6 @@ public class ScreenConnectionController {
                 }
             }
         }
-        this.expectedConnections = this.calculateExpectedConnections();
-    }
-
-    private int calculateExpectedConnections() {
-        ArrayList<String> ipArrayList = this.p.connect();
-        int expectedConnections = 0;
-
-        for (String ip : ipArrayList) {
-            if (!(ip.equals("null"))) {
-                expectedConnections++;
-
-            }
-        }
-
-        return expectedConnections;
     }
 
     //Solo para test, despues hacer automatico
@@ -97,35 +73,10 @@ public class ScreenConnectionController {
                 connections[i] = mac;
                 comController.sendMessage(comController.createPacket(mac, 120, i));
 
-                if (this.checkReady()) {
-                    comController.sendBroadcastMessage(302, null);
-                    GameControl.readyPCs++;
-                    if (GameControl.readyPCs == GameControl.expectedPCs) {
-                        GameEngine.phase = GameEngine.GamePhase.LOBBY;
-                    }
-                }
-
                 found = true;
             }
             i++;
         }
-    }
-
-    private boolean checkReady() {
-        boolean ready = false;
-        int readyConnections = 0;
-
-        for (String connection : connections) {
-            if (connection != null && !connection.equals("waiting")) {
-                readyConnections++;
-            }
-        }
-
-        if (readyConnections == this.expectedConnections) {
-            ready = true;
-        }
-
-        return ready;
     }
 
     protected void receivePlayer(ProtocolDataPacket packet) {

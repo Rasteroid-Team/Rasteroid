@@ -249,7 +249,7 @@ public class Player extends GameObject implements Serializable {
     @Override
     public void die() {
         super.die();
-        ConfigurationController confContr = new ConfigurationController();
+        //ConfigurationController confContr = new ConfigurationController();
         //Si se ejecuta desde la rama config this.getName() es null por lo que hay que introducir una string hardcoded.
         //confContr.writeRecord(this.getName(), this.getKillCount());
         GameControl.add_object(new ParticleFx(Resources.PARTICLE_EXPLOSION(), (int) (getBody().getPosX()-50), (int) (getBody().getPosY()-50)));

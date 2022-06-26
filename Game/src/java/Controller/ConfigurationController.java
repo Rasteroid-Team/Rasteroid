@@ -12,6 +12,7 @@ import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -22,6 +23,10 @@ public class ConfigurationController {
     JSONParser parser = new JSONParser();
     Object object;
 
+    public static int pcNumber;
+    public static boolean mainFrame = false;
+    public static String[] pcsInformation;
+
     public Properties getProperties() {
         return properties;
     }
@@ -31,6 +36,41 @@ public class ConfigurationController {
         Path path = Paths.get(file);
         String ruta = String.valueOf(path.toAbsolutePath());
         connectionsPath = ruta.replace(file,"Game\\src\\Resources\\config\\")+file;
+
+        try {
+            properties.load(new FileReader("Game\\src\\Resources\\config\\ipconfig.properties"));
+            pcNumber = Integer.parseInt(properties.getProperty("pcNumber"));
+
+            if (properties.getProperty("pcType").equals("mainFrame")){
+                mainFrame = true;
+            }
+            if (mainFrame) {
+                pcsInformation = new String[Integer.parseInt(properties.getProperty("total"))];
+                pcsInformation[pcNumber] = "this";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static synchronized boolean addPcInformation(String mac, int postion){
+        boolean filled = false;
+
+        if (pcsInformation[postion - 1] == null) {
+            pcsInformation[postion - 1] = mac;
+
+            filled = true;
+            int i = 0;
+            while (filled && i < pcsInformation.length) {
+                if (pcsInformation[i] == null) {
+                    filled = false;
+                }
+                i++;
+            }
+        }
+
+        return filled;
     }
 
     public ArrayList<String> connect(){
