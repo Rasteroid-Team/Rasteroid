@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.ConfigurationController;
 import Controller.GameControl;
 import Controller.GameEngine;
 import Testing.AvtomatV1;
@@ -97,8 +98,16 @@ public class Bullet extends GameObject implements Serializable {
             if (object instanceof Player && !(object instanceof AvtomatV1) &&
                     !((Player)object).getAssociatedMac().equals(this.playerOwnerMac))
             {
-                object.take_damage(damage);
+                boolean dead = object.take_damage(damage);
                 GameControl.remove_object(Bullet.this);
+                if (dead){
+                    if (ConfigurationController.mainFrame) {
+                        GameControl.gameRules.updatePlayerStatus(this.playerOwnerMac, "alive", true);
+                    }  else {
+                        GameControl.communicationController.sendMessage(GameControl.communicationController.createPacket(
+                                ConfigurationController.macMainFrame, 600, new String[]{this.playerOwnerMac, "dead", "false"}));
+                    }
+                }
             }
         }
     }

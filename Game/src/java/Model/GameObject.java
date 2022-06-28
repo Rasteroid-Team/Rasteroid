@@ -127,8 +127,9 @@ public class GameObject implements Serializable {
         draw_life_bar(graphics);
     }
 
-    public void take_damage(float damage)
+    public boolean take_damage(float damage)
     {
+        boolean die = false;
         if (!invencible)
         {
             health -= damage;
@@ -138,7 +139,10 @@ public class GameObject implements Serializable {
         if (health <= 0)
         {
             die();
+            die = true;
         }
+
+        return die;
     }
 
     public void die() {}

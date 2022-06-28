@@ -265,7 +265,7 @@ class Connection implements Runnable{
             this.askDeviceType();
         }
         while (running){
-            try{
+            try {
                 if (this.statusOk){
                     ProtocolDataPacket received=receive();
                     //If the packet hasn't exceeded the max number of allowed jumps
@@ -289,7 +289,9 @@ class Connection implements Runnable{
                         lastMessageReceived=System.currentTimeMillis();
                     }
                 }
-                Thread.sleep(1);
+                else {
+                    Thread.sleep(1);
+                }
             } catch (Exception ex) {
                 System.out.println("run connection: "+ex.getMessage());
                 ex.printStackTrace();

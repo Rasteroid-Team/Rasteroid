@@ -103,11 +103,6 @@ public class ConnectionController implements ConnectionInterface {
                 } else {
                     if (phaseController.getGamePhase() == GamePhaseController.GamePhase.LOBBY) {
                         comController.sendBroadcastMessage(502,null);
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                         phaseController.setGamePhase(GamePhaseController.GamePhase.IN_GAME);
                     }
                 }
@@ -123,11 +118,6 @@ public class ConnectionController implements ConnectionInterface {
                 if (ConfigurationController.mainFrame){
                     if (ConfigurationController.addPcInformation(packet.getSourceID(), (int)packet.getObject())){
                         comController.sendBroadcastMessage(303,null);
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                         phaseController.setGamePhase(GamePhaseController.GamePhase.LOBBY);
                     }
                 }
@@ -142,17 +132,28 @@ public class ConnectionController implements ConnectionInterface {
                 if (ConfigurationController.mainFrame){
                     if (phaseController.getGamePhase() == GamePhaseController.GamePhase.LOBBY) {
                         comController.sendBroadcastMessage(502,null);
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                         phaseController.setGamePhase(GamePhaseController.GamePhase.IN_GAME);
                     }
                 }
             }
             case 502 ->{
                 phaseController.setGamePhase(GamePhaseController.GamePhase.IN_GAME);
+            }
+            case 600 ->{
+                if (ConfigurationController.mainFrame){
+                    String [] playerStatus = (String[])packet.getObject();
+                    GameControl.gameRules.updatePlayerStatus(playerStatus[0], playerStatus[1], Boolean.parseBoolean(playerStatus[2]));
+                }
+            }
+            case 610 ->{
+                if (!ConfigurationController.mainFrame){
+                    GameControl.gameRules.setFinished(true);
+                }
+            }
+            case 621 ->{
+                if (GameControl.gameRules != null){
+                    GameControl.gameRules.setWinnerName(packet.getObject().toString());
+                }
             }
         }
     }
@@ -175,7 +176,7 @@ public class ConnectionController implements ConnectionInterface {
 
     @Override
     public void onConnectionClosed(String mac) {
-
+        //aqui manejar desconexio des mvl
     }
 
     @Override

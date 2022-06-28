@@ -64,6 +64,7 @@ public class PlayerConnectionController {
             while (i < ConfigurationController.pcsInformation.length && !found) {
                 if (ConfigurationController.pcsInformation[i][1] != null &&
                         ConfigurationController.pcsInformation[i][1].equals(mac)) {
+                    //aqui pasa mac a on esta sa nave a nes mvl.
                     found = true;
                 } else if (ConfigurationController.pcsInformation[i][1] == null &&
                         position == -1) {

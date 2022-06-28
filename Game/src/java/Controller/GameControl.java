@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.GameObject;
+import Model.GameRules;
 import Model.Map;
 import Model.Player;
 import Testing.AvtomatV1;
@@ -27,6 +28,8 @@ public class GameControl {
   public static final List<GameObject> objects = new ArrayList<>();
   private static List<GameObject> adding_list = new ArrayList<>();
   private static List<GameObject> removing_list = new ArrayList<>();
+  public static GameRules gameRules;
+  public static CommunicationController communicationController;
   Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
   //for print engine values
@@ -118,12 +121,16 @@ public class GameControl {
   private void check_modification_list()
   {
     synchronized (adding_list) {
-      objects.addAll(adding_list);
-      adding_list.clear();
+      synchronized (objects) {
+        objects.addAll(adding_list);
+        adding_list.clear();
+      }
     }
     synchronized (removing_list) {
-      objects.removeAll(removing_list);
-      removing_list.clear();
+      synchronized (objects) {
+        objects.removeAll(removing_list);
+        removing_list.clear();
+      }
     }
   }
 
@@ -293,6 +300,13 @@ public class GameControl {
   {
     synchronized (adding_list) {
       removing_list.add(object);
+    }
+  }
+
+  public static void clearObjectList()
+  {
+    synchronized (objects) {
+      objects.clear();
     }
   }
 }
