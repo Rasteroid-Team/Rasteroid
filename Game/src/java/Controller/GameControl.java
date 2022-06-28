@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.GameObject;
+import Model.GameRules;
 import Model.Map;
 import Model.Player;
 import Testing.AvtomatV1;
@@ -9,12 +10,17 @@ import View.GraphicEngine;
 import communications.CommunicationController;
 
 import java.awt.*;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.LineNumberReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
+import java.util.Properties;
 
 public class GameControl {
 
@@ -22,6 +28,9 @@ public class GameControl {
   public static final List<GameObject> objects = new ArrayList<>();
   private static List<GameObject> adding_list = new ArrayList<>();
   private static List<GameObject> removing_list = new ArrayList<>();
+  public static GameRules gameRules;
+  public static CommunicationController communicationController;
+  Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
   //for print engine values
   private boolean debug_mode;
@@ -67,6 +76,7 @@ public class GameControl {
       draw_engine_values(graphics);
       draw_ip_address(graphics);
       this.drawButtons(graphics);
+      draw_game_phase(graphics);
       //draw_object_position(graphics, player);
       //draw_object_hit_box(graphics, player);
       //draw_player_nickname(graphics, player);
@@ -77,7 +87,6 @@ public class GameControl {
   //Nomes per a test, a nes final sa conexio entre pantalles se fera automaticament.
   private void drawButtons(Graphics2D g){
 
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     int diameter = 25;
 
     if (ScreenConnectionController.getConnections()[0] != null){
@@ -112,12 +121,16 @@ public class GameControl {
   private void check_modification_list()
   {
     synchronized (adding_list) {
-      objects.addAll(adding_list);
-      adding_list.clear();
+      synchronized (objects) {
+        objects.addAll(adding_list);
+        adding_list.clear();
+      }
     }
     synchronized (removing_list) {
-      objects.removeAll(removing_list);
-      removing_list.clear();
+      synchronized (objects) {
+        objects.removeAll(removing_list);
+        removing_list.clear();
+      }
     }
   }
 
@@ -158,6 +171,16 @@ public class GameControl {
     graphics.drawString("► IPv4: ", 20,110);
     graphics.setColor(Color.gray);
     graphics.drawString(ip, 65, 110);
+  }
+  private void draw_game_phase(Graphics2D graphics)
+  {
+    String phase = "IN_GAME";
+
+    graphics.setColor(Color.white);
+    graphics.setColor(Color.MAGENTA);
+    graphics.drawString("► PHASE: ", 20,130);
+    graphics.setColor(Color.gray);
+    graphics.drawString(phase, 95, 130);
   }
 
   //private void draw_object_position(Graphics2D graphics, GameObject object)
@@ -266,10 +289,24 @@ public class GameControl {
     }
   }
 
+  public static void add_object(GameObject object, int position)
+  {
+    synchronized (adding_list) {
+      adding_list.add(position,object);
+    }
+  }
+
   public static void remove_object(GameObject object)
   {
     synchronized (adding_list) {
       removing_list.add(object);
+    }
+  }
+
+  public static void clearObjectList()
+  {
+    synchronized (objects) {
+      objects.clear();
     }
   }
 }

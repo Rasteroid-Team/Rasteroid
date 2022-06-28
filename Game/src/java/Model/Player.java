@@ -249,10 +249,16 @@ public class Player extends GameObject implements Serializable {
     @Override
     public void die() {
         super.die();
-        ConfigurationController confContr = new ConfigurationController();
+        //ConfigurationController confContr = new ConfigurationController();
         //Si se ejecuta desde la rama config this.getName() es null por lo que hay que introducir una string hardcoded.
         //confContr.writeRecord(this.getName(), this.getKillCount());
         GameControl.add_object(new ParticleFx(Resources.PARTICLE_EXPLOSION(), (int) (getBody().getPosX()-50), (int) (getBody().getPosY()-50)));
         GameControl.remove_object(this);
+        if (ConfigurationController.mainFrame) {
+            GameControl.gameRules.updatePlayerStatus(this.associatedMac, "dead", false);
+        } else {
+            GameControl.communicationController.sendMessage(GameControl.communicationController.createPacket(
+                    ConfigurationController.macMainFrame, 600, new String[]{this.associatedMac, "dead", "false"}));
+        }
     }
 }

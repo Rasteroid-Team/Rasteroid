@@ -15,8 +15,9 @@ import java.util.ArrayList;
 public class ScreenConnectionController {
 
     // 0 up, 1 right, 2 down, 3 left
-    private static String [] connections = new String[4];
+    private static String[] connections = new String[4];
     public CommunicationController comController;
+    private int expectedConnections = 0;
 
     public ScreenConnectionController(CommunicationController comController) {
         this.comController = comController;
@@ -28,17 +29,16 @@ public class ScreenConnectionController {
 
     public void connectAnotherScreen() {
         int activo = 0;
-        int noNulls = 0;
         ConfigurationController p = new ConfigurationController();
         ArrayList<String> connect = p.connect();
 
         for (String checkingIp : connect){
             if (!checkingIp.equals("null")){
-                noNulls++;
+                this.expectedConnections++;
             }
         }
 
-        while (activo < noNulls) {
+        while (activo < this.expectedConnections) {
             for (int i = 0; i < 4; i++) {
                 try {
                     if (connections[i] == null) {
@@ -50,7 +50,7 @@ public class ScreenConnectionController {
                             activo ++;
                         }
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -58,29 +58,30 @@ public class ScreenConnectionController {
     }
 
     //Solo para test, despues hacer automatico
-    protected void recieveConnectionPosition(ProtocolDataPacket packet){
+    protected void recieveConnectionPosition(ProtocolDataPacket packet) {
         int direction = (int) packet.getObject();
         //Gira la direccion pasada para que sea correcta
         direction = (direction < 2) ? direction + 2 : direction - 2;
         connections[direction] = packet.getSourceID();
     }
 
-    protected void returnConnectionPosition(String mac){
+    protected void returnConnectionPosition(String mac) {
         int i = 0;
         boolean found = false;
         while (!found && i < connections.length) {
             if (connections[i] != null && connections[i].equals("waiting")) {
                 connections[i] = mac;
                 comController.sendMessage(comController.createPacket(mac, 120, i));
+
                 found = true;
             }
             i++;
         }
     }
 
-    protected void receivePlayer(ProtocolDataPacket packet){
+    protected void receivePlayer(ProtocolDataPacket packet) {
         Player player = (Player) packet.getObject();
-        player.setLast_fire(System.currentTimeMillis()-1000);
+        player.setLast_fire(System.currentTimeMillis() - 1000);
         player.setModel(ApiService.getPlayerModel(ApiService.getPlayerById(player.getModelID())));
         player.getModel().set_aura_color(player.getColor());
         player.setStateList(player.getModel().get_machine_states());
@@ -88,7 +89,7 @@ public class ScreenConnectionController {
         GameControl.add_object(player);
     }
 
-    protected void receiveShoot(ProtocolDataPacket packet){
+    protected void receiveShoot(ProtocolDataPacket packet) {
         Bullet bullet = (Bullet) packet.getObject();
         bullet.setStateList(Resources.BULLET_YELLOW().get_machine_states());
         bullet.getBody().repositionAfterTransfer(bullet.getTransferingSide());
