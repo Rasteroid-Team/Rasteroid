@@ -169,10 +169,10 @@ public class GameEngine extends Thread {
 
         if (GameControl.gameRules.getWinnerName() == null) {
             graphics2D.setFont(new Font("Monospaced", Font.BOLD, 160));
-            graphics2D.drawString("GAME ENDED", (int) screenSize.getWidth() / 2 - 300, (int) screenSize.getHeight() / 2);
+            graphics2D.drawString("GAME ENDED", (int) screenSize.getWidth() / 2 - 360, (int) screenSize.getHeight() / 2);
         } else {
             graphics2D.setFont(new Font("Monospaced", Font.BOLD, 100));
-            graphics2D.drawString("CONGRATULATIONS", (int) screenSize.getWidth() / 2 - 300, (int) screenSize.getHeight() / 2 - 100);
+            graphics2D.drawString("CONGRATULATIONS", (int) screenSize.getWidth() / 2 - 400, (int) screenSize.getHeight() / 2 - 100);
             graphics2D.setFont(new Font("Monospaced", Font.BOLD, 160));
             graphics2D.drawString(GameControl.gameRules.getWinnerName(),
                     (int) screenSize.getWidth() / 2 - 350, (int) screenSize.getHeight() / 2 + 100);

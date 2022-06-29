@@ -18,8 +18,9 @@ public class Body implements Serializable {
 
     //Hardcoded
     public Body() {
-        posX = 100f + (int) (Math.random() * 400f);
-        posY = 50f + (int) (Math.random() * 400f);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        posX = (float)(screenSize.getWidth()/2);
+        posY = (float)(screenSize.getHeight()/2);
         angle = 0;
     }
 

@@ -224,10 +224,8 @@ public class Player extends GameObject implements Serializable {
 
                 Player player = (Player) object;
                 if (!player.equals(Player.this)) {
-
-                    this.setPosX(this.getOldPosX());
-                    this.setPosY(this.getOldPosY());
-
+                    Player.this.die();
+                    player.die();
                 }
             }
 

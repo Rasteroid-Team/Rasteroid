@@ -40,9 +40,7 @@ public class Test {
                 GameControl.communicationController = comuContr;
                 Lobby lobby = new Lobby(graphics, phaseContr, comuContr);
                 lobby.start();
-                System.out.println("hola");
                 lobby.join();
-                System.out.println("adios");
                 if (ConfigurationController.mainFrame) {
                     GameControl.gameRules = new GameRules(false, ConfigurationController.pcsInformation, comuContr);
                 } else {
@@ -61,6 +59,9 @@ public class Test {
                 game_engine.init();
                 game_engine.join();
                 GameControl.clearObjectList();
+                if (ConfigurationController.mainFrame) {
+                    plyrConnContr.sendStartingPcs();
+                }
             }
 
         } catch (InterruptedException e) {

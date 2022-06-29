@@ -79,7 +79,8 @@ public class PlayerConnectionController {
             //protocolo 155 = preguntar modelo nave
             //protocolo 156 = devuelve mensaje
             //Mandamos un mensaje para preguntar el modelo elegido al móvil
-            comController.sendMessage(comController.createPacket(mac, 155,ConfigurationController.pcsInformation[position][0]));
+            comController.sendMessage(comController.createPacket(mac, 155,new String []
+                    {ConfigurationController.pcsInformation[position][0], ""+(position+1)}));
             System.out.println("enviado");
             //GameControl.add_object(new Player(Resources.PLAYER_PHOENIX(), PlayerColors.cyan, mac));
         } else if (!found && position == -1){
@@ -92,6 +93,21 @@ public class PlayerConnectionController {
         Player player = new Player(model, PlayerColors.cyan, mac);
         player.setModelID(modelID);
         GameControl.add_object(player);
+    }
+
+
+
+    public void sendStartingPcs(){
+        synchronized (ConfigurationController.pcsInformation) {
+            for (String[] pcInformation : ConfigurationController.pcsInformation) {
+                if (pcInformation[1] != null && pcInformation[0].equals("this")){
+                    comController.sendMessage(comController.createPacket(pcInformation[1],180, comController.getLocalMAC()));
+                }
+                else if (pcInformation[1] != null){
+                    comController.sendMessage(comController.createPacket(pcInformation[1],180, pcInformation[0]));
+                }
+            }
+        }
     }
 
 }

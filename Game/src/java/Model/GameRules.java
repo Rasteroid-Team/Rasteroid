@@ -23,7 +23,15 @@ public class GameRules {
                 players.add(new String[]{pcInformation[1],"alive","0"});
             }
         }
-        this.finished = false;
+
+        this.finished = this.checkVictory();
+
+        if (this.finished){
+            communicationController.sendBroadcastMessage(610,null);
+            if (winnerMac != null) {
+                communicationController.sendMessage(communicationController.createPacket(winnerMac, 620, null));
+            }
+        }
     }
 
     public GameRules(boolean teamsActivated, CommunicationController communicationController) {
@@ -96,7 +104,9 @@ public class GameRules {
 
             if (this.finished){
                 communicationController.sendBroadcastMessage(610,null);
-                communicationController.sendMessage(communicationController.createPacket(winnerMac, 620, null));
+                if (winnerMac != null) {
+                    communicationController.sendMessage(communicationController.createPacket(winnerMac, 620, null));
+                }
             }
         }
     }

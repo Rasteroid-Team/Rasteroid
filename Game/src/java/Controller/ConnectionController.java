@@ -147,6 +147,15 @@ public class ConnectionController implements ConnectionInterface {
             }
             case 610 ->{
                 if (!ConfigurationController.mainFrame){
+                    int loops = 0;
+                    while (GameControl.gameRules == null && loops < 150){
+                        try {
+                            Thread.sleep(20);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        loops++;
+                    }
                     GameControl.gameRules.setFinished(true);
                 }
             }
