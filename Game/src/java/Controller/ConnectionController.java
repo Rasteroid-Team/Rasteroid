@@ -185,7 +185,20 @@ public class ConnectionController implements ConnectionInterface {
 
     @Override
     public void onConnectionClosed(String mac) {
-        //aqui manejar desconexio des mvl
+        System.out.println("Aqui estamos");
+        int i = 0;
+        boolean found = false;
+
+        synchronized (ConfigurationController.pcsInformation) {
+            while (i < ConfigurationController.pcsInformation.length && !found) {
+                if (ConfigurationController.pcsInformation[i][1] != null &&
+                        ConfigurationController.pcsInformation[i][1].equals(mac)) {
+                    found = true;
+                    ConfigurationController.pcsInformation[i][1] = null;
+                }
+                i++;
+            }
+        }
     }
 
     @Override
