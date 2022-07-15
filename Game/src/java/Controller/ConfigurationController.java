@@ -28,6 +28,7 @@ public class ConfigurationController {
     public static String macMainFrame;
     public static boolean playerConnected = false;
     public static String[][] pcsInformation;
+    public static String[] disconnectedPlayers;
 
     public Properties getProperties() {
         return properties;
@@ -138,6 +139,19 @@ public class ConfigurationController {
             }
         }
 
+    }
+
+    public static void setNewDisconnectedPlayers(){
+        disconnectedPlayers = new String[pcsInformation.length];
+    }
+
+    public static void cleanDisconnectedPlayers(){
+        for (int i=0; i<disconnectedPlayers.length; i++){
+            if (disconnectedPlayers[i] != null && disconnectedPlayers[i].equals(pcsInformation[i][1])){
+                pcsInformation[i][1] = null;
+            }
+        }
+        disconnectedPlayers = null;
     }
 }
 

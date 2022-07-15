@@ -64,7 +64,6 @@ public class PlayerConnectionController {
             while (i < ConfigurationController.pcsInformation.length && !found) {
                 if (ConfigurationController.pcsInformation[i][1] != null &&
                         ConfigurationController.pcsInformation[i][1].equals(mac)) {
-                    //aqui pasa mac a on esta sa nave a nes mvl.
                     found = true;
                 } else if (ConfigurationController.pcsInformation[i][1] == null &&
                         position == -1) {
@@ -84,6 +83,34 @@ public class PlayerConnectionController {
             System.out.println("enviado");
             //GameControl.add_object(new Player(Resources.PLAYER_PHOENIX(), PlayerColors.cyan, mac));
         } else if (!found && position == -1){
+            comController.disconnect(mac);
+        }
+    }
+
+    protected void reconnectPlayer(String mac){
+        int i = 0;
+        boolean found = false;
+
+        synchronized (ConfigurationController.pcsInformation) {
+            while (i < ConfigurationController.pcsInformation.length && !found) {
+                if (ConfigurationController.pcsInformation[i][1] != null &&
+                        ConfigurationController.pcsInformation[i][1].equals(mac)) {
+                    synchronized (ConfigurationController.disconnectedPlayers) {
+                        ConfigurationController.disconnectedPlayers[i] = null;
+                    }
+                    if (GameControl.searchPlayer(mac)){
+                        comController.sendMessage(comController.createPacket(mac, 180, comController.getLocalMAC()));
+                    }else {
+                        comController.sendBroadcastMessage(700, mac);
+                    }
+                    comController.sendMessage(comController.createPacket(mac, 550, null));
+                    found = true;
+                }
+                i++;
+            }
+        }
+
+        if (!found) {
             comController.disconnect(mac);
         }
     }

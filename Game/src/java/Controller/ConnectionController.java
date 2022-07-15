@@ -164,6 +164,14 @@ public class ConnectionController implements ConnectionInterface {
                     GameControl.gameRules.setWinnerName(packet.getObject().toString());
                 }
             }
+            case 700 ->{
+                if (phaseController.getGamePhase() == GamePhaseController.GamePhase.IN_GAME){
+                    if (GameControl.searchPlayer(packet.getObject().toString())){
+                        comController.sendMessage(comController.createPacket(packet.getObject().toString(), 180,
+                                comController.getLocalMAC()));
+                    }
+                }
+            }
         }
     }
 
@@ -173,7 +181,10 @@ public class ConnectionController implements ConnectionInterface {
         if (comController.getConnectedDeviceType(mac) == CommunicationController.MVL){
             if (ConfigurationController.mainFrame && phaseController.getGamePhase() == GamePhaseController.GamePhase.LOBBY) {
                 playerConnController.acceptNewPlayer(mac);
-            } else {
+            } else if (ConfigurationController.mainFrame && phaseController.getGamePhase() == GamePhaseController.GamePhase.IN_GAME) {
+                playerConnController.reconnectPlayer(mac);
+            }
+            else {
                 comController.disconnect(mac);
             }
         }
@@ -188,15 +199,22 @@ public class ConnectionController implements ConnectionInterface {
         System.out.println("Aqui estamos");
         int i = 0;
         boolean found = false;
-
-        synchronized (ConfigurationController.pcsInformation) {
-            while (i < ConfigurationController.pcsInformation.length && !found) {
-                if (ConfigurationController.pcsInformation[i][1] != null &&
-                        ConfigurationController.pcsInformation[i][1].equals(mac)) {
-                    found = true;
-                    ConfigurationController.pcsInformation[i][1] = null;
+        if (ConfigurationController.pcsInformation != null) {
+            synchronized (ConfigurationController.pcsInformation) {
+                while (i < ConfigurationController.pcsInformation.length && !found) {
+                    if (ConfigurationController.pcsInformation[i][1] != null &&
+                            ConfigurationController.pcsInformation[i][1].equals(mac)) {
+                        found = true;
+                        if (phaseController.getGamePhase() == GamePhaseController.GamePhase.IN_GAME &&
+                                ConfigurationController.disconnectedPlayers != null) {
+                            //Aixo s'ha de modificar, segur que i donara es player correcte?
+                            ConfigurationController.disconnectedPlayers[i] = mac;
+                        } else {
+                            ConfigurationController.pcsInformation[i][1] = null;
+                        }
+                    }
+                    i++;
                 }
-                i++;
             }
         }
     }

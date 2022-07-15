@@ -309,5 +309,22 @@ public class GameControl {
       objects.clear();
     }
   }
+
+  public static boolean searchPlayer(String mac){
+    boolean found = false;
+    int i = 0;
+    synchronized (objects) {
+      while (i < objects.size() && !found) {
+        if (objects.get(i) instanceof Player && !(objects.get(i) instanceof AvtomatV1)) {
+          if (((Player) objects.get(i)).getAssociatedMac().equals(mac)) {
+            found = true;
+          }
+        }
+      }
+    }
+
+    return found;
+  }
+
 }
 

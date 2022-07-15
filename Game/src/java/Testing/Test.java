@@ -42,6 +42,7 @@ public class Test {
                 lobby.start();
                 lobby.join();
                 if (ConfigurationController.mainFrame) {
+                    ConfigurationController.setNewDisconnectedPlayers();
                     GameControl.gameRules = new GameRules(false, ConfigurationController.pcsInformation, comuContr);
                 } else {
                     GameControl.gameRules = new GameRules(false, comuContr);
@@ -54,12 +55,11 @@ public class Test {
                 game_control.set_engine(game_engine);
                 game_control.set_debug_mode(true);
                 GameControl.add_object(new Map(Resources.MAP_SPACE()), 0);
-                //GameControl.add_object(new Player(Resources.PLAYER_PHOENIX(), PlayerColors.cyan, ""));
-                //GameControl.add_object(new AvtomatV1(Resources.PLAYER_HR75(), PlayerColors.red));
                 game_engine.init();
                 game_engine.join();
                 GameControl.clearObjectList();
                 if (ConfigurationController.mainFrame) {
+                    ConfigurationController.cleanDisconnectedPlayers();
                     plyrConnContr.sendStartingPcs();
                 }
             }

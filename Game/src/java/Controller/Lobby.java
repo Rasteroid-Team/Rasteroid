@@ -26,7 +26,7 @@ public class Lobby extends Thread{
             try {
                 synchronized (graphics) {
                     this.render(graphics.lock_canvas());
-                    Thread.sleep(500);
+                    Thread.sleep(20);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
